@@ -1,8 +1,6 @@
 {
-  // Cloudflare Workers 정적 사이트 설정 — `npx wrangler deploy`로 public/ 폴더를 배포합니다.
+  // Cloudflare Pages 설정 — public/ 폴더를 사이트 루트로 배포합니다.
   "name": "ytins",
   "compatibility_date": "2026-07-20",
-  "assets": {
-    "directory": "./public"
-  }
+  "pages_build_output_dir": "public"
 }
