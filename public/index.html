@@ -50,6 +50,28 @@
     transition: color .15s ease, background .15s ease;
   }
   .gnb a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+  /* dropdown */
+  .has-sub { position: relative; }
+  .has-sub > .sub-toggle { display: inline-flex; align-items: center; gap: 5px; }
+  .has-sub .caret { font-size: 9px; transition: transform .18s ease; }
+  .sub {
+    position: absolute; top: calc(100% + 8px); left: 0;
+    background: var(--navy2); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px; padding: 16px; min-width: 360px;
+    display: none; gap: 10px;
+    box-shadow: 0 18px 44px rgba(0,0,0,0.45);
+  }
+  .sub::before { content: ""; position: absolute; top: -10px; left: 0; right: 0; height: 10px; }
+  .has-sub:hover .sub, .has-sub:focus-within .sub { display: flex; }
+  .has-sub:hover .caret, .has-sub:focus-within .caret { transform: rotate(180deg); }
+  .sub-col { display: flex; flex-direction: column; flex: 1; }
+  .sub-col .sub-head {
+    color: var(--accent); font-weight: 700; font-size: 14px;
+    padding: 8px 12px; margin-bottom: 4px;
+    border-bottom: 1px solid rgba(255,255,255,0.1); border-radius: 0;
+  }
+  .sub-col .sub-head:hover { background: transparent; color: #4d86ff; }
+  .sub-col a:not(.sub-head) { font-size: 14px; padding: 9px 12px; color: rgba(255,255,255,0.82); }
   .burger {
     display: none; background: none; border: 0; cursor: pointer; padding: 8px;
   }
@@ -110,14 +132,15 @@
   .about-card .label { font-size: 13px; color: rgba(255,255,255,0.65); margin-top: 4px; }
 
   /* Business */
-  .biz-block { margin-bottom: 56px; }
+  .biz-block { margin-bottom: 56px; scroll-margin-top: calc(var(--header-h) + 24px); }
   .biz-block:last-child { margin-bottom: 0; }
   .biz-block h3 { font-size: 22px; margin: 0 0 8px; color: #0f172e; }
   .biz-block .biz-desc { color: var(--muted); font-size: 15px; line-height: 1.7; margin: 0 0 24px; }
-  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
   .card {
     background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 28px 24px;
     transition: box-shadow .2s ease, transform .2s ease;
+    scroll-margin-top: calc(var(--header-h) + 24px);
   }
   .card:hover { box-shadow: 0 12px 30px rgba(14,27,60,0.10); transform: translateY(-3px); }
   .card .icon {
@@ -213,6 +236,15 @@
     }
     .gnb.open { display: flex; }
     .gnb a { padding: 14px 10px; border-radius: 8px; }
+    .has-sub .caret { display: none; }
+    .sub {
+      position: static; display: flex; flex-direction: column;
+      background: transparent; border: 0; box-shadow: none;
+      min-width: 0; padding: 0 0 6px 12px; margin-top: 2px; gap: 2px;
+    }
+    .sub::before { display: none; }
+    .sub-col .sub-head { border-bottom: 0; margin-bottom: 0; padding: 12px; }
+    .sub-col a:not(.sub-head) { padding: 12px 12px 12px 22px; }
     .burger { display: block; }
     .about-grid { grid-template-columns: 1fr; }
     .cards, .contact-grid { grid-template-columns: 1fr; }
@@ -232,7 +264,21 @@
     </a>
     <nav class="gnb" id="gnb">
       <a href="#about">회사소개</a>
-      <a href="#business">사업분야</a>
+      <div class="has-sub">
+        <a href="#business" class="sub-toggle">사업분야 <span class="caret">▾</span></a>
+        <div class="sub">
+          <div class="sub-col">
+            <a href="#business-ax" class="sub-head">AX사업</a>
+            <a href="#biz-si">SI 사업</a>
+            <a href="#biz-outsourcing">IT아웃소싱</a>
+          </div>
+          <div class="sub-col">
+            <a href="#business-dx" class="sub-head">DX사업</a>
+            <a href="#biz-cloud">클라우드</a>
+            <a href="#biz-bigdata">BigData·AI 플랫폼</a>
+          </div>
+        </div>
+      </div>
       <a href="#brochure">회사소개서</a>
       <a href="#contact">오시는길</a>
     </nav>
@@ -294,28 +340,23 @@
       <span class="sec-chip">02 사업분야</span>
       <h2>Business</h2>
       <p class="sec-desc">
-        공공사업 조직 중심의 AX 사업과 솔루션 조직 중심의 DX 사업을 두 축으로,
+        시스템 구축·운영 중심의 AX 사업과 데이터 기반 디지털전환 중심의 DX 사업을 두 축으로,
         고객의 비즈니스에 최적화된 IT 서비스를 제공합니다.
       </p>
 
-      <div class="biz-block">
+      <div class="biz-block" id="business-ax">
         <h3>AX 사업</h3>
-        <p class="biz-desc">공공사업 1팀·공공사업 2팀을 중심으로 공공기관 대상 SI, IT 아웃소싱, 정보시스템 위탁운영·유지관리 사업을 수행합니다.</p>
+        <p class="biz-desc">SI 사업과 IT 아웃소싱을 중심으로 공공기관·기업 대상 정보시스템 구축부터 안정적 운영·유지관리까지 수행합니다.</p>
         <div class="cards">
-          <div class="card">
+          <div class="card" id="biz-si">
             <div class="icon">🏛️</div>
-            <h4>공공 SI</h4>
-            <p>웹 &amp; 모바일 SW 개발, 표준프레임워크 기반 SI. MSA(Micro Service Architecture) 개발방법론을 적용하여 사업 수행.</p>
+            <h4>SI 사업</h4>
+            <p>웹 &amp; 모바일 SW 개발, 표준프레임워크·MSA(Micro Service Architecture) 기반 시스템 구축. 공공·기업 정보시스템 설계부터 구축까지 수행.</p>
           </div>
-          <div class="card">
+          <div class="card" id="biz-outsourcing">
             <div class="icon">🔧</div>
             <h4>IT 아웃소싱</h4>
-            <p>정보시스템 위탁운영·통합 유지관리, 인프라·응용시스템·빅데이터플랫폼 운영, 장애 대응 및 상시 모니터링 체계 운영.</p>
-          </div>
-          <div class="card">
-            <div class="icon">🤝</div>
-            <h4>공공사업 조직</h4>
-            <p>공공사업 1팀·공공사업 2팀 이원화 운영으로 대형 공공 프로젝트 동시 수행 역량 확보.</p>
+            <p>정보시스템 위탁운영·통합 유지관리, 인프라·응용시스템 운영, 장애 대응 및 상시 모니터링 체계 운영. 공공사업 1팀·2팀 이원화로 대형 프로젝트 동시 수행.</p>
           </div>
         </div>
         <div class="clients">
@@ -324,24 +365,19 @@
         </div>
       </div>
 
-      <div class="biz-block">
+      <div class="biz-block" id="business-dx">
         <h3>DX 사업</h3>
-        <p class="biz-desc">솔루션개발팀·솔루션서비스팀을 중심으로 빅데이터·AI·IoT 기반 디지털전환(DX) 솔루션과 서비스를 제공합니다.</p>
+        <p class="biz-desc">클라우드와 BigData·AI 플랫폼을 중심으로 데이터 기반 디지털전환(DX) 솔루션과 서비스를 제공합니다.</p>
         <div class="cards">
-          <div class="card">
-            <div class="icon">📊</div>
-            <h4>빅데이터 플랫폼</h4>
-            <p>오픈소스 기반 빅데이터 수집·저장·분석·시각화 포털 구축, IoT 연계 대시보드 개발.</p>
+          <div class="card" id="biz-cloud">
+            <div class="icon">☁️</div>
+            <h4>클라우드</h4>
+            <p>G클라우드 기반 클라우드 인프라 구축·운영, IoT 연계 실시간 모니터링·관제 서비스, 지능형 실내환경측정 서비스 제공.</p>
           </div>
-          <div class="card">
+          <div class="card" id="biz-bigdata">
             <div class="icon">🧠</div>
-            <h4>AI 분석 솔루션</h4>
-            <p>OLAP 기반 AI 시스템 설계·구축, Hadoop·SPARK 연계 데이터 사이언스 적용.</p>
-          </div>
-          <div class="card">
-            <div class="icon">📡</div>
-            <h4>IoT 서비스</h4>
-            <p>지능형 실내환경측정 서비스, 클라우드(G클라우드) 기반 실시간 모니터링·관제 서비스.</p>
+            <h4>BigData·AI 플랫폼</h4>
+            <p>오픈소스 기반 빅데이터 수집·저장·분석·시각화 포털 구축, OLAP·Hadoop·SPARK 연계 AI 데이터 사이언스 적용.</p>
           </div>
         </div>
         <div class="clients">
