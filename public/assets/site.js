@@ -16,6 +16,21 @@
     });
   }
 
+  // 대분류 메뉴: 현재 페이지와 같으면 최상단으로 스크롤
+  function baseName(p) { p = (p || "").split("#")[0].split("?")[0].split("/").pop() || "index.html"; return p.replace(/\.html$/, "") || "index"; }
+  var here = baseName(location.pathname);
+  document.querySelectorAll(".gnb .sub-toggle, .gnb > a").forEach(function (a) {
+    var href = a.getAttribute("href") || "";
+    if (href.indexOf("#") === -1 && baseName(href) === here) {
+      a.addEventListener("click", function (e) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (gnb) gnb.classList.remove("open");
+        if (burger) burger.setAttribute("aria-expanded", "false");
+      });
+    }
+  });
+
   // 헤더 스크롤 시 하단 보더
   var header = document.querySelector(".site-header");
   if (header) {
