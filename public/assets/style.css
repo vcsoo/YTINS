@@ -232,6 +232,29 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 .footer-bottom .fnav a { font-weight: 500; }
 .footer-bottom .fnav a:hover { color: var(--accent); }
 
+/* Steps (process) */
+.steps { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 8px; }
+.step { flex: 1 1 150px; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 22px 20px; }
+.step .n { font-family: var(--font-display); font-weight: 800; color: var(--accent); font-size: 14px; }
+.step h5 { margin: 10px 0 6px; font-size: 15.5px; font-family: var(--font-display); font-weight: 700; color: var(--ink); }
+.step p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+/* Tag chips */
+.taglist { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.tag { background: var(--accent-soft); color: var(--accent); font-size: 13px; font-weight: 600; padding: 6px 13px; border-radius: 999px; }
+
+/* Spec (definition) rows — reuse info-table look */
+.spec { width: 100%; border-collapse: collapse; }
+.spec th, .spec td { text-align: left; padding: 13px 4px; font-size: 14.5px; border-bottom: 1px solid var(--line); }
+.spec tr:last-child th, .spec tr:last-child td { border-bottom: 0; }
+.spec th { width: 150px; color: var(--accent); font-weight: 700; font-family: var(--font-display); white-space: nowrap; }
+.spec td { color: var(--ink); font-weight: 500; }
+
+/* Feature list with check marks */
+.checks { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+.checks li { position: relative; padding: 14px 16px 14px 42px; background: #fff; border: 1px solid var(--line); border-radius: 12px; font-size: 14.5px; color: var(--ink); line-height: 1.6; }
+.checks li::before { content: "✓"; position: absolute; left: 15px; top: 14px; color: var(--accent); font-weight: 800; }
+
 /* ---------- Scroll reveal (progressive: visible unless JS opts in) ---------- */
 .js-reveal .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1); }
 .js-reveal .reveal.in { opacity: 1; transform: none; }

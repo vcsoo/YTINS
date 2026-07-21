@@ -1,8 +1,10 @@
 /* YTINS 회사소개서 슬라이드 뷰어 */
 (function () {
-  var TOTAL = 14;
-  var titles = ["표지","목차","Company Overview","History","Organization","Certifications",
-    "AX 사업","DX 사업","하둡(Hadoop)","AI","스마트심사","Clients","주요실적","Thank you"];
+  var TOTAL = 27;
+  var titles = ["표지","목차","01 회사소개","회사개요","비전","연혁","조직도","인증현황",
+    "02 Business","DX & AX","SI","클라우드","BigData·AI","IT아웃소싱",
+    "03 솔루션","빅데이터 플랫폼(Hadoop)","Data & AI","Data & AI 차별화","스마트심사",
+    "04 Reference","파트너사","주요실적","BigData·AI 주요실적","클라우드 주요실적","클라우드 주요실적","재무 & 신용등급","Contact"];
   var frame = document.getElementById("frame");
   var thumbsEl = document.getElementById("thumbs");
   var curEl = document.getElementById("cur");
