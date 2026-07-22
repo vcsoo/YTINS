@@ -97,13 +97,34 @@
     <div class="container">
       <span class="sec-chip">파트너사</span><h2>Partners</h2>
       <p class="sec-desc">클라우드·SI 전문 기업, 산학 연구기관과의 협력 네트워크를 기반으로 검증된 서비스를 제공합니다.</p>
-      <div class="partner-cats">
-        <div class="pcat"><h4>Cloud 파트너</h4><div class="pcat-sub">클라우드 인프라·플랫폼</div><ul>
-          <li>NCP (네이버 클라우드)</li><li>AWS</li><li>Microsoft Azure</li></ul></div>
-        <div class="pcat"><h4>SI 파트너</h4><div class="pcat-sub">시스템 구축·통합</div><ul>
-          <li>SKT</li><li>CJ올리브네트웍스</li><li>메가존디지털</li><li>한국이디에스</li><li>두산</li><li>LIG정보통신</li><li>대보정보통신</li></ul></div>
-        <div class="pcat"><h4>산학 및 기타</h4><div class="pcat-sub">연구·협력 기관</div><ul>
-          <li>광운대학교</li><li>서일대학교</li><li>경기도경제과학진흥원</li><li>한국전자기술연구원</li></ul></div>
+      <div class="pcat-group">
+        <div class="pcat-head"><h4>Cloud 파트너</h4><span>클라우드 인프라·플랫폼</span></div>
+        <div class="logo-grid">
+          <div class="lg"><img src="assets/partners-logos/ncp.png" alt="NAVER Cloud"></div>
+          <div class="lg"><img src="assets/partners-logos/aws.png" alt="AWS"></div>
+          <div class="lg"><img src="assets/partners-logos/azure.png" alt="Microsoft Azure"></div>
+        </div>
+      </div>
+      <div class="pcat-group">
+        <div class="pcat-head"><h4>SI 파트너</h4><span>시스템 구축·통합</span></div>
+        <div class="logo-grid">
+          <div class="lg"><img src="assets/partners-logos/skt.png" alt="SK텔레콤"></div>
+          <div class="lg"><img src="assets/partners-logos/cj.png" alt="CJ올리브네트웍스"></div>
+          <div class="lg"><img src="assets/partners-logos/megazone.png" alt="메가존 클라우드"></div>
+          <div class="lg"><img src="assets/partners-logos/keds.png" alt="한국이디에스"></div>
+          <div class="lg"><img src="assets/partners-logos/doosan.png" alt="두산"></div>
+          <div class="lg"><img src="assets/partners-logos/lig.png" alt="LIG"></div>
+          <div class="lg"><img src="assets/partners-logos/daebo.png" alt="대보정보통신"></div>
+        </div>
+      </div>
+      <div class="pcat-group">
+        <div class="pcat-head"><h4>산학 및 기타</h4><span>연구·협력 기관</span></div>
+        <div class="logo-grid">
+          <div class="lg"><img src="assets/partners-logos/kw.png" alt="광운대학교"></div>
+          <div class="lg"><img src="assets/partners-logos/seoil.png" alt="서일대학교"></div>
+          <div class="lg"><img src="assets/partners-logos/gbsa.png" alt="경기도경제과학진흥원"></div>
+          <div class="lg"><img src="assets/partners-logos/keti.png" alt="한국전자기술연구원"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -232,6 +253,23 @@
     </div>
   </div>
 </footer>
+<div class="fab" id="fab">
+  <button class="fab-btn" id="fabBtn" aria-label="문의하기" aria-expanded="false">✉</button>
+  <div class="fab-panel" role="dialog" aria-label="문의하기">
+    <div class="fp-head">
+      <b>문의하기</b><span>남겨주시면 담당자가 확인 후 연락드립니다.</span>
+      <button class="fp-close" id="fabClose" aria-label="닫기">×</button>
+    </div>
+    <form id="fabForm">
+      <input type="text" name="name" placeholder="이름" required autocomplete="name">
+      <input type="text" name="contact" placeholder="연락처 (이메일 또는 전화번호)" required>
+      <input type="text" name="subject" placeholder="제목" required>
+      <textarea name="message" placeholder="문의 내용" required></textarea>
+      <button type="submit" class="fp-submit">보내기</button>
+      <p class="fp-note">전송 시 메일 앱을 통해 service@ytins.co.kr 로 전달됩니다.</p>
+    </form>
+  </div>
+</div>
 <script src="assets/site.js"></script>
 </body>
 </html>

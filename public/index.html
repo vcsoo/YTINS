@@ -62,7 +62,7 @@
   <section class="hero">
     <div class="container">
       <span class="eyebrow">Create the best value, YTINS</span>
-      <h1>어제의 경험으로<br>내일의 가치를 만드는<br><span class="en">통합 IT 서비스 전문기업</span></h1>
+      <h1>축적된 경험으로<br>미래의 가치를 만드는<br><span class="en">통합 IT 서비스 전문기업 YTINS</span></h1>
       <p class="lead">㈜와이티아이엔에스는 모바일·웹 SI, IT 아웃소싱, Total 비즈니스 솔루션과
         스마트 서비스(BigData·AI·IoT·Cloud)를 제공하는 통합 IT 서비스 전문기업입니다.
         풍부한 경험과 역량으로 고객의 성공적인 사업 수행을 약속드립니다.</p>
@@ -109,6 +109,23 @@
     </div>
   </div>
 </footer>
+<div class="fab" id="fab">
+  <button class="fab-btn" id="fabBtn" aria-label="문의하기" aria-expanded="false">✉</button>
+  <div class="fab-panel" role="dialog" aria-label="문의하기">
+    <div class="fp-head">
+      <b>문의하기</b><span>남겨주시면 담당자가 확인 후 연락드립니다.</span>
+      <button class="fp-close" id="fabClose" aria-label="닫기">×</button>
+    </div>
+    <form id="fabForm">
+      <input type="text" name="name" placeholder="이름" required autocomplete="name">
+      <input type="text" name="contact" placeholder="연락처 (이메일 또는 전화번호)" required>
+      <input type="text" name="subject" placeholder="제목" required>
+      <textarea name="message" placeholder="문의 내용" required></textarea>
+      <button type="submit" class="fp-submit">보내기</button>
+      <p class="fp-note">전송 시 메일 앱을 통해 service@ytins.co.kr 로 전달됩니다.</p>
+    </form>
+  </div>
+</div>
 <script src="assets/site.js"></script>
 </body>
 </html>
