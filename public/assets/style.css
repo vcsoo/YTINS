@@ -129,6 +129,19 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 .clients-bar .t { font-family: var(--font-display); font-weight: 800; font-size: 14px; color: var(--accent); flex-shrink: 0; letter-spacing: 0; }
 .clients-bar .list { font-size: 14.5px; color: var(--text); line-height: 1.75; }
 
+/* Cloud partnership band */
+.cloud-partners { margin-top: 40px; background: linear-gradient(180deg, var(--accent-soft), #fff); border: 1px solid #dce6fb; border-radius: 20px; padding: 30px 34px; display: flex; align-items: center; justify-content: space-between; gap: 30px; flex-wrap: wrap; }
+.cloud-partners .cp-head { display: flex; flex-direction: column; gap: 6px; max-width: 460px; }
+.cloud-partners .cp-kicker { font-family: var(--font-display); font-weight: 800; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.cloud-partners .cp-head b { font-family: var(--font-display); font-size: 19px; color: var(--ink); letter-spacing: -0.01em; }
+.cloud-partners .cp-sub { font-size: 13.5px; color: var(--muted); line-height: 1.65; }
+.cloud-partners .cp-logos { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.cloud-partners .cp-logo { background: #fff; border: 1px solid var(--line); border-radius: 14px; height: 76px; min-width: 150px; display: flex; align-items: center; justify-content: center; padding: 16px 24px; box-shadow: 0 8px 22px rgba(12,14,19,0.05); }
+.cloud-partners .cp-logo img { max-height: 40px; max-width: 100%; width: auto; object-fit: contain; }
+.cloud-partners .cp-plus { font-family: var(--font-display); font-weight: 800; font-size: 22px; color: var(--accent); }
+.cloud-partners .cp-with { font-family: var(--font-display); font-weight: 800; font-size: 15px; color: var(--accent-ink); padding-left: 4px; }
+@media (max-width: 720px) { .cloud-partners { padding: 24px; } .cloud-partners .cp-logos { width: 100%; justify-content: center; } .cloud-partners .cp-with { width: 100%; text-align: center; } }
+
 /* Home nav cards */
 .nav-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 22px; }
 .nav-card { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 36px 32px; transition: box-shadow .25s ease, transform .25s ease, border-color .25s ease; min-height: 220px; }
