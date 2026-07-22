@@ -1,5 +1,28 @@
-/* 공통: 모바일 메뉴 · 헤더 스크롤 상태 · 스크롤 리빌 */
+/* 공통: 모바일 메뉴 · 헤더 스크롤 상태 · 스크롤 리빌 · 문의 위젯 */
 (function () {
+  // 문의 플로팅 위젯
+  var fab = document.getElementById("fab");
+  if (fab) {
+    var fabBtn = document.getElementById("fabBtn");
+    var fabClose = document.getElementById("fabClose");
+    var fabForm = document.getElementById("fabForm");
+    var openFab = function () { fab.classList.add("open"); fabBtn.setAttribute("aria-expanded", "true"); var f = fabForm.querySelector("input"); if (f) f.focus(); };
+    var closeFab = function () { fab.classList.remove("open"); fabBtn.setAttribute("aria-expanded", "false"); };
+    fabBtn.addEventListener("click", openFab);
+    fabClose.addEventListener("click", closeFab);
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeFab(); });
+    fabForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var d = new FormData(fabForm);
+      var name = (d.get("name") || "").trim(), contact = (d.get("contact") || "").trim(),
+          subject = (d.get("subject") || "").trim(), message = (d.get("message") || "").trim();
+      var subj = encodeURIComponent("[YTINS 문의] " + subject + " (" + name + ")");
+      var body = encodeURIComponent("이름: " + name + "\n연락처: " + contact + "\n제목: " + subject + "\n\n" + message);
+      window.location.href = "mailto:service@ytins.co.kr?subject=" + subj + "&body=" + body;
+      setTimeout(closeFab, 300);
+    });
+  }
+
   // 모바일 메뉴
   var burger = document.getElementById("burger");
   var gnb = document.getElementById("gnb");
