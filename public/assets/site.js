@@ -1,26 +1,37 @@
 /* 공통: 모바일 메뉴 · 헤더 스크롤 상태 · 스크롤 리빌 · 문의 위젯 */
 (function () {
-  // 문의 플로팅 위젯
+  // 플로팅: 맨 위로(스크롤 진행률 링) + 연락처 팝오버
   var fab = document.getElementById("fab");
   if (fab) {
-    var fabBtn = document.getElementById("fabBtn");
-    var fabClose = document.getElementById("fabClose");
-    var fabForm = document.getElementById("fabForm");
-    var openFab = function () { fab.classList.add("open"); fabBtn.setAttribute("aria-expanded", "true"); var f = fabForm.querySelector("input"); if (f) f.focus(); };
-    var closeFab = function () { fab.classList.remove("open"); fabBtn.setAttribute("aria-expanded", "false"); };
-    fabBtn.addEventListener("click", openFab);
-    fabClose.addEventListener("click", closeFab);
-    document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeFab(); });
-    fabForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var d = new FormData(fabForm);
-      var name = (d.get("name") || "").trim(), contact = (d.get("contact") || "").trim(),
-          subject = (d.get("subject") || "").trim(), message = (d.get("message") || "").trim();
-      var subj = encodeURIComponent("[YTINS 문의] " + subject + " (" + name + ")");
-      var body = encodeURIComponent("이름: " + name + "\n연락처: " + contact + "\n제목: " + subject + "\n\n" + message);
-      window.location.href = "mailto:service@ytins.co.kr?subject=" + subj + "&body=" + body;
-      setTimeout(closeFab, 300);
-    });
+    var toTop = document.getElementById("toTop");
+    var toTopPct = document.getElementById("toTopPct");
+    var ring = fab.querySelector(".ring-fg");
+    var CIRC = 2 * Math.PI * 21;
+    if (ring) ring.style.strokeDasharray = CIRC;
+    var updateProgress = function () {
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      var pct = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      if (ring) ring.style.strokeDashoffset = CIRC * (1 - pct);
+      if (toTopPct) toTopPct.textContent = Math.round(pct * 100) + "%";
+    };
+    updateProgress();
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("resize", updateProgress, { passive: true });
+    if (toTop) toTop.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: "smooth" }); });
+
+    var contactUnit = document.getElementById("contactUnit");
+    var contactBtn = document.getElementById("contactBtn");
+    if (contactUnit && contactBtn) {
+      contactBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var open = contactUnit.classList.toggle("open");
+        contactBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+      var closeContact = function () { contactUnit.classList.remove("open"); contactBtn.setAttribute("aria-expanded", "false"); };
+      document.addEventListener("click", function (e) { if (contactUnit.classList.contains("open") && !contactUnit.contains(e.target)) closeContact(); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeContact(); });
+    }
   }
 
   // 모바일 메뉴
@@ -65,7 +76,7 @@
   // 스크롤 리빌 (스크롤 기반·결정적, 스태거) — 콘텐츠는 기본 노출, JS 있을 때만 애니메이션
   var targets = [].slice.call(document.querySelectorAll(
     ".card, .nav-card, .cert, .partner, .tl-item, .about-card, .perf-stat, .info-table, .org, .clients-bar, .viewer, .contact-card"
-  ));
+  )).filter(function (el) { return !el.closest("[data-marquee]"); });
   if (!targets.length) return;
   document.documentElement.classList.add("js-reveal");
   targets.forEach(function (el) { el.classList.add("reveal"); });
