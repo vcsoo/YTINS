@@ -68,7 +68,39 @@
     <div class="container">
       <span class="sec-chip">빅데이터 플랫폼</span><h2>빅데이터 플랫폼 (Hadoop)</h2>
       <p class="sec-desc">상용 빅데이터 플랫폼을 자사 오픈소스 기반 빅데이터 플랫폼으로 전환하여 유연성과 확장성을 확보합니다. 저비용·단계적 전환으로 리스크를 최소화합니다.</p>
-      <div class="diagram"><img src="assets/diagrams/hadoop.jpg" alt="상용 빅데이터 플랫폼 전환 제안 — 오픈소스 구성기술 및 구축 추진 방식" loading="lazy"></div>
+      <div class="duo">
+        <div class="duo-panel ink">
+          <div class="dhead"><div class="kicker">Before</div><h3>상용 플랫폼의 한계</h3></div>
+          <div class="dbody">
+            <div class="srv"><span>구독형 라이선스 및 유지보수 비용 부담</span></div>
+            <div class="srv"><span>벤더 의존도 증가와 전환 유연성 제한</span></div>
+            <div class="srv"><span>고객 환경별 커스터마이징 제약</span></div>
+            <div class="srv"><span>버전 정착·업그레이드에 따른 운영 부담</span></div>
+            <div class="srv"><span>데이터 증가 시 장기 TCO 상승 가능성</span></div>
+          </div>
+        </div>
+        <div class="duo-panel blue">
+          <div class="dhead"><div class="kicker">After</div><h3>오픈소스 기반 구축</h3></div>
+          <div class="dbody">
+            <table class="spec" style="margin:6px 0">
+              <tr><th>수집·연계</th><td>Kafka, NiFi</td></tr>
+              <tr><th>저장</th><td>HDFS, Object Storage</td></tr>
+              <tr><th>처리</th><td>Spark, Flink</td></tr>
+              <tr><th>SQL·분석</th><td>Hive, Trino</td></tr>
+              <tr><th>워크플로우</th><td>Airflow</td></tr>
+              <tr><th>보안·거버넌스</th><td>Ranger, Atlas</td></tr>
+              <tr><th>모니터링</th><td>Prometheus, Grafana</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="flow grad" style="margin-top:26px">
+        <div class="fstep">현황 진단</div>
+        <div class="fstep">전환 설계</div>
+        <div class="fstep">구축·이관</div>
+        <div class="fstep">안정화·기술이전</div>
+      </div>
+      <div class="clients-bar"><span class="t">기대 효과</span><span class="list">라이선스 비용 절감 · 유연한 아키텍처 구현 · 운영 효율화 및 확장성 확보 · 자체 운영 역량 강화</span></div>
     </div>
   </section>
 
@@ -76,8 +108,33 @@
     <div class="container">
       <span class="sec-chip">Data &amp; AI</span><h2>Data &amp; AI Solution</h2>
       <p class="sec-desc">YT는 오픈소스 기반 빅데이터 플랫폼 역량과 실시간 분석·AI 활용 역량을 결합하여 고객의 데이터 활용 전 주기를 지원합니다. (YT BigData·AI Solution)</p>
-      <div class="diagram"><img src="assets/diagrams/dataai1.jpg" alt="YT-BDP 데이터 플랫폼과 YT-DA 분석·AI 계층 구조" loading="lazy"></div>
-      <div class="diagram" style="margin-top:22px"><img src="assets/diagrams/dataai2.jpg" alt="YT만의 차별화 및 주요 레퍼런스 영역" loading="lazy"></div>
+      <div class="stack">
+        <div class="layer top">
+          <div class="lsub">분석·AI 계층 (상위 레이어)</div>
+          <div class="ltitle">YT-DA · Data Analytics &amp; AI</div>
+          <ul><li>실시간 분석·시각화·AI 모델 적용을 지원하는 분석 플랫폼</li>
+            <li>정형·비정형 데이터 통합 분석</li>
+            <li>RAG 기반 지식검색 및 생성형 AI 서비스 확장</li></ul>
+        </div>
+        <div class="stack-arrow">▲</div>
+        <div class="layer">
+          <div class="lsub">데이터 플랫폼 (기반 레이어)</div>
+          <div class="ltitle">YT-BDP · BigData Platform</div>
+          <ul><li>수집·저장·처리·모니터링을 통합한 오픈소스 기반 빅데이터 플랫폼</li>
+            <li>클라우드/온프레미스·G-클라우드 유연 대응</li>
+            <li>실시간 모니터링·알림·운영 자동화 지원</li></ul>
+        </div>
+      </div>
+      <div class="block" style="margin-top:40px">
+        <h3>YT만의 차별화</h3>
+        <ul class="checks">
+          <li>오픈소스 중심 설계로 라이선스 비용 부담 최소화</li>
+          <li>공공·금융·민간 프로젝트 기반의 현실형 아키텍처</li>
+          <li>빅데이터 플랫폼부터 AI 활용까지 End-to-End 구축</li>
+          <li>보안·운영·거버넌스를 고려한 엔터프라이즈형 설계</li>
+        </ul>
+        <div class="clients-bar"><span class="t">시장 흐름</span><span class="list">Lakehouse 기반 통합 데이터 관리 · 실시간 스트리밍 분석 확대 · 오픈소스·하이브리드 아키텍처 선호 · 생성형 AI/RAG 기반 지식활용 수요 증가</span></div>
+      </div>
     </div>
   </section>
 
