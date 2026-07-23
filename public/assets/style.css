@@ -770,3 +770,54 @@ b.count-pop { display: inline-block; }
   .org-stat .n b { font-size: 22px; }
 }
 @media (max-width: 560px) { .org-divs { grid-template-columns: 1fr 1fr; gap: 10px; } .org-div .head { padding: 13px 12px; font-size: 13.5px; } .org-div .team { padding: 11px 12px; font-size: 12.5px; } .hero .stats { gap: 22px; } }
+
+/* ================= Dark-navy theme: header + alt sections =================
+   롤백 시 이 블록 전체 삭제 (헤더·햄버거·alt 섹션 다크네이비 실험) */
+:root { --navy: #101828; --navy-2: #131c30; }
+
+/* 헤더: 다크네이비 반투명 */
+.site-header { background: rgba(16,24,40,0.86); }
+.site-header.scrolled { background: rgba(16,24,40,0.97); border-bottom-color: rgba(255,255,255,0.10); box-shadow: 0 10px 30px rgba(4,8,16,0.35); }
+.site-header .logo-img { filter: brightness(0) invert(1); } /* 로고 흰색 단색화 (푸터 로고는 제외) */
+.logo .kr { color: #e8edf5; }
+.gnb > a, .gnb .has-sub > .sub-toggle { color: #b9c4d8; }
+.gnb > a:hover, .gnb .has-sub:hover > .sub-toggle { color: #fff; background: rgba(255,255,255,0.08); }
+.gnb .has-sub > .sub-toggle.active, .gnb > a.active { color: #8db4f9; background: rgba(141,180,249,0.14); }
+.burger span { background: #fff; }
+
+/* alt 섹션: 다크네이비 배경 (흰 카드·표·다이어그램은 대비 유지를 위해 그대로) */
+.section.alt { background: var(--navy); }
+.section.alt h2 { background: var(--navy); color: #fff; }
+.section.alt h3.sub-h { color: #fff; }
+.section.alt .sec-desc, .section.alt .block-desc { color: #a7b3c8; }
+.section.alt .pcat-head h4 { color: #fff; }
+.section.alt .pcat-head span { color: #8592a8; }
+.section.alt .pcat-head { border-bottom-color: rgba(255,255,255,0.14); }
+/* 대표인사말 */
+.section.alt .ceo-lead { color: #fff; }
+.section.alt .ceo > p { color: #b6c0d2; }
+.section.alt .ceo-name b { color: #fff; }
+.section.alt .ceo-name span { color: #8fa0ba; }
+.section.alt .ceo-signimg { filter: brightness(0) invert(1); }
+/* 오시는길 정보표 */
+.section.alt .info-table th { color: #8fa0ba; }
+.section.alt .info-table td { color: #eef2f8; }
+.section.alt .info-table th, .section.alt .info-table td { border-bottom-color: rgba(255,255,255,0.12); }
+/* 조직도·다이어그램 보조선 */
+.section.alt .org-line { background: rgba(255,255,255,0.25); }
+.section.alt .org-div { border-color: rgba(255,255,255,0.18); }
+.section.alt .org-div .head { background: #1d2b4a; } /* 검은 헤더가 네이비 배경에 묻히지 않도록 */
+.section.alt .flow .fstep::after { color: rgba(255,255,255,0.4); }
+.section.alt .stack-arrow { color: #7fa8f7; }
+
+/* 모바일: 헤더·풀스크린 메뉴 다크네이비 */
+@media (max-width: 900px) {
+  .site-header { background: #101828; backdrop-filter: none; }
+  .gnb { background: linear-gradient(180deg, var(--navy-2), #0d1424); }
+  .gnb > a, .gnb .has-sub > .sub-toggle { color: #fff; }
+  .gnb .has-sub > .sub-toggle::before { color: #7fa8f7; }
+  .gnb .has-sub > .sub-toggle.active, .gnb > a.active { color: #8db4f9; background: transparent; }
+  .gnb .has-sub + .has-sub { border-top-color: rgba(255,255,255,0.09); }
+  .sub a { color: #8fa0ba; }
+  .sub a:hover, .sub a:active { color: #fff; }
+}
