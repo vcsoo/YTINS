@@ -191,7 +191,7 @@
         var e = 1 - Math.pow(1 - p, 3);
         it.node.nodeValue = (it.target * e).toFixed(it.dec);
         if (p < 1) requestAnimationFrame(step);
-        else it.node.nodeValue = it.target.toFixed(it.dec);
+        else { it.node.nodeValue = it.target.toFixed(it.dec); it.el.classList.add("count-pop"); } // 완료 시 팝 강조
       }
       requestAnimationFrame(step);
     }
@@ -213,8 +213,8 @@
     ".card, .nav-card, .cert, .partner, .tl-item, .about-card, .perf-stat, .info-table, .org, .clients-bar, .viewer, .contact-card, " +
     ".sec-desc, .block-desc, .num-item, .feat, .duo-panel, .phase, .fstep, .layer, .stack-arrow, " +
     ".ssd-eng, .ssd-bridge, .ssd-db, .ssd-comp, .cert-doc, .pcat-head, .finchart, .hnode, .hc-inner, " +
-    ".found .p4, .found .base, .cloud-partners, .map-wrap, .map-info, .btn-row, .ceo, .table-wrap"
-  )).filter(function (el) { return !el.closest("[data-marquee]"); });
+    ".found .p4, .found .base, .cloud-partners, .map-wrap, .map-info, .btn-row, .ceo, .table-wrap, .marquee"
+  )).filter(function (el) { var m = el.closest("[data-marquee]"); return !m || m === el; }); // 마퀴 내부 셀은 제외, 컨테이너 자체는 허용
   if (!targets.length) return;
   document.documentElement.classList.add("js-reveal");
   targets.forEach(function (el) { el.classList.add("reveal"); });
