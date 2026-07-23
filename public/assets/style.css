@@ -627,19 +627,19 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 .checks li::before { content: "✓"; position: absolute; left: 15px; top: 14px; color: var(--accent); font-weight: 800; }
 
 /* ---------- Scroll reveal (progressive: visible unless JS opts in) ---------- */
-.js-reveal .reveal { opacity: 0; transform: translateY(40px); filter: blur(6px); transition: opacity .75s cubic-bezier(.2,.7,.2,1), transform .75s cubic-bezier(.16,.8,.24,1), filter .75s ease; will-change: opacity, transform, filter; }
+.js-reveal .reveal { transition: opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.16,.8,.24,1), filter .6s ease; }
+/* 숨김 상태는 전부 :not(.in)에만 적용 — 등장 후에는 어떤 변형도 남지 않음 */
+.js-reveal .reveal:not(.in) { opacity: 0; transform: translateY(20px); filter: blur(3px); }
+.js-reveal .duo .duo-panel.reveal:not(.in):nth-child(1) { transform: translateX(-28px) translateY(6px); }
+.js-reveal .duo .duo-panel.reveal:not(.in):nth-child(2) { transform: translateX(28px) translateY(6px); }
+.js-reveal .ssd-engines .ssd-eng.reveal:not(.in):nth-child(1) { transform: translateX(-24px); }
+.js-reveal .ssd-engines .ssd-eng.reveal:not(.in):nth-child(3) { transform: translateX(24px); }
+.js-reveal :is(.num-item, .feat, .cert-doc, .about-card, .phase, .found .p4, .ssd-comp, .nav-card, .perf-stat).reveal:not(.in) { transform: translateY(15px) scale(0.96); }
+.js-reveal .fstep.reveal:not(.in) { transform: translateY(11px) scale(0.95); }
+.js-reveal :is(.sec-chip, .section h2, .sec-desc, .block-desc, .pcat-head).reveal:not(.in) { transform: translateY(13px); filter: blur(2px); }
+.js-reveal :is(.map-wrap, .finchart, .cloud-partners, .ssd-db).reveal:not(.in) { transform: translateY(17px) scale(0.985); }
 .js-reveal .reveal.in { opacity: 1; transform: none; filter: none; }
-/* 요소별 등장 방향 변주 */
-.js-reveal .duo .duo-panel.reveal:nth-child(1) { transform: translateX(-56px) translateY(12px); }
-.js-reveal .duo .duo-panel.reveal:nth-child(2) { transform: translateX(56px) translateY(12px); }
-.js-reveal .ssd-engines .ssd-eng.reveal:nth-child(1) { transform: translateX(-48px); }
-.js-reveal .ssd-engines .ssd-eng.reveal:nth-child(3) { transform: translateX(48px); }
-.js-reveal :is(.num-item, .feat, .cert-doc, .about-card, .phase, .found .p4, .ssd-comp, .nav-card, .perf-stat).reveal { transform: translateY(30px) scale(0.92); }
-.js-reveal :is(.fstep, .tag).reveal { transform: translateY(22px) scale(0.9); }
-.js-reveal :is(.sec-chip, .section h2, .sec-desc, .block-desc, .pcat-head).reveal { transform: translateY(26px); filter: blur(4px); }
-.js-reveal :is(.map-wrap, .finchart, .cloud-partners, .ssd-db).reveal { transform: translateY(34px) scale(0.97); }
-.js-reveal .duo .duo-panel.reveal.in, .js-reveal .ssd-engines .ssd-eng.reveal.in { transform: none; }
-@media (prefers-reduced-motion: reduce) { .js-reveal .reveal { opacity: 1; transform: none !important; filter: none; transition: none; } }
+@media (prefers-reduced-motion: reduce) { .js-reveal .reveal, .js-reveal .reveal:not(.in) { opacity: 1; transform: none !important; filter: none; transition: none; } }
 
 /* ---------- Mobile ---------- */
 @media (max-width: 900px) {
