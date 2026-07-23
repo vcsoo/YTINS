@@ -107,6 +107,73 @@
     window.addEventListener("resize", function () { headerH = header ? header.offsetHeight : 64; secScroll(); }, { passive: true });
   }
 
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // CTA 밴드 → 연락처 팝오버 열기 (팝오버 없으면 mailto 폴백)
+  [].slice.call(document.querySelectorAll("[data-open-contact]")).forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      var unit = document.getElementById("contactUnit");
+      if (!unit) return; // href(mailto)로 진행
+      e.preventDefault();
+      e.stopPropagation(); // 문서 클릭 닫힘 핸들러보다 먼저 소비
+      unit.classList.add("open");
+      var btn = document.getElementById("contactBtn");
+      if (btn) btn.setAttribute("aria-expanded", "true");
+    });
+  });
+
+  // 히어로 키워드 로테이션
+  var rotWord = document.getElementById("rotWord");
+  if (rotWord && !reduceMotion) {
+    var rotWords = ["AI 전환", "클라우드 전환", "데이터 혁신"];
+    var rotIdx = 0;
+    setInterval(function () {
+      rotIdx = (rotIdx + 1) % rotWords.length;
+      rotWord.classList.remove("swap");
+      void rotWord.offsetWidth; // 애니메이션 재시작
+      rotWord.textContent = rotWords[rotIdx];
+      rotWord.classList.add("swap");
+    }, 3000);
+  }
+
+  // KPI 숫자 카운트업 (뷰포트 진입 시 1회)
+  (function () {
+    var els = [].slice.call(document.querySelectorAll(".hero .stats .num, .about-card .num, .org-stat .nums b"));
+    var items = [];
+    els.forEach(function (el) {
+      var t = el.firstChild;
+      if (!t || t.nodeType !== 3) return;
+      var m = /^(\d+(?:\.\d+)?)$/.exec(t.nodeValue.trim());
+      if (!m) return; // BB+ 등 비수치 항목 제외
+      items.push({ node: t, el: el, target: parseFloat(m[1]), dec: (m[1].split(".")[1] || "").length, done: false });
+      if (!reduceMotion) t.nodeValue = "0";
+    });
+    if (!items.length || reduceMotion) return;
+    function animate(it) {
+      var start = null, dur = 1200;
+      function step(ts) {
+        if (!start) start = ts;
+        var p = Math.min(1, (ts - start) / dur);
+        var e = 1 - Math.pow(1 - p, 3);
+        it.node.nodeValue = (it.target * e).toFixed(it.dec);
+        if (p < 1) requestAnimationFrame(step);
+        else it.node.nodeValue = it.target.toFixed(it.dec);
+      }
+      requestAnimationFrame(step);
+    }
+    function check() {
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      items.forEach(function (it) {
+        if (it.done) return;
+        var r = it.el.getBoundingClientRect();
+        if (r.top < vh * 0.92 && r.bottom > 0) { it.done = true; animate(it); }
+      });
+    }
+    check();
+    window.addEventListener("scroll", check, { passive: true });
+    window.addEventListener("load", check);
+  })();
+
   // 스크롤 리빌 (스크롤 기반·결정적, 스태거) — 콘텐츠는 기본 노출, JS 있을 때만 애니메이션
   var targets = [].slice.call(document.querySelectorAll(
     ".card, .nav-card, .cert, .partner, .tl-item, .about-card, .perf-stat, .info-table, .org, .clients-bar, .viewer, .contact-card"
