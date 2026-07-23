@@ -64,87 +64,14 @@ export const SECTIONS = [
   { page: "사업분야", items: [
     { id: "business.meta", title: "검색·브라우저 정보", spec: { title: "text: 브라우저 탭 제목", desc: "area: 검색엔진 설명문" } },
     { id: "business.hero", title: "페이지 상단", spec: { eyebrow: "text: 소제목", title: "text: 제목", desc: "area: 설명" } },
-    { id: "business.dxax", title: "DX & AX", spec: {
-      title: "text: 섹션 제목", desc: "area: 섹션 설명",
-      flow: { _label: "단계 다이어그램", _item: { t: "text: 단계명", s: "text: 부연" } },
-      panels: { _label: "DX/AX 패널 (2개)", _item: { kicker: "text: 상단 라벨", title: "text: 패널 제목", items: { _label: "항목", _item: { b: "text: 제목", s: "text: 설명" } } } },
-      bar: { t: "text: 하단 바 라벨", list: "area: 하단 바 내용" }
-    } },
-    { id: "business.si", title: "SI", spec: {
-      title: "text: 섹션 제목", desc: "area: 섹션 설명",
-      numbered: { _label: "01~04 카드", _item: { title: "text: 제목", desc: "area: 설명" } },
-      egov: { title: "text: 소제목", desc: "area: 설명", feats: { _label: "특징 카드", _item: { icon: "icon: 아이콘", b: "text: 제목", s: "text: 설명" } } },
-      method: { title: "text: 소제목", desc: "area: 설명", phases: { _label: "방법론 단계", _item: { ph: "text: 단계명", items: { _label: "세부 항목", _of: "text: 항목" } } } },
-      bar: { t: "text: 하단 바 라벨", list: "area: 하단 바 내용" }
-    } },
-    { id: "business.ito", title: "ITO", spec: {
-      title: "text: 섹션 제목", desc: "area: 섹션 설명",
-      p4: { _label: "상단 4요소", _item: { icon: "icon: 아이콘", b: "text: 제목", s: "text: 설명" } },
-      base: { bt: "text: 기반 문구", cols: { _label: "기반 구성", _item: { b: "text: 제목", s: "text: 설명" } } },
-      bar: { t: "text: 하단 바 라벨", list: "area: 하단 바 내용" }
-    } },
-    { id: "business.bigdata", title: "BigData·AI", spec: {
-      title: "text: 섹션 제목", desc: "area: 섹션 설명",
-      flow: { _label: "단계 다이어그램", _item: { t: "text: 단계명", s: "text: 부연" } },
-      numbered: { _label: "01~04 카드", _item: { title: "text: 제목", desc: "area: 설명" } },
-      tagsTitle: "text: 역량 소제목", tagsDesc: "area: 역량 설명",
-      tags: { _label: "역량 태그", _of: "text: 태그" },
-      featsTitle: "text: 가치 소제목",
-      feats: { _label: "가치 카드", _item: { icon: "icon: 아이콘", b: "text: 제목", s: "text: 설명" } }
-    } },
-    { id: "business.cloud", title: "클라우드", spec: {
-      title: "text: 섹션 제목", desc: "area: 섹션 설명",
-      lineupTitle: "text: 라인업 소제목", lineupDesc: "area: 라인업 설명",
-      numbered: { _label: "01~04 카드", _item: { title: "text: 제목", badge: "text: 파란 배지", desc: "area: 설명" } },
-      checksTitle: "text: 역량 소제목", checksDesc: "area: 역량 설명",
-      checks: { _label: "체크 리스트", _item: { b: "text: 제목", s: "text: 설명" } },
-      flow: { _label: "단계 다이어그램", _item: { t: "text: 단계명", s: "text: 부연" } },
-      cp: { kicker: "text: 파트너십 라벨", head: "text: 파트너십 제목", sub: "area: 파트너십 설명", logo1: "img.partners: 로고 1", logo2: "img.partners: 로고 2" },
-      bar: { t: "text: 하단 바 라벨", list: "area: 하단 바 내용" }
-    } }
+    { id: "business.sections", title: "페이지 구성 (블록 편집)", sectionsEditor: true }
   ] },
-  { page: "Solution", items: [
+    { page: "Solution", items: [
     { id: "solution.meta", title: "검색·브라우저 정보", spec: { title: "text: 브라우저 탭 제목", desc: "area: 검색엔진 설명문" } },
     { id: "solution.hero", title: "페이지 상단", spec: { eyebrow: "text: 소제목", title: "text: 제목", desc: "area: 설명" } },
-    { id: "solution.hadoop", title: "빅데이터 플랫폼 (Hadoop)SW", spec: {
-      title: "text: 섹션 제목", desc: "area: 섹션 설명",
-      before: { kicker: "text: 좌측 패널 라벨", title: "text: 좌측 패널 제목", items: { _label: "한계 항목", _of: "text: 항목" } },
-      after: { kicker: "text: 우측 패널 라벨", title: "text: 우측 패널 제목", spec: { _label: "기술 스택 표", _item: { th: "text: 구분", td: "text: 기술" } } },
-      flow1: { _label: "전환 단계", _item: { t: "text: 단계명", s: "text: 부연(비워도 됨)" } },
-      aiTitle: "text: AI 분석 소제목", aiDesc: "area: AI 분석 설명",
-      flow2: { _label: "AI 분석 단계", _item: { t: "text: 단계명", s: "text: 부연" } },
-      monTitle: "text: 통합관리 소제목", monDesc: "area: 통합관리 설명",
-      monFeats: { _label: "통합관리 카드", _item: { icon: "icon: 아이콘", b: "text: 제목", s: "text: 설명" } },
-      bar: { t: "text: 하단 바 라벨", list: "area: 하단 바 내용" }
-    } },
-    { id: "solution.dataai", title: "Data & AI Solution", spec: {
-      title: "text: 섹션 제목", desc: "area: 섹션 설명",
-      flow: { _label: "단계 다이어그램", _item: { t: "text: 단계명", s: "text: 부연" } },
-      layers: { _label: "레이어 (상위/기반)", _item: { icon: "icon: 아이콘", sub: "text: 레이어 라벨", title: "text: 레이어 제목", items: { _label: "설명 항목", _of: "text: 항목" } } },
-      featsTitle: "text: 차별화 소제목",
-      feats: { _label: "차별화 카드", _item: { icon: "icon: 아이콘", b: "text: 제목", s: "text: 설명" } },
-      bar: { t: "text: 하단 바 라벨", list: "area: 하단 바 내용" }
-    } },
-    { id: "solution.smart", title: "스마트심사 Solution", spec: {
-      title: "text: 섹션 제목", desc: "area: 섹션 설명",
-      ssdTitle: "text: 구성도 소제목", ssdDesc: "area: 구성도 설명 (<b>강조</b> 가능)",
-      ssd: {
-        sysLabel: "text: 상단 시스템 라벨",
-        eng1: { tag: "text: 좌측 태그", nm: "text: 좌측 영문명", ko: "text: 좌측 한글명", items: { _label: "기능 (첫 항목이 REST 연동 강조)", _of: "text: 기능" } },
-        bridge: "text: 연동 배지 문구",
-        eng2: { tag: "text: 우측 태그", nm: "text: 우측 영문명", ko: "text: 우측 한글명", items: { _label: "기능 (첫 항목이 REST 연동 강조)", _of: "text: 기능" } },
-        db: { b: "text: DB 이름", em: "text: DB 설명" },
-        sys2Label: "text: 하단 시스템 라벨",
-        comps: { _label: "하단 구성요소", _item: { icon: "icon: 아이콘", b: "text: 이름" } }
-      },
-      lh: {
-        title: "text: 레퍼런스 소제목", cardTitle: "text: 카드 제목", cardDesc: "area: 카드 설명",
-        points: { _label: "주요 내용", _of: "text: 항목" },
-        years: { _label: "연도별 이력", _item: { num: "text: 연도", label: "area: 내용" } }
-      }
-    } }
+    { id: "solution.sections", title: "페이지 구성 (블록 편집)", sectionsEditor: true }
   ] },
-  { page: "레퍼런스", items: [
+    { page: "레퍼런스", items: [
     { id: "reference.meta", title: "검색·브라우저 정보", spec: { title: "text: 브라우저 탭 제목", desc: "area: 검색엔진 설명문" } },
     { id: "reference.hero", title: "페이지 상단", spec: { eyebrow: "text: 소제목", title: "text: 제목", desc: "area: 설명" } },
     { id: "reference.clients", title: "고객사 로고", spec: {
@@ -176,3 +103,57 @@ export const SECTIONS = [
     { id: "contact", title: "우측 하단 연락처 버튼", spec: { email: "text: 이메일", tel: "text: 전화(표시용)", telLink: "text: 전화(숫자만, 링크용)" } }
   ] }
 ];
+
+/* ---------- 블록 에디터: 사업분야·Solution 페이지 구성용 ---------- */
+export const BLOCKS = {
+  desc: { name: "섹션 설명문", spec: { text: "area: 내용" },
+    empty: { type: "desc", text: "" } },
+  subhead: { name: "소제목 + 설명", spec: { title: "text: 소제목", desc: "area: 설명 (비우면 생략)", tight: "check: 위 여백 줄이기" },
+    empty: { type: "subhead", title: "소제목", desc: "", tight: false } },
+  flow: { name: "단계 다이어그램 (화살표 흐름)", spec: { steps: { _label: "단계", _item: { t: "text: 단계명", s: "text: 부연 (비워도 됨)" } }, style: "text: 여백 스타일 (고급 · 비워도 됨)" },
+    empty: { type: "flow", steps: [{ t: "1단계", s: "" }, { t: "2단계", s: "" }, { t: "3단계", s: "" }], style: "" } },
+  numbered: { name: "번호 카드 (01~04)", spec: { items: { _label: "카드", _item: { title: "text: 제목", badge: "text: 파란 배지 (비워도 됨)", desc: "area: 설명" } } },
+    empty: { type: "numbered", items: [{ title: "제목", badge: "", desc: "" }] } },
+  featgrid: { name: "특징 카드 (아이콘+제목+설명)", spec: { feats: { _label: "카드", _item: { icon: "icon: 아이콘", b: "text: 제목", s: "text: 설명" } } },
+    empty: { type: "featgrid", feats: [{ icon: "target", b: "제목", s: "설명" }] } },
+  duo: { name: "좌우 패널 (검정/파랑)", spec: { panels: { _label: "패널 (2개)", _item: { kicker: "text: 상단 라벨", title: "text: 패널 제목", items: { _label: "항목", _item: { b: "text: 제목", s: "text: 설명" } } } } },
+    empty: { type: "duo", panels: [{ kicker: "LEFT", title: "왼쪽 패널", items: [{ b: "항목", s: "" }] }, { kicker: "RIGHT", title: "오른쪽 패널", items: [{ b: "항목", s: "" }] }] } },
+  duospec: { name: "Before/After 패널 (경고 목록 + 기술표)", spec: {
+      before: { kicker: "text: 좌측 라벨", title: "text: 좌측 제목", items: { _label: "항목", _of: "text: 항목" } },
+      after: { kicker: "text: 우측 라벨", title: "text: 우측 제목", spec: { _label: "기술 표", _item: { th: "text: 구분", td: "text: 내용" } } } },
+    empty: { type: "duospec", before: { kicker: "Before", title: "", items: [""] }, after: { kicker: "After", title: "", spec: [{ th: "", td: "" }] } } },
+  phases: { name: "방법론 단계 (계획~운영)", spec: { items: { _label: "단계", _item: { ph: "text: 단계명", items: { _label: "세부 항목", _of: "text: 항목" } } } },
+    empty: { type: "phases", items: [{ ph: "단계", items: ["항목"] }] } },
+  checks: { name: "체크 리스트 (✓)", spec: { items: { _label: "항목", _item: { b: "text: 제목", s: "text: 설명" } } },
+    empty: { type: "checks", items: [{ b: "제목", s: "설명" }] } },
+  tags: { name: "태그 나열 (모바일 자동 흐름)", spec: { tags: { _label: "태그", _of: "text: 태그" } },
+    empty: { type: "tags", tags: ["태그"] } },
+  found: { name: "기반 도식 (4요소 + 기반 바)", spec: {
+      p4: { _label: "상단 4요소", _item: { icon: "icon: 아이콘", b: "text: 제목", s: "text: 설명" } },
+      base: { bt: "text: 기반 문구", cols: { _label: "기반 구성", _item: { b: "text: 제목", s: "text: 설명" } } } },
+    empty: { type: "found", p4: [{ icon: "clipboard", b: "제목", s: "설명" }], base: { bt: "기반 문구", cols: [{ b: "제목", s: "설명" }] } } },
+  cp: { name: "클라우드 파트너십 (로고 배너)", spec: { kicker: "text: 상단 라벨", head: "text: 제목", sub: "area: 설명", logo1: "img.partners: 로고 1", logo2: "img.partners: 로고 2" },
+    empty: { type: "cp", kicker: "Partnership", head: "제목", sub: "", logo1: "", logo2: "" } },
+  bar: { name: "하단 정보 바 (주요 고객 등)", spec: { t: "text: 라벨", list: "area: 내용" },
+    empty: { type: "bar", t: "라벨", list: "" } },
+  stack: { name: "레이어 스택 (상위/기반)", spec: { layers: { _label: "레이어", _item: { icon: "icon: 아이콘", sub: "text: 레이어 라벨", title: "text: 레이어 제목", items: { _label: "설명 항목", _of: "text: 항목" } } } },
+    empty: { type: "stack", layers: [{ icon: "chart", sub: "상위 레이어", title: "제목", items: ["항목"] }, { icon: "database", sub: "기반 레이어", title: "제목", items: ["항목"] }] } },
+  ssd: { name: "스마트심사 구성도", spec: {
+      sysLabel: "text: 상단 시스템 라벨",
+      eng1: { tag: "text: 좌측 태그", nm: "text: 좌측 영문명", ko: "text: 좌측 한글명", items: { _label: "기능 (첫 항목이 연동 강조)", _of: "text: 기능" } },
+      bridge: "text: 연동 배지 문구",
+      eng2: { tag: "text: 우측 태그", nm: "text: 우측 영문명", ko: "text: 우측 한글명", items: { _label: "기능 (첫 항목이 연동 강조)", _of: "text: 기능" } },
+      db: { b: "text: DB 이름", em: "text: DB 설명" },
+      sys2Label: "text: 하단 시스템 라벨",
+      comps: { _label: "하단 구성요소", _item: { icon: "icon: 아이콘", b: "text: 이름" } } },
+    empty: { type: "ssd", sysLabel: "시스템", eng1: { tag: "A", nm: "", ko: "", items: [""] }, bridge: "REST API", eng2: { tag: "B", nm: "", ko: "", items: [""] }, db: { b: "통합 DB", em: "" }, sys2Label: "시스템", comps: [{ icon: "cloud", b: "구성요소" }] } },
+  lhref: { name: "대표 레퍼런스 (카드 + 연도 이력)", spec: {
+      title: "text: 소제목", cardTitle: "text: 카드 제목", cardDesc: "area: 카드 설명",
+      points: { _label: "주요 내용", _of: "text: 항목" },
+      years: { _label: "연도별 이력", _item: { num: "text: 연도", label: "area: 내용" } } },
+    empty: { type: "lhref", title: "대표 레퍼런스", cardTitle: "", cardDesc: "", points: [""], years: [{ num: "2026", label: "" }] } },
+  image: { name: "이미지 (도식·사진 업로드)", spec: { src: "img.assets: 이미지 파일", alt: "text: 이미지 설명", caption: "text: 캡션 (비워도 됨)", maxw: "text: 최대 폭 px (비우면 전체 폭)" },
+    empty: { type: "image", src: "", alt: "", caption: "", maxw: "" } },
+  html: { name: "자유 HTML (고급)", spec: { code: "area: HTML 코드" },
+    empty: { type: "html", code: "" } },
+};

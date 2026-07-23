@@ -853,3 +853,8 @@ b.count-pop { display: inline-block; }
 .ssd-list li.link { color: var(--navy-text); border-color: var(--navy-text); }
 .ssd-bridge .rest { color: var(--navy-text); border-color: var(--navy-text); }
 .ssd-bridge .rest::before, .ssd-bridge .rest::after { background: var(--navy-text); }
+
+/* 이미지 블록 (어드민 블록 에디터용) */
+.img-block { margin: 26px auto; text-align: center; }
+.img-block img { max-width: 100%; height: auto; border-radius: var(--r-md); border: 1px solid var(--line); box-shadow: 0 10px 26px rgba(12,14,19,0.06); display: inline-block; }
+.img-block figcaption { margin-top: 10px; font-size: 13px; color: var(--muted); }
