@@ -33,12 +33,14 @@ export const ICON_NAMES = Object.keys(ICONS);
 /* 편집 모드: 빌더 캔버스용 — 요소에 편집 경로 주석을 달고 사이트 JS를 뺀다 */
 let EDIT = false;
 const ea = (key) => (EDIT ? ` data-edit="${key}"` : "");
+const et = (path) => (EDIT ? ` data-t="${path}"` : ""); // 더블클릭 인라인 편집 대상
+const ew = (txt, path) => (EDIT ? `<span data-t="${path}">${txt}</span>` : txt); // 맨몸 텍스트 노드 래핑
 function ic(name) { return `<svg class="ico-svg" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ""}</svg>`; }
 
 function marquee(inner, gridCls) {
   return `<div class="marquee" data-marquee>
         <div class="marquee-track ${gridCls}">${inner}</div>
-        <div class="marquee-track ${gridCls}" aria-hidden="true">${inner}</div>
+        ${EDIT ? "" : `<div class="marquee-track ${gridCls}" aria-hidden="true">${inner}</div>`}
       </div>`;
 }
 function lg(src, alt, fallback) {
@@ -134,13 +136,13 @@ ${EDIT ? "" : '<script src="assets/site.js"><\/script>' }
 /* 공용 partial */
 const pageHero = (h, key) => `  <section class="page-hero"${ea(key)}>
     <div class="ph-bg" aria-hidden="true"><canvas class="pageNet"></canvas></div>
-    <div class="container"><span class="eyebrow">${h.eyebrow}</span><h1>${h.title}</h1>
-      <p>${h.desc}</p></div>
+    <div class="container"><span class="eyebrow"${et(key + ".eyebrow")}>${h.eyebrow}</span><h1${et(key + ".title")}>${h.title}</h1>
+      <p${et(key + ".desc")}>${h.desc}</p></div>
   </section>`;
-const clientsBar = (b) => `<div class="clients-bar"><span class="t">${b.t}</span><span class="list">${b.list}</span></div>`;
-const flowSteps = (steps) => steps.map((s) => `<div class="fstep">${s.t}${s.s ? `<small>${s.s}</small>` : ""}</div>`).join("\n        ");
-const numbered = (items) => items.map((n, i) => `<div class="num-item"><div class="gh">0${i + 1}</div><h4>${n.title}${n.badge ? ` <span style="color:var(--accent);font-size:12px;font-weight:700">${n.badge}</span>` : ""}</h4><p>${n.desc}</p></div>`).join("\n        ");
-const featgrid = (feats, sep = "\n        ") => feats.map((f) => `<div class="feat"><span class="fic">${ic(f.icon)}</span><div class="ftx"><b>${f.b}</b><span>${f.s}</span></div></div>`).join(sep);
+const clientsBar = (b, P) => `<div class="clients-bar"><span class="t"${P ? et(P + ".t") : ""}>${b.t}</span><span class="list"${P ? et(P + ".list") : ""}>${b.list}</span></div>`;
+const flowSteps = (steps, P) => steps.map((s, i) => `<div class="fstep">${P ? ew(s.t, `${P}.steps.${i}.t`) : s.t}${s.s ? `<small${P ? et(`${P}.steps.${i}.s`) : ""}>${s.s}</small>` : ""}</div>`).join("\n        ");
+const numbered = (items, P) => items.map((n, i) => `<div class="num-item"><div class="gh">0${i + 1}</div><h4>${P ? ew(n.title, `${P}.items.${i}.title`) : n.title}${n.badge ? ` <span style="color:var(--accent);font-size:12px;font-weight:700"${P ? et(`${P}.items.${i}.badge`) : ""}>${n.badge}</span>` : ""}</h4><p${P ? et(`${P}.items.${i}.desc`) : ""}>${n.desc}</p></div>`).join("\n        ");
+const featgrid = (feats, sep = "\n        ", P) => feats.map((f, i) => `<div class="feat"><span class="fic">${ic(f.icon)}</span><div class="ftx"><b${P ? et(`${P}.feats.${i}.b`) : ""}>${f.b}</b><span${P ? et(`${P}.feats.${i}.s`) : ""}>${f.s}</span></div></div>`).join(sep);
 
 /* ============================================================ HOME */
 function renderHome(C) {
@@ -148,11 +150,11 @@ function renderHome(C) {
   const main = `  <section class="hero"${ea("home.hero")}>
     <div class="hero-bg" aria-hidden="true"><canvas id="heroNet"></canvas></div>
     <div class="container">
-      <span class="eyebrow">${H.hero.eyebrow}</span>
+      <span class="eyebrow"${et("home.hero.eyebrow")}>${H.hero.eyebrow}</span>
       <h1>${H.hero.line1Before}<span class="rot-wrap"><span class="rot"><span class="rot-word" id="rotWord">${H.hero.rotWords[0]}</span></span>${H.hero.line1After}</span><br>${H.hero.line2}<br><span class="en">${H.hero.line3}</span></h1>
-      <p class="lead">${H.hero.lead}</p>
+      <p class="lead"${et("home.hero.lead")}>${H.hero.lead}</p>
       <div class="stats">
-        ${H.hero.stats.map((s) => `<div class="stat"><div class="num">${s.num}${s.unit ? `<small>${s.unit}</small>` : ""}</div><div class="label">${s.label}</div></div>`).join("\n        ")}
+        ${H.hero.stats.map((s, i) => `<div class="stat"><div class="num">${ew(s.num, `home.hero.stats.${i}.num`)}${s.unit ? `<small${et(`home.hero.stats.${i}.unit`)}>${s.unit}</small>` : ""}</div><div class="label"${et(`home.hero.stats.${i}.label`)}>${s.label}</div></div>`).join("\n        ")}
       </div>
     </div>
     <a class="scroll-cue" href="#explore" aria-label="아래로 스크롤"><span>Scroll</span><svg class="ico-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5l6 6 6-6"/></svg></a>
@@ -160,10 +162,10 @@ function renderHome(C) {
   <section class="section" id="explore"${ea("home.explore")}>
     <div class="container">
       
-      <h2>${H.explore.title}</h2>
-      <p class="sec-desc">${H.explore.desc}</p>
+      <h2${et("home.explore.title")}>${H.explore.title}</h2>
+      <p class="sec-desc"${et("home.explore.desc")}>${H.explore.desc}</p>
       <div class="nav-cards">
-        ${H.explore.cards.map((c) => `<a class="nav-card" href="${c.href}"><span class="nc-ic">${ic(c.icon)}</span><div class="no">${c.no}</div><h3>${c.title}</h3><p>${c.desc}</p><span class="go">자세히 보기 →</span></a>`).join("\n        ")}
+        ${H.explore.cards.map((c, i) => `<a class="nav-card" href="${c.href}"><span class="nc-ic">${ic(c.icon)}</span><div class="no"${et(`home.explore.cards.${i}.no`)}>${c.no}</div><h3${et(`home.explore.cards.${i}.title`)}>${c.title}</h3><p${et(`home.explore.cards.${i}.desc`)}>${c.desc}</p><span class="go">자세히 보기 →</span></a>`).join("\n        ")}
       </div>
     </div>
   </section>`;
@@ -177,14 +179,14 @@ function renderCompany(C) {
 
   <section class="section" id="about"${ea("company.about")}>
     <div class="container">
-      <h2>${P.about.title}</h2>
-      <p class="sec-desc">${P.about.desc}</p>
+      <h2${et("company.about.title")}>${P.about.title}</h2>
+      <p class="sec-desc"${et("company.about.desc")}>${P.about.desc}</p>
       <div class="about-grid">
         <table class="info-table">
-          ${P.about.rows.map((r) => `<tr><th>${r.th}</th><td>${r.td}</td></tr>`).join("\n          ")}
+          ${P.about.rows.map((r, i) => `<tr><th${et(`company.about.rows.${i}.th`)}>${r.th}</th><td${et(`company.about.rows.${i}.td`)}>${r.td}</td></tr>`).join("\n          ")}
         </table>
         <div class="about-side">
-          ${P.about.cards.map((c) => `<div class="about-card"><span class="ac-ic">${ic(c.icon)}</span><div class="num">${c.num}${c.unit ? `<small>${c.unit}</small>` : ""}</div><div class="label">${c.label}</div></div>`).join("\n          ")}
+          ${P.about.cards.map((c, i) => `<div class="about-card"><span class="ac-ic">${ic(c.icon)}</span><div class="num">${ew(c.num, `company.about.cards.${i}.num`)}${c.unit ? `<small${et(`company.about.cards.${i}.unit`)}>${c.unit}</small>` : ""}</div><div class="label"${et(`company.about.cards.${i}.label`)}>${c.label}</div></div>`).join("\n          ")}
         </div>
       </div>
     </div>
@@ -192,13 +194,13 @@ function renderCompany(C) {
 
   <section class="section alt" id="ceo"${ea("company.ceo")}>
     <div class="container">
-      <h2>${P.ceo.title}</h2>
+      <h2${et("company.ceo.title")}>${P.ceo.title}</h2>
       <div class="ceo">
-        <p class="ceo-lead">${P.ceo.lead}</p>
-        ${P.ceo.paras.map((p) => `<p>${p}</p>`).join("\n        ")}
+        <p class="ceo-lead"${et("company.ceo.lead")}>${P.ceo.lead}</p>
+        ${P.ceo.paras.map((p, i) => `<p${et(`company.ceo.paras.${i}`)}>${p}</p>`).join("\n        ")}
         <div class="ceo-sign">
           <img class="ceo-signimg" src="assets/ceo-signature.png" alt="${P.ceo.name} 대표이사 서명" onerror="this.style.display='none'">
-          <div class="ceo-name"><b>${P.ceo.name}</b><span>${P.ceo.role}</span></div>
+          <div class="ceo-name"><b${et("company.ceo.name")}>${P.ceo.name}</b><span${et("company.ceo.role")}>${P.ceo.role}</span></div>
         </div>
       </div>
     </div>
@@ -206,29 +208,29 @@ function renderCompany(C) {
 
   <section class="section" id="history"${ea("company.history")}>
     <div class="container">
-      <h2>${P.history.title}</h2>
-      <p class="sec-desc">${P.history.desc}</p>
+      <h2${et("company.history.title")}>${P.history.title}</h2>
+      <p class="sec-desc"${et("company.history.desc")}>${P.history.desc}</p>
       <div class="timeline">
-        ${P.history.items.map((t) => `<div class="tl-item"><div class="year">${t.year}</div><ul>
-          ${t.rows.map((li) => `<li>${li}</li>`).join("\n          ")}</ul></div>`).join("\n        ")}
+        ${P.history.items.map((t, i) => `<div class="tl-item"><div class="year"${et(`company.history.items.${i}.year`)}>${t.year}</div><ul>
+          ${t.rows.map((li, j) => `<li${et(`company.history.items.${i}.rows.${j}`)}>${li}</li>`).join("\n          ")}</ul></div>`).join("\n        ")}
       </div>
     </div>
   </section>
 
   <section class="section alt" id="organization"${ea("company.org")}>
     <div class="container">
-      <h2>${P.org.title}</h2>
-      <p class="sec-desc">${P.org.desc}</p>
+      <h2${et("company.org.title")}>${P.org.title}</h2>
+      <p class="sec-desc"${et("company.org.desc")}>${P.org.desc}</p>
       <div class="org">
-        <div class="org-top">${P.org.top}</div>
+        <div class="org-top"${et("company.org.top")}>${P.org.top}</div>
         <div class="org-line"></div>
-        <div class="org-staff">${P.org.staff.map((s) => `<span>${s}</span>`).join("")}</div>
+        <div class="org-staff">${P.org.staff.map((s, i) => `<span${et(`company.org.staff.${i}`)}>${s}</span>`).join("")}</div>
         <div class="org-line"></div>
         <div class="org-divs">
-          ${P.org.divs.map((d) => `<div class="org-div"><div class="head">${d.head}</div><div class="team">${d.team}</div></div>`).join("\n          ")}
+          ${P.org.divs.map((d, i) => `<div class="org-div"><div class="head"${et(`company.org.divs.${i}.head`)}>${d.head}</div><div class="team"${et(`company.org.divs.${i}.team`)}>${d.team}</div></div>`).join("\n          ")}
         </div>
         <div class="org-stat">
-          <div class="t">${P.org.statLabel}</div>
+          <div class="t"${et("company.org.statLabel")}>${P.org.statLabel}</div>
           <div class="nums"><div class="n"><b class="hi">${P.org.statNum}</b><span>${P.org.statUnit}</span></div></div>
         </div>
       </div>
@@ -237,25 +239,25 @@ function renderCompany(C) {
 
   <section class="section" id="certifications"${ea("company.certs")}>
     <div class="container">
-      <h2>${P.certs.title}</h2>
-      <p class="sec-desc">${P.certs.desc}</p>
+      <h2${et("company.certs.title")}>${P.certs.title}</h2>
+      <p class="sec-desc"${et("company.certs.desc")}>${P.certs.desc}</p>
       <div class="cert-docs">
-        ${P.certs.items.map((c) => `<div class="cert-doc"><div class="thumb"><img src="${c.img}" alt="${c.alt}"></div><div class="cap"><div class="name">${c.name}</div><div class="meta">${c.meta}</div></div></div>`).join("\n        ")}
+        ${P.certs.items.map((c, i) => `<div class="cert-doc"><div class="thumb"><img src="${c.img}" alt="${c.alt}"></div><div class="cap"><div class="name"${et(`company.certs.items.${i}.name`)}>${c.name}</div><div class="meta"${et(`company.certs.items.${i}.meta`)}>${c.meta}</div></div></div>`).join("\n        ")}
       </div>
     </div>
   </section>
 
   <section class="section alt" id="location"${ea("company.location")}>
     <div class="container">
-      <h2>${P.location.title}</h2>
-      <p class="sec-desc">${P.location.desc}</p>
+      <h2${et("company.location.title")}>${P.location.title}</h2>
+      <p class="sec-desc"${et("company.location.desc")}>${P.location.desc}</p>
       <div class="map-grid">
         <div class="map-wrap">
           <iframe title="YTINS 본사 위치 지도" src="${P.location.mapSrc}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
         </div>
         <div class="map-info">
           <table class="info-table">
-            ${P.location.rows.map((r) => `<tr><th>${r.th}</th><td>${r.td}</td></tr>`).join("\n            ")}
+            ${P.location.rows.map((r, i) => `<tr><th${et(`company.location.rows.${i}.th`)}>${r.th}</th><td${et(`company.location.rows.${i}.td`)}>${r.td}</td></tr>`).join("\n            ")}
           </table>
           <a class="btn" href="${P.location.naverUrl}" target="_blank" rel="noopener"><span class="ico">📍</span> ${P.location.naverLabel}</a>
         </div>
@@ -265,8 +267,8 @@ function renderCompany(C) {
 
   <section class="section" id="brochure"${ea("company.brochure")}>
     <div class="container">
-      <h2>${P.brochure.title}</h2>
-      <p class="sec-desc">${P.brochure.desc}</p>
+      <h2${et("company.brochure.title")}>${P.brochure.title}</h2>
+      <p class="sec-desc"${et("company.brochure.desc")}>${P.brochure.desc}</p>
       <div class="btn-row">
         <a class="btn" href="${P.brochure.file}" download><span class="ico">⬇</span> ${P.brochure.btnLabel}</a>
       </div>
@@ -277,59 +279,59 @@ function renderCompany(C) {
 
 /* ============================================================ 블록 렌더러 (사업분야·Solution — 어드민 블록 에디터 대응) */
 const BLOCK_RENDERERS = {
-  desc: (b) => `<p class="sec-desc">${b.text}</p>`,
-  subhead: (b) => `<h3 class="sub-h${b.tight ? " tight" : ""}">${b.title}</h3>${b.desc ? `\n      <p class="block-desc">${b.desc}</p>` : ""}`,
-  flow: (b) => `<div class="flow grad"${b.style ? ` style="${b.style}"` : ""}>
-        ${flowSteps(b.steps)}
+  desc: (b, P) => `<p class="sec-desc"${et(P + ".text")}>${b.text}</p>`,
+  subhead: (b, P) => `<h3 class="sub-h${b.tight ? " tight" : ""}"${et(P + ".title")}>${b.title}</h3>${b.desc ? `\n      <p class="block-desc"${et(P + ".desc")}>${b.desc}</p>` : ""}`,
+  flow: (b, P) => `<div class="flow grad"${b.style ? ` style="${b.style}"` : ""}>
+        ${flowSteps(b.steps, P)}
       </div>`,
-  numbered: (b) => `<div class="numbered">
-        ${numbered(b.items)}
+  numbered: (b, P) => `<div class="numbered">
+        ${numbered(b.items, P)}
       </div>`,
-  featgrid: (b) => `<div class="featgrid">
-        ${featgrid(b.feats)}
+  featgrid: (b, P) => `<div class="featgrid">
+        ${featgrid(b.feats, "\n        ", P)}
       </div>`,
-  duo: (b) => `<div class="duo">
+  duo: (b, P) => `<div class="duo">
         ${b.panels.map((p, i) => `<div class="duo-panel ${i === 0 ? "ink" : "blue"}">
-          <div class="dhead"><div class="kicker">${p.kicker}</div><h3>${p.title}</h3></div>
+          <div class="dhead"><div class="kicker"${et(`${P}.panels.${i}.kicker`)}>${p.kicker}</div><h3${et(`${P}.panels.${i}.title`)}>${p.title}</h3></div>
           <div class="dbody">
-            ${p.items.map((s) => `<div class="srv"><b>${s.b}</b><span>${s.s}</span></div>`).join("\n            ")}
+            ${p.items.map((s, j) => `<div class="srv"><b${et(`${P}.panels.${i}.items.${j}.b`)}>${s.b}</b><span${et(`${P}.panels.${i}.items.${j}.s`)}>${s.s}</span></div>`).join("\n            ")}
           </div>
         </div>`).join("\n        ")}
       </div>`,
-  duospec: (b) => `<div class="duo">
+  duospec: (b, P) => `<div class="duo">
         <div class="duo-panel ink">
-          <div class="dhead"><div class="kicker">${b.before.kicker}</div><h3>${b.before.title}</h3></div>
+          <div class="dhead"><div class="kicker"${et(P + ".before.kicker")}>${b.before.kicker}</div><h3${et(P + ".before.title")}>${b.before.title}</h3></div>
           <div class="dbody">
-            ${b.before.items.map((s) => `<div class="srv iconed"><i class="s-ic">${ic('alert')}</i><span>${s}</span></div>`).join("\n            ")}
+            ${b.before.items.map((s, i) => `<div class="srv iconed"><i class="s-ic">${ic('alert')}</i><span${et(`${P}.before.items.${i}`)}>${s}</span></div>`).join("\n            ")}
           </div>
         </div>
         <div class="duo-panel blue">
-          <div class="dhead"><div class="kicker">${b.after.kicker}</div><h3>${b.after.title}</h3></div>
+          <div class="dhead"><div class="kicker"${et(P + ".after.kicker")}>${b.after.kicker}</div><h3${et(P + ".after.title")}>${b.after.title}</h3></div>
           <div class="dbody">
             <table class="spec" style="margin:6px 0">
-              ${b.after.spec.map((r) => `<tr><th>${r.th}</th><td>${r.td}</td></tr>`).join("\n              ")}
+              ${b.after.spec.map((r, i) => `<tr><th${et(`${P}.after.spec.${i}.th`)}>${r.th}</th><td${et(`${P}.after.spec.${i}.td`)}>${r.td}</td></tr>`).join("\n              ")}
             </table>
           </div>
         </div>
       </div>`,
-  phases: (b) => `<div class="phases">
-        ${b.items.map((p) => `<div class="phase"><div class="ph">${p.ph}</div><ul>${p.items.map((li) => `<li>${li}</li>`).join("")}</ul></div>`).join("\n        ")}
+  phases: (b, P) => `<div class="phases">
+        ${b.items.map((p, i) => `<div class="phase"><div class="ph"${et(`${P}.items.${i}.ph`)}>${p.ph}</div><ul>${p.items.map((li, j) => `<li${et(`${P}.items.${i}.items.${j}`)}>${li}</li>`).join("")}</ul></div>`).join("\n        ")}
       </div>`,
-  checks: (b) => `<ul class="checks">
-        ${b.items.map((c) => `<li><b>${c.b}</b> — ${c.s}</li>`).join("\n        ")}
+  checks: (b, P) => `<ul class="checks">
+        ${b.items.map((c, i) => `<li><b${et(`${P}.items.${i}.b`)}>${c.b}</b> — ${ew(c.s, `${P}.items.${i}.s`)}</li>`).join("\n        ")}
       </ul>`,
-  tags: (b) => marquee(b.tags.map((t) => `<span class="tag">${t}</span>`).join(""), "taglist"),
-  found: (b) => `<div class="found">
+  tags: (b, P) => marquee(b.tags.map((t, i) => `<span class="tag"${et(`${P}.tags.${i}`)}>${t}</span>`).join(""), "taglist"),
+  found: (b, P) => `<div class="found">
         <div class="top4">
-          ${b.p4.map((p) => `<div class="p4"><div class="ic">${ic(p.icon)}</div><b>${p.b}</b><span>${p.s}</span></div>`).join("\n          ")}
+          ${b.p4.map((p, i) => `<div class="p4"><div class="ic">${ic(p.icon)}</div><b${et(`${P}.p4.${i}.b`)}>${p.b}</b><span${et(`${P}.p4.${i}.s`)}>${p.s}</span></div>`).join("\n          ")}
         </div>
         <div class="base">
-          <div class="bt">${b.base.bt}</div>
-          <div class="cols">${b.base.cols.map((c) => `<span><b>${c.b}</b>${c.s}</span>`).join("")}</div>
+          <div class="bt"${et(P + ".base.bt")}>${b.base.bt}</div>
+          <div class="cols">${b.base.cols.map((c, i) => `<span><b${et(`${P}.base.cols.${i}.b`)}>${c.b}</b>${ew(c.s, `${P}.base.cols.${i}.s`)}</span>`).join("")}</div>
         </div>
       </div>`,
-  cp: (b) => `<div class="cloud-partners">
-        <div class="cp-head"><span class="cp-kicker">${b.kicker}</span><b>${b.head}</b><span class="cp-sub">${b.sub}</span></div>
+  cp: (b, P) => `<div class="cloud-partners">
+        <div class="cp-head"><span class="cp-kicker"${et(P + ".kicker")}>${b.kicker}</span><b${et(P + ".head")}>${b.head}</b><span class="cp-sub"${et(P + ".sub")}>${b.sub}</span></div>
         <div class="cp-logos">
           <div class="cp-logo"><img src="${b.logo1}" alt="NAVER Cloud Platform"></div>
           <div class="cp-plus">+</div>
@@ -337,65 +339,65 @@ const BLOCK_RENDERERS = {
           <div class="cp-with">with <img class="cp-with-logo" src="assets/ytins-logo.png" alt="YTINS"></div>
         </div>
       </div>`,
-  bar: (b) => clientsBar(b),
-  stack: (b) => `<div class="stack">
+  bar: (b, P) => clientsBar(b, P),
+  stack: (b, P) => `<div class="stack">
         ${b.layers.map((l, i) => `<div class="layer${i === 0 ? " top" : ""}">
-          <div class="lhead"><span class="licon">${ic(l.icon)}</span><div><div class="lsub">${l.sub}</div><div class="ltitle">${l.title}</div></div></div>
-          <ul>${l.items.map((li) => `<li>${li}</li>`).join("\n            ")}</ul>
+          <div class="lhead"><span class="licon">${ic(l.icon)}</span><div><div class="lsub"${et(`${P}.layers.${i}.sub`)}>${l.sub}</div><div class="ltitle"${et(`${P}.layers.${i}.title`)}>${l.title}</div></div></div>
+          <ul>${l.items.map((li, j) => `<li${et(`${P}.layers.${i}.items.${j}`)}>${li}</li>`).join("\n            ")}</ul>
         </div>`).join(`
         <div class="stack-arrow">▲</div>
         `)}
       </div>`,
-  ssd: (b) => `<div class="ssd">
+  ssd: (b, P) => `<div class="ssd">
         <div class="ssd-sys">
-          <div class="ssd-sys-label">${b.sysLabel}</div>
+          <div class="ssd-sys-label"${et(P + ".sysLabel")}>${b.sysLabel}</div>
           <div class="ssd-engines">
             <div class="ssd-eng">
-              <div class="ssd-eng-head"><span class="tag">${b.eng1.tag}</span><span class="nm">${b.eng1.nm}</span><span class="ko">${b.eng1.ko}</span></div>
+              <div class="ssd-eng-head"><span class="tag"${et(P + ".eng1.tag")}>${b.eng1.tag}</span><span class="nm"${et(P + ".eng1.nm")}>${b.eng1.nm}</span><span class="ko"${et(P + ".eng1.ko")}>${b.eng1.ko}</span></div>
               <ul class="ssd-list">
-                ${b.eng1.items.map((li, j) => `<li${j === 0 ? ' class="link"' : ""}>${li}</li>`).join("\n                ")}
+                ${b.eng1.items.map((li, j) => `<li${j === 0 ? ' class="link"' : ""}${et(`${P}.eng1.items.${j}`)}>${li}</li>`).join("\n                ")}
               </ul>
             </div>
-            <div class="ssd-bridge"><span class="rest"><i>⇄</i>${b.bridge}</span></div>
+            <div class="ssd-bridge"><span class="rest"><i>⇄</i>${ew(b.bridge, P + ".bridge")}</span></div>
             <div class="ssd-eng">
-              <div class="ssd-eng-head"><span class="tag alt">${b.eng2.tag}</span><span class="nm">${b.eng2.nm}</span><span class="ko">${b.eng2.ko}</span></div>
+              <div class="ssd-eng-head"><span class="tag alt"${et(P + ".eng2.tag")}>${b.eng2.tag}</span><span class="nm"${et(P + ".eng2.nm")}>${b.eng2.nm}</span><span class="ko"${et(P + ".eng2.ko")}>${b.eng2.ko}</span></div>
               <ul class="ssd-list">
-                ${b.eng2.items.map((li, j) => `<li${j === 0 ? ' class="link"' : ""}>${li}</li>`).join("\n                ")}
+                ${b.eng2.items.map((li, j) => `<li${j === 0 ? ' class="link"' : ""}${et(`${P}.eng2.items.${j}`)}>${li}</li>`).join("\n                ")}
               </ul>
             </div>
           </div>
         </div>
         <div class="ssd-link"></div>
-        <div class="ssd-db"><span class="ssd-db-ic">${ic('database')}</span><div class="ssd-db-tx"><b>${b.db.b}</b><em>${b.db.em}</em></div></div>
+        <div class="ssd-db"><span class="ssd-db-ic">${ic('database')}</span><div class="ssd-db-tx"><b${et(P + ".db.b")}>${b.db.b}</b><em${et(P + ".db.em")}>${b.db.em}</em></div></div>
         <div class="ssd-link"></div>
         <div class="ssd-sys">
-          <div class="ssd-sys-label">${b.sys2Label}</div>
+          <div class="ssd-sys-label"${et(P + ".sys2Label")}>${b.sys2Label}</div>
           <div class="ssd-comps">
-            ${b.comps.map((c) => `<div class="ssd-comp"><div class="ic">${ic(c.icon)}</div><b>${c.b}</b></div>`).join("\n            ")}
+            ${b.comps.map((c, i) => `<div class="ssd-comp"><div class="ic">${ic(c.icon)}</div><b${et(`${P}.comps.${i}.b`)}>${c.b}</b></div>`).join("\n            ")}
           </div>
         </div>
       </div>`,
-  lhref: (b) => `<div class="block" style="margin-top:56px">
-        <h3>${b.title}</h3>
+  lhref: (b, P) => `<div class="block" style="margin-top:56px">
+        <h3${et(P + ".title")}>${b.title}</h3>
         <div class="about-grid" style="margin-top:20px">
-          <div class="card" style="align-self:stretch"><h4>${b.cardTitle}</h4>
-            <p>${b.cardDesc}</p>
+          <div class="card" style="align-self:stretch"><h4${et(P + ".cardTitle")}>${b.cardTitle}</h4>
+            <p${et(P + ".cardDesc")}>${b.cardDesc}</p>
             <ul class="card-points">
-              ${b.points.map((li) => `<li>${li}</li>`).join("\n              ")}
+              ${b.points.map((li, i) => `<li${et(`${P}.points.${i}`)}>${li}</li>`).join("\n              ")}
             </ul></div>
           <div class="about-side col">
-            ${b.years.map((y) => `<div class="about-card"><div class="num">${y.num}</div><div class="label">${y.label}</div></div>`).join("\n            ")}
+            ${b.years.map((y, i) => `<div class="about-card"><div class="num"${et(`${P}.years.${i}.num`)}>${y.num}</div><div class="label"${et(`${P}.years.${i}.label`)}>${y.label}</div></div>`).join("\n            ")}
           </div>
         </div>
       </div>`,
-  image: (b) => `<figure class="img-block"${b.maxw ? ` style="max-width:${b.maxw}px"` : ""}>
-        <img src="${b.src}" alt="${b.alt || ""}">${b.caption ? `\n        <figcaption>${b.caption}</figcaption>` : ""}
+  image: (b, P) => `<figure class="img-block"${b.maxw ? ` style="max-width:${b.maxw}px"` : ""}>
+        <img src="${b.src}" alt="${b.alt || ""}">${b.caption ? `\n        <figcaption${et(P + ".caption")}>${b.caption}</figcaption>` : ""}
       </figure>`,
   html: (b) => b.code,
 };
-function renderBlock(b) {
+function renderBlock(b, path) {
   const fn = BLOCK_RENDERERS[b.type];
-  return fn ? fn(b) : "";
+  return fn ? fn(b, path) : "";
 }
 function renderSectionsPage(P, active, C, pageKey) {
   const wrapB = (html, si, bi) => (EDIT ? `<div class="eb" data-blk="${si}:${bi}">${html}</div>` : html);
@@ -403,8 +405,8 @@ function renderSectionsPage(P, active, C, pageKey) {
 
   ${P.sections.map((sec, si) => `<section class="section${sec.alt ? " alt" : ""}" id="${sec.id}"${EDIT ? ` data-sec="${si}"` : ""}>
     <div class="container">
-      <h2>${sec.title}</h2>
-      ${sec.blocks.map((b, bi) => wrapB(renderBlock(b), si, bi)).join("\n\n      ")}
+      <h2${et(`${pageKey}.sections.${si}.title`)}>${sec.title}</h2>
+      ${sec.blocks.map((b, bi) => wrapB(renderBlock(b, `${pageKey}.sections.${si}.blocks.${bi}`), si, bi)).join("\n\n      ")}
     </div>
   </section>`).join("\n\n")}`;
   return pageShell({ active, title: P.meta.title, desc: P.meta.desc, main }, C);
@@ -419,18 +421,18 @@ function renderReference(C) {
 
   <section class="section" id="clients"${ea("reference.clients")}>
     <div class="container">
-      <h2>${P.clients.title}</h2>
-      <p class="sec-desc">${P.clients.desc}</p>
+      <h2${et("reference.clients.title")}>${P.clients.title}</h2>
+      <p class="sec-desc"${et("reference.clients.desc")}>${P.clients.desc}</p>
       ${marquee(P.clients.logos.map((l) => `<div class="partner"><img src="assets/clients/${l.img}" alt="${l.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="p-text" style="display:none">${l.name}</span></div>`).join("\n          "), "partner-grid")}
     </div>
   </section>
 
   <section class="section alt" id="partners"${ea("reference.partners")}>
     <div class="container">
-      <h2>${P.partners.title}</h2>
-      <p class="sec-desc">${P.partners.desc}</p>
-      ${P.partners.groups.map((g) => `<div class="pcat-group">
-        <div class="pcat-head"><h4>${g.title}</h4><span>${g.sub}</span></div>
+      <h2${et("reference.partners.title")}>${P.partners.title}</h2>
+      <p class="sec-desc"${et("reference.partners.desc")}>${P.partners.desc}</p>
+      ${P.partners.groups.map((g, gi) => `<div class="pcat-group">
+        <div class="pcat-head"><h4${et(`reference.partners.groups.${gi}.title`)}>${g.title}</h4><span${et(`reference.partners.groups.${gi}.sub`)}>${g.sub}</span></div>
         ${marquee(g.logos.map((l) => lg(l.img, l.name, l.fallback || undefined)).join("\n          "), "logo-grid")}
       </div>`).join("\n      ")}
     </div>
@@ -438,39 +440,39 @@ function renderReference(C) {
 
   <section class="section" id="performance"${ea("reference.performance")}>
     <div class="container">
-      <h2>${P.performance.title}</h2>
-      <p class="sec-desc">${P.performance.desc}</p>
-      ${P.performance.years.map((y) => `<div class="block">
-        <h3>${y.year}</h3>
+      <h2${et("reference.performance.title")}>${P.performance.title}</h2>
+      <p class="sec-desc"${et("reference.performance.desc")}>${P.performance.desc}</p>
+      ${P.performance.years.map((y, yi) => `<div class="block">
+        <h3${et(`reference.performance.years.${yi}.year`)}>${y.year}</h3>
         <div class="table-wrap"><table class="perf-table">
           <thead><tr><th>사업명</th><th style="width:190px">발주처</th><th style="width:160px">사업기간</th></tr></thead>
           <tbody>
-            ${y.rows.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td><td class="when">${r[2]}</td></tr>`).join("\n            ")}
+            ${y.rows.map((r, ri) => `<tr><td${et(`reference.performance.years.${yi}.rows.${ri}.0`)}>${r[0]}</td><td${et(`reference.performance.years.${yi}.rows.${ri}.1`)}>${r[1]}</td><td class="when"${et(`reference.performance.years.${yi}.rows.${ri}.2`)}>${r[2]}</td></tr>`).join("\n            ")}
           </tbody>
         </table></div>
       </div>`).join("\n      ")}
       <div class="block">
-        <h3>${P.performance.bigdata.title}</h3>
-        <p class="block-desc">${P.performance.bigdata.desc}</p>
+        <h3${et("reference.performance.bigdata.title")}>${P.performance.bigdata.title}</h3>
+        <p class="block-desc"${et("reference.performance.bigdata.desc")}>${P.performance.bigdata.desc}</p>
         <div class="table-wrap"><table class="perf-table">
           <thead><tr><th style="width:170px">발주처</th><th>사업명</th><th style="width:150px">사업기간</th><th style="width:150px">구분</th></tr></thead>
           <tbody>
-            ${P.performance.bigdata.rows.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td><td class="when">${r[2]}</td><td>${r[3]}</td></tr>`).join("\n            ")}
+            ${P.performance.bigdata.rows.map((r, ri) => `<tr>${[0,1,2,3].map((ci) => `<td${ci === 2 ? ' class="when"' : ""}${et(`reference.performance.bigdata.rows.${ri}.${ci}`)}>${r[ci]}</td>`).join("")}</tr>`).join("\n            ")}
           </tbody>
         </table></div>
       </div>
 
       <div class="block">
-        <h3>${P.performance.cloud.title}</h3>
-        <p class="block-desc">${P.performance.cloud.desc}</p>
+        <h3${et("reference.performance.cloud.title")}>${P.performance.cloud.title}</h3>
+        <p class="block-desc"${et("reference.performance.cloud.desc")}>${P.performance.cloud.desc}</p>
         <div class="table-wrap"><table class="perf-table">
           <thead><tr><th style="width:150px">발주처</th><th>사업명</th><th style="width:150px">사업기간</th><th style="width:130px">산업</th></tr></thead>
           <tbody>
-            ${P.performance.cloud.rows.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td><td class="when">${r[2]}</td><td>${r[3]}</td></tr>`).join("\n            ")}
+            ${P.performance.cloud.rows.map((r, ri) => `<tr>${[0,1,2,3].map((ci) => `<td${ci === 2 ? ' class="when"' : ""}${et(`reference.performance.cloud.rows.${ri}.${ci}`)}>${r[ci]}</td>`).join("")}</tr>`).join("\n            ")}
           </tbody>
         </table></div>
       </div>
-      <p class="note">${P.performance.note}</p>
+      <p class="note"${et("reference.performance.note")}>${P.performance.note}</p>
     </div>
   </section>`;
   return pageShell({ active: "reference", title: P.meta.title, desc: P.meta.desc, main }, C);

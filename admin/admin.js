@@ -61,6 +61,12 @@ async function api(action, opts = {}) {
 
 /* ---------- 유틸 ---------- */
 const getPath = (obj, path) => path.split(".").reduce((o, k) => (o ? o[k] : undefined), obj);
+const setPath = (obj, path, val) => {
+  const parts = path.split(".");
+  let o = obj;
+  for (let i = 0; i < parts.length - 1; i++) o = o[parts[i]];
+  o[parts[parts.length - 1]] = val;
+};
 const clone = (o) => JSON.parse(JSON.stringify(o));
 const stripTags = (t) => String(t || "").replace(/&amp;/g, "&").replace(/<[^>]*>/g, "");
 
@@ -265,9 +271,57 @@ let PAGE = "index.html";
 let SEL = null; /* {kind:"blk",si,bi} | {kind:"sec",si} | {kind:"edit",key} */
 let renderT = null;
 
+/* 실행취소/다시실행: 0.8초 이상 간격의 변경을 한 단계로 묶음 */
+let UNDO = [], REDO = [], prevState = null, lastEditT = 0;
+function snapshotCheck() {
+  const cur = JSON.stringify(CONTENT);
+  if (prevState !== null && cur !== prevState) {
+    const now = Date.now();
+    if (now - lastEditT > 800) { UNDO.push(prevState); if (UNDO.length > 60) UNDO.shift(); REDO = []; }
+    lastEditT = now;
+    prevState = cur;
+    updateHistoryBtns();
+  } else if (prevState === null) { prevState = cur; }
+}
+function updateHistoryBtns() {
+  $("#undoBtn").disabled = !UNDO.length;
+  $("#redoBtn").disabled = !REDO.length;
+}
+function doUndo() {
+  if (!UNDO.length) return;
+  REDO.push(JSON.stringify(CONTENT));
+  CONTENT = JSON.parse(UNDO.pop());
+  prevState = JSON.stringify(CONTENT);
+  lastEditT = 0;
+  DIRTY = true;
+  $("#saveBtn").classList.add("need");
+  clearSelection();
+  renderCanvas(true);
+  updateHistoryBtns();
+}
+function doRedo() {
+  if (!REDO.length) return;
+  UNDO.push(JSON.stringify(CONTENT));
+  CONTENT = JSON.parse(REDO.pop());
+  prevState = JSON.stringify(CONTENT);
+  lastEditT = 0;
+  DIRTY = true;
+  $("#saveBtn").classList.add("need");
+  clearSelection();
+  renderCanvas(true);
+  updateHistoryBtns();
+}
+function historyKeys(e, doc) {
+  if (!(e.ctrlKey || e.metaKey)) return;
+  const ae = (doc || document).activeElement;
+  if (ae && (ae.isContentEditable || ae.tagName === "INPUT" || ae.tagName === "TEXTAREA")) return; /* 입력 중엔 브라우저 기본 동작 */
+  if (e.key === "z" || e.key === "Z") { e.preventDefault(); e.shiftKey ? doRedo() : doUndo(); }
+  else if (e.key === "y" || e.key === "Y") { e.preventDefault(); doRedo(); }
+}
 function markDirty() {
   DIRTY = true;
   $("#saveBtn").classList.add("need");
+  snapshotCheck();
   scheduleRender();
 }
 function scheduleRender() {
@@ -292,8 +346,9 @@ function renderCanvas(keepScroll) {
 }
 
 const CANVAS_CSS = `
-  a, button { pointer-events: none; }
   [data-edit]:hover, .eb:hover, section[data-sec]:hover { outline: 2px dashed rgba(47,111,237,.5); outline-offset: -2px; cursor: pointer !important; }
+  [data-t]:hover { outline: 1px dotted rgba(232,89,12,.8); cursor: text !important; }
+  [data-t][contenteditable="true"] { outline: 2px solid #e8590c !important; outline-offset: 1px; background: rgba(232,89,12,.05); cursor: text; min-width: 8px; }
   .bld-sel { outline: 3px solid #2f6fed !important; outline-offset: -3px; position: relative; }
   .eb { position: relative; }
   .eb.dropbefore { box-shadow: 0 -3px 0 0 #e8590c; }
@@ -314,6 +369,7 @@ function bindCanvas() {
   doc.addEventListener("click", (e) => {
     const t = e.target;
     if (t.closest(".bld-tools")) return; /* 툴바 버튼은 통과 */
+    if (t.closest('[contenteditable="true"]')) return; /* 인라인 편집 중: 커서 이동 허용 */
     e.preventDefault();
     e.stopPropagation();
     const eb = t.closest(".eb");
@@ -324,6 +380,36 @@ function bindCanvas() {
     else if (de) selectEditKey(de.dataset.edit);
     else clearSelection();
   }, true);
+  /* 더블클릭 → 그 자리에서 바로 타이핑 (아임웹식 인라인 편집) */
+  doc.addEventListener("dblclick", (e) => {
+    const t = e.target.closest("[data-t]");
+    if (!t || t.isContentEditable) return;
+    e.preventDefault();
+    e.stopPropagation();
+    startInline(t);
+  }, true);
+  doc.addEventListener("keydown", (e) => historyKeys(e, doc));
+}
+
+function startInline(elm) {
+  const path = elm.dataset.t;
+  const orig = elm.innerHTML;
+  elm.setAttribute("contenteditable", "true");
+  elm.focus();
+  try { const sel = elm.ownerDocument.getSelection(); sel.selectAllChildren(elm); sel.collapseToEnd(); } catch (e) {}
+  const finish = (commit) => {
+    elm.removeAttribute("contenteditable");
+    if (commit && elm.innerHTML !== orig) {
+      setPath(CONTENT, path, elm.innerHTML);
+      markDirty();
+    } else if (!commit) { elm.innerHTML = orig; }
+  };
+  elm.addEventListener("blur", () => finish(true), { once: true });
+  elm.addEventListener("keydown", function onKey(e) {
+    e.stopPropagation(); /* 캔버스 단축키와 충돌 방지 */
+    if (e.key === "Escape") { elm.removeEventListener("keydown", onKey); finish(false); elm.blur(); }
+    if (e.key === "Enter" && !e.shiftKey && elm.tagName !== "P" && elm.tagName !== "TD" && elm.tagName !== "LI") { e.preventDefault(); elm.blur(); }
+  });
 }
 
 function clearSelection() {
@@ -592,6 +678,7 @@ async function boot() {
   CSRF = state.csrf;
   if (state.defaultPw) alert("초기 비밀번호를 사용 중입니다. 보안을 위해 [비밀번호 변경]에서 반드시 변경해 주세요.");
   CONTENT = await api("content");
+  prevState = JSON.stringify(CONTENT);
   $("#login").style.display = "none";
   $("#app").style.display = "flex";
 
@@ -613,6 +700,19 @@ async function boot() {
 
   $("#saveBtn").addEventListener("click", doSave);
   $("#previewBtn").addEventListener("click", doPreview);
+  $("#undoBtn").addEventListener("click", doUndo);
+  $("#redoBtn").addEventListener("click", doRedo);
+  updateHistoryBtns();
+  document.addEventListener("keydown", (e) => historyKeys(e));
+  const setDevice = (w, btn) => {
+    const c = $("#canvas");
+    if (w) { c.style.width = w + "px"; c.style.flex = "none"; }
+    else { c.style.width = "100%"; c.style.flex = "1"; }
+    document.querySelectorAll(".dev-btn").forEach((n) => n.classList.toggle("on", n === btn));
+  };
+  $("#devPc").addEventListener("click", (e) => setDevice(null, e.currentTarget));
+  $("#devTab").addEventListener("click", (e) => setDevice(768, e.currentTarget));
+  $("#devMo").addEventListener("click", (e) => setDevice(390, e.currentTarget));
   $("#metaBtn").addEventListener("click", () => {
     const id = META_PREFIX[PAGE] + ".meta";
     SEL = null;
