@@ -93,6 +93,41 @@
     mqCheck();
     window.addEventListener("load", mqCheck);
     window.addEventListener("resize", mqCheck, { passive: true });
+
+    // 모바일 마퀴: scrollLeft 기반 자동 흐름 — 터치로 직접 슬라이드 가능, 놓으면 잠시 후 재개
+    var mqMobile = window.matchMedia("(max-width: 720px)");
+    marquees.forEach(function (m) {
+      m.classList.add("js-flow");
+      var pos = 0, paused = false, resumeT = null;
+      var pause = function () { paused = true; if (resumeT) clearTimeout(resumeT); };
+      var resume = function () {
+        if (resumeT) clearTimeout(resumeT);
+        resumeT = setTimeout(function () {
+          var t = m.querySelector(".marquee-track");
+          var w = t ? t.offsetWidth : 0;
+          pos = w > 0 ? m.scrollLeft % w : m.scrollLeft; // 사용자가 넘긴 위치에서 이어서 흐름
+          paused = false;
+        }, 1500);
+      };
+      m.addEventListener("touchstart", pause, { passive: true });
+      m.addEventListener("pointerdown", pause);
+      m.addEventListener("touchend", resume, { passive: true });
+      m.addEventListener("pointerup", resume);
+      m.addEventListener("pointercancel", resume);
+      var frame = function () {
+        if (mqMobile.matches && !paused && !reduceMotion && !m.classList.contains("static")) {
+          var t = m.querySelector(".marquee-track");
+          var w = t ? t.offsetWidth : 0;
+          if (w > 0 && m.scrollWidth > m.clientWidth + 4) {
+            pos += Math.max(0.4, w / 1440); // 트랙 1회전 ≈ 24초
+            if (pos >= w) pos -= w;
+            m.scrollLeft = pos;
+          }
+        }
+        requestAnimationFrame(frame);
+      };
+      requestAnimationFrame(frame);
+    });
   }
 
   // 네트워크(노드 연결) 배경 — 메인 히어로(#heroNet) + 서브 히어로(.pageNet) 공용
