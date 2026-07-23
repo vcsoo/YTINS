@@ -78,21 +78,6 @@
 
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // 섹션 타이틀: 헤더에 붙는 순간 배지(stuck) 상태로 전환
-  var stickyTitles = [].slice.call(document.querySelectorAll(".section h2"));
-  if (stickyTitles.length) {
-    var stickCheck = function () {
-      var hh = (header ? header.offsetHeight : 68) + 10;
-      stickyTitles.forEach(function (h) {
-        var r = h.getBoundingClientRect();
-        h.classList.toggle("stuck", r.top <= hh && window.scrollY > 10);
-      });
-    };
-    stickCheck();
-    window.addEventListener("scroll", stickCheck, { passive: true });
-    window.addEventListener("resize", stickCheck, { passive: true });
-  }
-
   // 마퀴: 내용이 컨테이너를 넘지 않으면 흐름 정지·복제 숨김
   var marquees = [].slice.call(document.querySelectorAll(".marquee"));
   if (marquees.length) {
