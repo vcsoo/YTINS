@@ -225,7 +225,7 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 .timeline { display: grid; grid-template-columns: 1fr 1fr; gap: 0 56px; }
 .tl-item { position: relative; padding: 0 0 36px 30px; border-left: 2px solid var(--line); }
 .tl-item:last-child { border-left-color: transparent; }
-.tl-item::before { content: ""; position: absolute; left: -8px; top: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 3px solid var(--accent); z-index: 1; transition: background .45s ease .5s, box-shadow .45s ease .5s; }
+.tl-item::before { content: ""; position: absolute; left: -11px; top: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 3px solid var(--accent); z-index: 1; transition: background .45s ease .5s, box-shadow .45s ease .5s; }
 .tl-item::after { content: ""; position: absolute; left: -2px; top: 0; width: 2px; height: 0; background: linear-gradient(180deg, var(--accent), var(--accent-ink)); transition: height .9s cubic-bezier(.2,.8,.2,1) .25s; }
 .tl-item:last-child::after { display: none; }
 .js-reveal .tl-item.reveal.in::before { background: var(--accent); box-shadow: 0 0 0 5px rgba(47,111,237,0.14); }
@@ -403,7 +403,7 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 
 /* Smart-screening system diagram */
 .ssd { max-width: 860px; margin: 40px auto 0; }
-.ssd-link { width: 2px; height: 22px; background: #c9d6f2; margin: 0 auto; position: relative; }
+.ssd-link { width: 2px; height: 48px; background: #c9d6f2; margin: 0 auto; position: relative; }
 .ssd-link::after { content: ""; position: absolute; left: 50%; top: -3px; width: 6px; height: 6px; margin-left: -3px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px rgba(47,111,237,0.55); animation: linkFlow 2.2s ease-in-out infinite; }
 @keyframes linkFlow { 0% { top: -4px; opacity: 0; } 18% { opacity: 1; } 82% { opacity: 1; } 100% { top: calc(100% - 2px); opacity: 0; } }
 /* system container (스마트 심사 / 온라인 심사) */
@@ -421,22 +421,23 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 .ssd-list li { background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 10px 12px; font-size: 13px; font-weight: 600; color: var(--text); text-align: center; }
 .ssd-list li.link { background: var(--accent-soft); border: 1.5px solid var(--accent); color: var(--accent-ink); font-weight: 700; }
 /* REST API bridge — links only the two 'link' rows */
-.ssd-bridge { align-self: start; padding-top: 74px; display: flex; justify-content: center; }
+.ssd-bridge { align-self: start; padding-top: 68px; display: flex; justify-content: center; }
 .ssd-bridge .rest { position: relative; display: inline-flex; flex-direction: column; align-items: center; gap: 1px; font-family: var(--font-display); font-weight: 800; font-size: 11px; color: var(--accent); background: #fff; border: 1.5px dashed var(--accent); border-radius: var(--r-sm); padding: 7px 11px; white-space: nowrap; }
 .ssd-bridge .rest i { font-style: normal; font-size: 17px; line-height: 1; }
 .ssd-bridge .rest { animation: restPulse 2.4s ease-in-out infinite; }
 @keyframes restPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(47,111,237,0.28); } 55% { box-shadow: 0 0 0 8px rgba(47,111,237,0); } }
-@media (prefers-reduced-motion: reduce) { .ssd-link::after { display: none; } .ssd-bridge .rest { animation: none; } .finchart .fc-bar { transition: none; } .tl-item::before, .tl-item::after { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .ssd-link::after { display: none; } .ssd-bridge .rest, .ssd-db { animation: none; } .finchart .fc-bar { transition: none; } .tl-item::before, .tl-item::after { transition: none; } }
 .ssd-bridge .rest::before, .ssd-bridge .rest::after { content: ""; position: absolute; top: 50%; width: 14px; height: 2px; background: var(--accent); }
 .ssd-bridge .rest::before { right: 100%; }
 .ssd-bridge .rest::after { left: 100%; }
-/* shared integrated DB */
-.ssd-db { display: flex; align-items: center; justify-content: center; gap: var(--sp-2); background: #fff; border: 1.5px solid #d5e1fb; border-radius: var(--r-md); padding: 15px 24px; max-width: 440px; margin: 0 auto; box-shadow: 0 10px 26px rgba(12,14,19,0.06); }
-.ssd-db-ic { width: 46px; height: 46px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.ssd-db-ic .ico-svg { width: 26px; height: 26px; }
+/* shared integrated DB — compact hub between the two systems */
+.ssd-db { display: flex; align-items: center; justify-content: center; gap: 10px; background: #fff; border: 1.5px solid #b9cdf5; border-radius: var(--r-pill); padding: 8px 22px 8px 10px; width: max-content; max-width: 92%; margin: 0 auto; box-shadow: 0 10px 26px rgba(12,14,19,0.06); animation: dbPulse 2.4s ease-in-out infinite; }
+@keyframes dbPulse { 0%, 100% { box-shadow: 0 10px 26px rgba(12,14,19,0.06), 0 0 0 0 rgba(47,111,237,0.22); } 55% { box-shadow: 0 10px 26px rgba(12,14,19,0.06), 0 0 0 9px rgba(47,111,237,0); } }
+.ssd-db-ic { width: 36px; height: 36px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ssd-db-ic .ico-svg { width: 20px; height: 20px; }
 .ssd-db-tx { text-align: left; }
-.ssd-db-tx b { font-family: var(--font-display); font-size: 16px; color: var(--ink); display: block; }
-.ssd-db-tx em { font-style: normal; font-size: 12px; color: var(--muted); }
+.ssd-db-tx b { font-family: var(--font-display); font-size: 15px; color: var(--ink); display: block; line-height: 1.25; }
+.ssd-db-tx em { font-style: normal; font-size: 11.5px; color: var(--muted); }
 /* online-screening components (inside container) */
 .ssd-comps { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-3); }
 .ssd-comp { background: #fff; border: 1px solid var(--line); border-radius: var(--r-md); padding: 20px 14px; text-align: center; box-shadow: 0 8px 22px rgba(12,14,19,0.05); }
@@ -446,12 +447,17 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 @media (max-width: 720px) {
   .ssd-engines { grid-template-columns: 1fr; }
   .ssd-eng-head { min-height: 0; }
-  .ssd-bridge { padding: 6px 0; }
+  .ssd-bridge { padding: 10px 0; }
   .ssd-bridge .rest { flex-direction: row; gap: 5px; }
   .ssd-bridge .rest i { transform: rotate(90deg); }
-  .ssd-bridge .rest::before, .ssd-bridge .rest::after { display: none; }
-  .ssd-db { flex-direction: column; gap: 6px; text-align: center; padding: 16px; }
-  .ssd-db-tx { text-align: center; }
+  .ssd-bridge .rest::before, .ssd-bridge .rest::after { top: auto; right: auto; left: 50%; margin-left: -1px; width: 2px; height: 9px; }
+  .ssd-bridge .rest::before { bottom: 100%; }
+  .ssd-bridge .rest::after { top: 100%; }
+  .ssd-link { height: 38px; }
+  .ssd-db { gap: 8px; padding: 7px 16px 7px 8px; }
+  .ssd-db-ic { width: 32px; height: 32px; }
+  .ssd-db-tx b { font-size: 13.5px; }
+  .ssd-db-tx em { font-size: 10.5px; }
   .ssd-comps { gap: 8px; }
   .ssd-comp { padding: 14px 6px; }
   .ssd-comp .ic { font-size: 24px; }
