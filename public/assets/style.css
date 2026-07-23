@@ -42,9 +42,10 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
   background: rgba(255,255,255,0.82); backdrop-filter: saturate(180%) blur(14px);
   border-bottom: 1px solid transparent; transition: border-color .2s ease, background .2s ease;
 }
-.site-header.scrolled { border-bottom-color: var(--line); }
+.site-header.scrolled { border-bottom-color: var(--line); background: rgba(255,255,255,0.97); box-shadow: 0 10px 30px rgba(12,14,19,0.10); }
 /* 스크롤 시 현재 섹션명을 헤더 아래 고정 표시 */
-.secbar { position: fixed; top: var(--header-h); left: 0; right: 0; z-index: 90; background: rgba(255,255,255,0.96); backdrop-filter: saturate(180%) blur(10px); border-bottom: 1px solid var(--line); box-shadow: 0 6px 18px rgba(12,14,19,0.06); transform: translateY(-100%); opacity: 0; transition: transform .28s ease, opacity .28s ease; pointer-events: none; }
+.secbar { position: fixed; top: var(--header-h); left: 0; right: 0; z-index: 90; background: rgba(255,255,255,0.97); backdrop-filter: saturate(180%) blur(12px); border-bottom: 0; box-shadow: 0 12px 28px rgba(12,14,19,0.10); transform: translateY(-100%); opacity: 0; transition: transform .32s cubic-bezier(.2,.8,.2,1), opacity .32s ease; pointer-events: none; }
+.secbar::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, var(--accent), #22d3ee 55%, var(--accent-ink)); }
 .secbar.show { transform: translateY(0); opacity: 1; }
 .secbar .container { display: flex; align-items: center; gap: 12px; height: 56px; }
 .secbar .secbar-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
@@ -626,9 +627,19 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 .checks li::before { content: "✓"; position: absolute; left: 15px; top: 14px; color: var(--accent); font-weight: 800; }
 
 /* ---------- Scroll reveal (progressive: visible unless JS opts in) ---------- */
-.js-reveal .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1); }
-.js-reveal .reveal.in { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) { .js-reveal .reveal { opacity: 1; transform: none; transition: none; } }
+.js-reveal .reveal { opacity: 0; transform: translateY(40px); filter: blur(6px); transition: opacity .75s cubic-bezier(.2,.7,.2,1), transform .75s cubic-bezier(.16,.8,.24,1), filter .75s ease; will-change: opacity, transform, filter; }
+.js-reveal .reveal.in { opacity: 1; transform: none; filter: none; }
+/* 요소별 등장 방향 변주 */
+.js-reveal .duo .duo-panel.reveal:nth-child(1) { transform: translateX(-56px) translateY(12px); }
+.js-reveal .duo .duo-panel.reveal:nth-child(2) { transform: translateX(56px) translateY(12px); }
+.js-reveal .ssd-engines .ssd-eng.reveal:nth-child(1) { transform: translateX(-48px); }
+.js-reveal .ssd-engines .ssd-eng.reveal:nth-child(3) { transform: translateX(48px); }
+.js-reveal :is(.num-item, .feat, .cert-doc, .about-card, .phase, .found .p4, .ssd-comp, .nav-card, .perf-stat).reveal { transform: translateY(30px) scale(0.92); }
+.js-reveal :is(.fstep, .tag).reveal { transform: translateY(22px) scale(0.9); }
+.js-reveal :is(.sec-chip, .section h2, .sec-desc, .block-desc, .pcat-head).reveal { transform: translateY(26px); filter: blur(4px); }
+.js-reveal :is(.map-wrap, .finchart, .cloud-partners, .ssd-db).reveal { transform: translateY(34px) scale(0.97); }
+.js-reveal .duo .duo-panel.reveal.in, .js-reveal .ssd-engines .ssd-eng.reveal.in { transform: none; }
+@media (prefers-reduced-motion: reduce) { .js-reveal .reveal { opacity: 1; transform: none !important; filter: none; transition: none; } }
 
 /* ---------- Mobile ---------- */
 @media (max-width: 900px) {
