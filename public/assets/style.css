@@ -701,6 +701,8 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
   .about-side { flex-direction: row; flex-wrap: wrap; } .about-card { flex: 1 1 150px; }
   .timeline { grid-template-columns: 1fr; }
   .org-divs { grid-template-columns: 1fr 1fr; }
-  .org-stat { flex-direction: column; align-items: flex-start; }
+  .org-stat { padding: 15px 20px; gap: 10px; }
+  .org-stat .n { display: flex; align-items: baseline; gap: 8px; text-align: left; }
+  .org-stat .n b { font-size: 22px; }
 }
 @media (max-width: 560px) { .org-divs { grid-template-columns: 1fr 1fr; gap: 10px; } .org-div .head { padding: 13px 12px; font-size: 13.5px; } .org-div .team { padding: 11px 12px; font-size: 12.5px; } .hero .stats { gap: 22px; } }
