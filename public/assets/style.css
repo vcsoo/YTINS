@@ -824,20 +824,14 @@ b.count-pop { display: inline-block; }
 /* ---- 다크네이비 v2: 로고 원본 · 밝은 네이비 히어로 · 파란 글씨 → 네이비 ---- */
 :root { --navy-text: #22355e; --navy-hero: #253853; }
 
-/* 메인 히어로(네트워크 애니메이션 영역): 밝은 네이비 */
-.hero { background: var(--navy-hero); }
-.hero-bg::before { background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px); }
-.hero .eyebrow { color: #9db9ee; }
-.hero .eyebrow::before { background: #9db9ee; }
-.hero h1 { color: #fff; }
-.hero h1 .en, .hero h1 .rot { color: #8db4f9; }
-.hero p.lead { color: #b9c4d8; }
-.hero .stat .num { color: #fff; }
-.hero .stat .num small, .hero .stat .label { color: #93a1b8; }
-.scroll-cue { color: #8ea0bc; }
+/* 서브페이지 히어로(카테고리 메인): 밝은 네이비 */
+.page-hero { background: var(--navy-hero); border-bottom-color: rgba(255,255,255,0.08); }
+.page-hero h1 { color: #fff; }
+.page-hero p { color: #b9c4d8; }
 
 /* 파란색 글씨 → 다크네이비 (밝은 배경 위 텍스트만) */
-.page-hero .eyebrow { color: var(--navy-text); }
+.page-hero .eyebrow { color: #9db9ee; }
+.page-hero .eyebrow::before { background: #9db9ee; }
 .clients-bar .t { color: var(--navy-text); }
 .cloud-partners .cp-kicker, .cloud-partners .cp-plus, .cloud-partners .cp-with { color: var(--navy-text); }
 .nav-card .no, .nav-card .go { color: var(--navy-text); }
