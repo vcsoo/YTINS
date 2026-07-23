@@ -313,8 +313,11 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 .duo-panel .dhead h3 { color: #fff; font-size: 22px; margin: 6px 0 0; }
 .duo-panel.ink .dhead { background: var(--ink); }
 .duo-panel.blue .dhead { background: linear-gradient(135deg, var(--accent), var(--accent-ink)); }
-.duo-panel .dbody { padding: 10px 26px 4px; }
-.duo-panel .srv { padding: 15px 0; border-bottom: 1px solid var(--line2); }
+.duo-panel .dbody { padding: 10px 26px 4px; flex: 1; display: flex; flex-direction: column; }
+.duo-panel .srv { padding: 15px 0; border-bottom: 1px solid var(--line2); flex: 1; display: flex; flex-direction: column; justify-content: center; }
+.duo-panel .srv.iconed { flex-direction: row; align-items: center; justify-content: flex-start; gap: 13px; }
+.duo-panel .srv .s-ic { width: 36px; height: 36px; border-radius: var(--r-sm); background: #eef1f6; color: #64748b; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.duo-panel .srv .s-ic .ico-svg { width: 19px; height: 19px; }
 .duo-panel .srv:last-child { border-bottom: 0; }
 .duo-panel .srv b { display: block; font-family: var(--font-display); font-size: 15.5px; color: var(--ink); margin-bottom: 3px; }
 .duo-panel .srv span { font-size: 13.5px; color: var(--muted); line-height: 1.6; }
