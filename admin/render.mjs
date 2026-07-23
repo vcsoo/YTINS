@@ -30,6 +30,9 @@ const ICONS = {
   alert: '<path d="M12 4.5 20.5 19h-17L12 4.5Z"/><path d="M12 10.5v3.6M12 16.8h.01"/>',
 };
 export const ICON_NAMES = Object.keys(ICONS);
+/* 편집 모드: 빌더 캔버스용 — 요소에 편집 경로 주석을 달고 사이트 JS를 뺀다 */
+let EDIT = false;
+const ea = (key) => (EDIT ? ` data-edit="${key}"` : "");
 function ic(name) { return `<svg class="ico-svg" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ""}</svg>`; }
 
 function marquee(inner, gridCls) {
@@ -52,7 +55,7 @@ function header(active, nav) {
           ${g.subs.map((s) => `<a href="${s.href}">${s.label}</a>`).join("\n          ")}
         </div>
       </div>`;
-  return `<header class="site-header">
+  return `<header class="site-header"${ea("nav")}>
   <div class="container">
     <a class="logo" href="index.html" aria-label="YTINS 홈">
       <img class="logo-img" src="assets/ytins-logo.png" alt="YTINS"><span class="kr">${nav.brand}</span>
@@ -66,7 +69,7 @@ function header(active, nav) {
 }
 
 function footerHtml(f) {
-  return `<footer class="site-footer">
+  return `<footer class="site-footer"${ea("footer")}>
   <div class="container">
     <div class="footer-top">
       <div class="footer-brand">
@@ -109,7 +112,7 @@ ${header(active, C.nav)}
 ${main}
 </main>
 ${footerHtml(C.footer)}
-<div class="fab" id="fab">
+<div class="fab" id="fab"${ea("contact")}>
   <div class="fab-unit" id="contactUnit">
     <div class="contact-pop" id="contactPop" role="dialog" aria-label="연락처">
       <div class="cp-title">문의 · 연락처</div>
@@ -123,13 +126,13 @@ ${footerHtml(C.footer)}
     <span class="totop-pct" id="toTopPct">0%</span>
   </button>
 </div>
-<script src="assets/site.js"></script>
+${EDIT ? "" : '<script src="assets/site.js"><\/script>' }
 </body>
 </html>`;
 }
 
 /* 공용 partial */
-const pageHero = (h) => `  <section class="page-hero">
+const pageHero = (h, key) => `  <section class="page-hero"${ea(key)}>
     <div class="ph-bg" aria-hidden="true"><canvas class="pageNet"></canvas></div>
     <div class="container"><span class="eyebrow">${h.eyebrow}</span><h1>${h.title}</h1>
       <p>${h.desc}</p></div>
@@ -142,7 +145,7 @@ const featgrid = (feats, sep = "\n        ") => feats.map((f) => `<div class="fe
 /* ============================================================ HOME */
 function renderHome(C) {
   const H = C.home;
-  const main = `  <section class="hero">
+  const main = `  <section class="hero"${ea("home.hero")}>
     <div class="hero-bg" aria-hidden="true"><canvas id="heroNet"></canvas></div>
     <div class="container">
       <span class="eyebrow">${H.hero.eyebrow}</span>
@@ -154,7 +157,7 @@ function renderHome(C) {
     </div>
     <a class="scroll-cue" href="#explore" aria-label="아래로 스크롤"><span>Scroll</span><svg class="ico-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5l6 6 6-6"/></svg></a>
   </section>
-  <section class="section" id="explore">
+  <section class="section" id="explore"${ea("home.explore")}>
     <div class="container">
       
       <h2>${H.explore.title}</h2>
@@ -170,9 +173,9 @@ function renderHome(C) {
 /* ============================================================ COMPANY */
 function renderCompany(C) {
   const P = C.company;
-  const main = `${pageHero(P.hero)}
+  const main = `${pageHero(P.hero, "company.hero")}
 
-  <section class="section" id="about">
+  <section class="section" id="about"${ea("company.about")}>
     <div class="container">
       <h2>${P.about.title}</h2>
       <p class="sec-desc">${P.about.desc}</p>
@@ -187,7 +190,7 @@ function renderCompany(C) {
     </div>
   </section>
 
-  <section class="section alt" id="ceo">
+  <section class="section alt" id="ceo"${ea("company.ceo")}>
     <div class="container">
       <h2>${P.ceo.title}</h2>
       <div class="ceo">
@@ -201,7 +204,7 @@ function renderCompany(C) {
     </div>
   </section>
 
-  <section class="section" id="history">
+  <section class="section" id="history"${ea("company.history")}>
     <div class="container">
       <h2>${P.history.title}</h2>
       <p class="sec-desc">${P.history.desc}</p>
@@ -212,7 +215,7 @@ function renderCompany(C) {
     </div>
   </section>
 
-  <section class="section alt" id="organization">
+  <section class="section alt" id="organization"${ea("company.org")}>
     <div class="container">
       <h2>${P.org.title}</h2>
       <p class="sec-desc">${P.org.desc}</p>
@@ -232,7 +235,7 @@ function renderCompany(C) {
     </div>
   </section>
 
-  <section class="section" id="certifications">
+  <section class="section" id="certifications"${ea("company.certs")}>
     <div class="container">
       <h2>${P.certs.title}</h2>
       <p class="sec-desc">${P.certs.desc}</p>
@@ -242,7 +245,7 @@ function renderCompany(C) {
     </div>
   </section>
 
-  <section class="section alt" id="location">
+  <section class="section alt" id="location"${ea("company.location")}>
     <div class="container">
       <h2>${P.location.title}</h2>
       <p class="sec-desc">${P.location.desc}</p>
@@ -260,7 +263,7 @@ function renderCompany(C) {
     </div>
   </section>
 
-  <section class="section" id="brochure">
+  <section class="section" id="brochure"${ea("company.brochure")}>
     <div class="container">
       <h2>${P.brochure.title}</h2>
       <p class="sec-desc">${P.brochure.desc}</p>
@@ -394,26 +397,27 @@ function renderBlock(b) {
   const fn = BLOCK_RENDERERS[b.type];
   return fn ? fn(b) : "";
 }
-function renderSectionsPage(P, active, C) {
-  const main = `${pageHero(P.hero)}
+function renderSectionsPage(P, active, C, pageKey) {
+  const wrapB = (html, si, bi) => (EDIT ? `<div class="eb" data-blk="${si}:${bi}">${html}</div>` : html);
+  const main = `${pageHero(P.hero, pageKey + ".hero")}
 
-  ${P.sections.map((sec) => `<section class="section${sec.alt ? " alt" : ""}" id="${sec.id}">
+  ${P.sections.map((sec, si) => `<section class="section${sec.alt ? " alt" : ""}" id="${sec.id}"${EDIT ? ` data-sec="${si}"` : ""}>
     <div class="container">
       <h2>${sec.title}</h2>
-      ${sec.blocks.map(renderBlock).join("\n\n      ")}
+      ${sec.blocks.map((b, bi) => wrapB(renderBlock(b), si, bi)).join("\n\n      ")}
     </div>
   </section>`).join("\n\n")}`;
   return pageShell({ active, title: P.meta.title, desc: P.meta.desc, main }, C);
 }
-function renderBusiness(C) { return renderSectionsPage(C.business, "business", C); }
-function renderSolution(C) { return renderSectionsPage(C.solution, "solution", C); }
+function renderBusiness(C) { return renderSectionsPage(C.business, "business", C, "business"); }
+function renderSolution(C) { return renderSectionsPage(C.solution, "solution", C, "solution"); }
 
 /* ============================================================ REFERENCE */
 function renderReference(C) {
   const P = C.reference;
-  const main = `${pageHero(P.hero)}
+  const main = `${pageHero(P.hero, "reference.hero")}
 
-  <section class="section" id="clients">
+  <section class="section" id="clients"${ea("reference.clients")}>
     <div class="container">
       <h2>${P.clients.title}</h2>
       <p class="sec-desc">${P.clients.desc}</p>
@@ -421,7 +425,7 @@ function renderReference(C) {
     </div>
   </section>
 
-  <section class="section alt" id="partners">
+  <section class="section alt" id="partners"${ea("reference.partners")}>
     <div class="container">
       <h2>${P.partners.title}</h2>
       <p class="sec-desc">${P.partners.desc}</p>
@@ -432,7 +436,7 @@ function renderReference(C) {
     </div>
   </section>
 
-  <section class="section" id="performance">
+  <section class="section" id="performance"${ea("reference.performance")}>
     <div class="container">
       <h2>${P.performance.title}</h2>
       <p class="sec-desc">${P.performance.desc}</p>
@@ -472,12 +476,15 @@ function renderReference(C) {
   return pageShell({ active: "reference", title: P.meta.title, desc: P.meta.desc, main }, C);
 }
 
-export function renderAll(content) {
-  return {
+export function renderAll(content, opts) {
+  EDIT = !!(opts && opts.edit);
+  const out = {
     "index.html": renderHome(content),
     "company.html": renderCompany(content),
     "business.html": renderBusiness(content),
     "solution.html": renderSolution(content),
     "reference.html": renderReference(content),
   };
+  EDIT = false;
+  return out;
 }
