@@ -621,10 +621,13 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 /* ===== 로고 마퀴: 데스크톱 그리드 · 모바일 좌우 자동 슬라이딩 ===== */
 .marquee .marquee-track[aria-hidden="true"] { display: none; }
 @media (max-width: 720px) {
-  .marquee { display: flex; flex-wrap: nowrap; overflow: hidden; width: 100%;
+  .marquee { display: flex; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; width: 100%;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch;
     -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
     mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+  .marquee::-webkit-scrollbar { display: none; }
   .marquee .marquee-track { display: flex; flex-wrap: nowrap; width: max-content; gap: 12px; padding-right: 12px; animation: marqueeX 24s linear infinite; }
+  .marquee.js-flow .marquee-track { animation: none; } /* JS가 scrollLeft로 흐름 구동 (터치 슬라이드 겸용) */
   .marquee .marquee-track[aria-hidden="true"] { display: flex; }
   .marquee:hover .marquee-track, .marquee:active .marquee-track { animation-play-state: paused; }
   .marquee .partner, .marquee .lg { flex: 0 0 auto; width: 138px; min-height: 82px; height: 82px; padding: 14px 16px; }
