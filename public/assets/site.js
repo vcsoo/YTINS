@@ -109,19 +109,6 @@
 
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // CTA 밴드 → 연락처 팝오버 열기 (팝오버 없으면 mailto 폴백)
-  [].slice.call(document.querySelectorAll("[data-open-contact]")).forEach(function (a) {
-    a.addEventListener("click", function (e) {
-      var unit = document.getElementById("contactUnit");
-      if (!unit) return; // href(mailto)로 진행
-      e.preventDefault();
-      e.stopPropagation(); // 문서 클릭 닫힘 핸들러보다 먼저 소비
-      unit.classList.add("open");
-      var btn = document.getElementById("contactBtn");
-      if (btn) btn.setAttribute("aria-expanded", "true");
-    });
-  });
-
   // 히어로 키워드 로테이션
   var rotWord = document.getElementById("rotWord");
   if (rotWord && !reduceMotion) {
@@ -138,7 +125,8 @@
 
   // KPI 숫자 카운트업 (뷰포트 진입 시 1회)
   (function () {
-    var els = [].slice.call(document.querySelectorAll(".hero .stats .num, .about-card .num, .org-stat .nums b"));
+    var els = [].slice.call(document.querySelectorAll(".hero .stats .num, .about-card .num, .org-stat .nums b"))
+      .filter(function (el) { return !el.closest(".about-side.col"); }); // 연혁(연도) 카드는 카운트업 제외
     var items = [];
     els.forEach(function (el) {
       var t = el.firstChild;
