@@ -70,8 +70,8 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 .logo .kr { color: var(--text); font-size: 15px; font-weight: 600; font-family: var(--font-body); margin-top: 3px; }
 .gnb { display: flex; gap: 2px; }
 .gnb > a, .gnb .has-sub > .sub-toggle {
-  color: #4a4f5a; font-size: 15px; font-weight: 600; font-family: var(--font-body);
-  padding: 9px 15px; border-radius: var(--r-sm); transition: color .15s ease, background .15s ease;
+  color: #4a4f5a; font-size: 11.5px; font-weight: 600; font-family: var(--font-body);
+  padding: 8px 13px; border-radius: var(--r-sm); transition: color .15s ease, background .15s ease;
   display: inline-flex; align-items: center; gap: 5px; cursor: pointer;
 }
 .gnb > a:hover, .gnb .has-sub:hover > .sub-toggle { color: var(--ink); background: var(--bg-soft); }
