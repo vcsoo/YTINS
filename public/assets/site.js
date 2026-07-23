@@ -180,7 +180,7 @@
       var r = el.getBoundingClientRect();
       if (r.top < vh * 0.9 && r.bottom > 0) {
         var sibs = el.parentElement ? [].slice.call(el.parentElement.children).filter(function (c) { return c.classList.contains("reveal"); }) : [el];
-        el.style.transitionDelay = Math.min(sibs.indexOf(el), 8) * 85 + "ms";
+        el.style.transitionDelay = Math.min(sibs.indexOf(el), 6) * 50 + "ms";
         el.classList.add("in");
       }
     });
