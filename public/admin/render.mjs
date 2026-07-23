@@ -151,7 +151,7 @@ function renderHome(C) {
     <div class="hero-bg" aria-hidden="true"><canvas id="heroNet"></canvas></div>
     <div class="container">
       <span class="eyebrow"${et("home.hero.eyebrow")}>${H.hero.eyebrow}</span>
-      <h1>${H.hero.line1Before}<span class="rot-wrap"><span class="rot"><span class="rot-word" id="rotWord">${H.hero.rotWords[0]}</span></span>${H.hero.line1After}</span><br>${H.hero.line2}<br><span class="en">${H.hero.line3}</span></h1>
+      <h1>${H.hero.line1Before}<span class="rot-wrap"><span class="rot"><span class="rot-word" id="rotWord">${H.hero.rotWords[0]}</span><span class="rot-sfx">${H.hero.line1After}</span></span></span><br>${H.hero.line2}<br><span class="en">${H.hero.line3}</span></h1>
       <p class="lead"${et("home.hero.lead")}>${H.hero.lead}</p>
       <div class="stats">
         ${H.hero.stats.map((s, i) => `<div class="stat"><div class="num">${ew(s.num, `home.hero.stats.${i}.num`)}${s.unit ? `<small${et(`home.hero.stats.${i}.unit`)}>${s.unit}</small>` : ""}</div><div class="label"${et(`home.hero.stats.${i}.label`)}>${s.label}</div></div>`).join("\n        ")}

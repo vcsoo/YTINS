@@ -112,6 +112,7 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 .hero h1 .en { color: var(--accent); }
 /* 히어로 키워드 로테이션 */
 .hero h1 .rot { display: inline-block; color: var(--accent); }
+.hero h1 .rot-sfx { color: var(--ink); }
 .hero h1 .rot-word { display: inline-block; }
 .hero h1 .rot-word.swap { animation: rotSwap .5s cubic-bezier(.2,.8,.2,1); }
 @keyframes rotSwap { 0% { transform: translateY(0.55em); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }

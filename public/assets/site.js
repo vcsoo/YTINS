@@ -220,6 +220,19 @@
   if (rotWord && !reduceMotion) {
     var rotWords = ["AI 전환", "클라우드 전환", "데이터 혁신"];
     var rotIdx = 0;
+    // 회전 슬롯 폭을 가장 긴 단어로 고정 → 단어가 바뀌어도 앞뒤 글자·줄바꿈이 전혀 움직이지 않음
+    var rotBox = rotWord.parentElement; // .rot
+    var fitRot = function () {
+      var orig = rotWord.textContent, max = 0;
+      rotBox.style.width = "auto";
+      rotWords.forEach(function (t) { rotWord.textContent = t; max = Math.max(max, rotBox.offsetWidth); });
+      rotWord.textContent = orig;
+      rotBox.style.width = Math.ceil(max) + "px";
+    };
+    fitRot();
+    window.addEventListener("load", fitRot);
+    window.addEventListener("resize", fitRot, { passive: true });
+    setTimeout(fitRot, 800); // 웹폰트 적용 후 재측정
     setInterval(function () {
       rotIdx = (rotIdx + 1) % rotWords.length;
       rotWord.classList.remove("swap");
