@@ -95,6 +95,62 @@
     window.addEventListener("resize", mqCheck, { passive: true });
   }
 
+  // 히어로 네트워크(노드 연결) 배경 — 모노크롬 슬레이트 톤
+  var netCv = document.getElementById("heroNet");
+  if (netCv) {
+    var nctx = netCv.getContext("2d");
+    var heroEl = netCv.closest(".hero");
+    var W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
+    var nodes = [], LINK = 135, mouse = { x: -9999, y: -9999 };
+    var sizeNet = function () {
+      var r = heroEl.getBoundingClientRect();
+      W = r.width; H = r.height;
+      netCv.width = W * DPR; netCv.height = H * DPR;
+      netCv.style.width = W + "px"; netCv.style.height = H + "px";
+      nctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      var target = W < 720 ? 34 : 84;
+      while (nodes.length < target) nodes.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.55, vy: (Math.random() - 0.5) * 0.55, r: 1.2 + Math.random() * 1.6 });
+      nodes.length = target;
+    };
+    sizeNet();
+    window.addEventListener("resize", sizeNet, { passive: true });
+    heroEl.addEventListener("pointermove", function (e) { var r = netCv.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; }, { passive: true });
+    heroEl.addEventListener("pointerleave", function () { mouse.x = -9999; mouse.y = -9999; });
+    var drawNet = function () {
+      if (window.scrollY < H + 120) { // 히어로가 보일 때만 렌더
+        nctx.clearRect(0, 0, W, H);
+        var i, j;
+        for (i = 0; i < nodes.length; i++) {
+          var p = nodes[i];
+          if (!reduceMotion) {
+            p.x += p.vx; p.y += p.vy;
+            if (p.x < -20) p.x = W + 20; else if (p.x > W + 20) p.x = -20;
+            if (p.y < -20) p.y = H + 20; else if (p.y > H + 20) p.y = -20;
+          }
+          nctx.beginPath(); nctx.arc(p.x, p.y, p.r, 0, 6.2832);
+          nctx.fillStyle = "rgba(71,85,105,0.45)"; nctx.fill();
+        }
+        nctx.lineWidth = 1;
+        for (i = 0; i < nodes.length; i++) {
+          for (j = i + 1; j < nodes.length; j++) {
+            var dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y, d2 = dx * dx + dy * dy;
+            if (d2 < LINK * LINK) {
+              nctx.strokeStyle = "rgba(100,116,139," + ((1 - Math.sqrt(d2) / LINK) * 0.17).toFixed(3) + ")";
+              nctx.beginPath(); nctx.moveTo(nodes[i].x, nodes[i].y); nctx.lineTo(nodes[j].x, nodes[j].y); nctx.stroke();
+            }
+          }
+          var mdx = nodes[i].x - mouse.x, mdy = nodes[i].y - mouse.y, md2 = mdx * mdx + mdy * mdy;
+          if (md2 < 28900) { // 170px 이내 노드는 커서와 연결
+            nctx.strokeStyle = "rgba(51,65,85," + ((1 - Math.sqrt(md2) / 170) * 0.3).toFixed(3) + ")";
+            nctx.beginPath(); nctx.moveTo(nodes[i].x, nodes[i].y); nctx.lineTo(mouse.x, mouse.y); nctx.stroke();
+          }
+        }
+      }
+      if (!reduceMotion) requestAnimationFrame(drawNet);
+    };
+    drawNet(); // 모션 최소화 설정 시 정적 1프레임만
+  }
+
   // 히어로 키워드 로테이션
   var rotWord = document.getElementById("rotWord");
   if (rotWord && !reduceMotion) {
