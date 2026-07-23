@@ -41,11 +41,13 @@
     burger.addEventListener("click", function () {
       var open = gnb.classList.toggle("open");
       burger.setAttribute("aria-expanded", open);
+      document.documentElement.classList.toggle("menu-open", open); // 배경 스크롤 잠금
     });
     gnb.querySelectorAll("a").forEach(function (a) {
       a.addEventListener("click", function () {
         gnb.classList.remove("open");
         burger.setAttribute("aria-expanded", "false");
+        document.documentElement.classList.remove("menu-open");
       });
     });
   }
@@ -61,6 +63,7 @@
         window.scrollTo({ top: 0, behavior: "smooth" });
         if (gnb) gnb.classList.remove("open");
         if (burger) burger.setAttribute("aria-expanded", "false");
+        document.documentElement.classList.remove("menu-open");
       });
     }
   });
@@ -108,6 +111,23 @@
   }
 
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // 마퀴: 내용이 컨테이너를 넘지 않으면 흐름 정지·복제 숨김
+  var marquees = [].slice.call(document.querySelectorAll(".marquee"));
+  if (marquees.length) {
+    var mqCheck = function () {
+      marquees.forEach(function (m) {
+        var t = m.querySelector(".marquee-track");
+        if (!t) return;
+        m.classList.remove("static");
+        var fits = t.scrollWidth <= m.clientWidth + 4;
+        if (fits) m.classList.add("static");
+      });
+    };
+    mqCheck();
+    window.addEventListener("load", mqCheck);
+    window.addEventListener("resize", mqCheck, { passive: true });
+  }
 
   // 히어로 키워드 로테이션
   var rotWord = document.getElementById("rotWord");
