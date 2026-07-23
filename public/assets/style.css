@@ -397,6 +397,19 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 .feat .ftx b { font-family: var(--font-display); font-size: 14.5px; color: var(--ink); display: block; }
 .feat .ftx span { font-size: 12.5px; color: var(--muted); }
 
+/* Process phases */
+.phases { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+@media (max-width: 760px) { .phases { grid-template-columns: 1fr 1fr; } }
+.phase { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 8px 22px rgba(12,14,19,0.05); }
+.phase .ph { color: #fff; font-family: var(--font-display); font-weight: 800; font-size: 14px; text-align: center; padding: 12px; }
+.phase:nth-child(1) .ph { background: #6aa2f5; }
+.phase:nth-child(2) .ph { background: var(--accent); }
+.phase:nth-child(3) .ph { background: var(--accent-ink); }
+.phase:nth-child(4) .ph { background: var(--ink); }
+.phase ul { list-style: none; margin: 0; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+.phase li { font-size: 13px; color: var(--text); padding-left: 15px; position: relative; }
+.phase li::before { content: ""; position: absolute; left: 3px; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+
 /* Location / map */
 .map-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 26px; align-items: start; }
 @media (max-width: 860px) { .map-grid { grid-template-columns: 1fr; } }
