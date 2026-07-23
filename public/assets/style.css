@@ -84,7 +84,13 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 .burger span { display: block; width: 22px; height: 2px; background: var(--ink); margin: 5px 0; border-radius: 2px; transition: transform .2s ease, opacity .2s ease; }
 
 /* ---------- Home hero (airy, giant type) ---------- */
-.hero { padding: calc(var(--header-h) + 90px) 0 90px; background: var(--bg); position: relative; overflow: hidden; }
+.hero { padding: calc(var(--header-h) + 48px) 0 72px; background: var(--bg); position: relative; overflow: hidden; min-height: 100vh; min-height: 100svh; display: flex; align-items: center; }
+/* 풀스크린 히어로 하단 스크롤 유도 */
+.scroll-cue { position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%); z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 5px; color: var(--muted); }
+.scroll-cue span { font-size: 10.5px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; }
+.scroll-cue .ico-svg { width: 20px; height: 20px; animation: cueBounce 1.7s ease-in-out infinite; }
+@keyframes cueBounce { 0%, 100% { transform: translateY(0); opacity: 0.55; } 50% { transform: translateY(7px); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .scroll-cue .ico-svg { animation: none; } }
 .hero .container { position: relative; z-index: 1; }
 /* 메인 히어로 애니메이션 배경: 부유하는 광원 + 회전 빔 + 그리드 */
 .hero-bg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
