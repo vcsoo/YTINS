@@ -90,18 +90,32 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 .hero-bg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
 .hero-bg::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(47,111,237,0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(47,111,237,0.055) 1px, transparent 1px); background-size: 56px 56px; -webkit-mask-image: radial-gradient(ellipse 80% 70% at 68% 22%, #000 15%, transparent 72%); mask-image: radial-gradient(ellipse 80% 70% at 68% 22%, #000 15%, transparent 72%); }
 .hero-bg .orb { position: absolute; display: block; border-radius: 50%; filter: blur(70px); }
-.hero-bg .orb.a { width: 640px; height: 640px; right: -150px; top: -200px; background: radial-gradient(circle, rgba(47,111,237,0.30), transparent 65%); animation: orbA 16s ease-in-out infinite alternate; }
-.hero-bg .orb.b { width: 540px; height: 540px; left: -170px; bottom: -220px; background: radial-gradient(circle, rgba(23,70,196,0.22), transparent 65%); animation: orbB 21s ease-in-out infinite alternate; }
-.hero-bg .orb.c { width: 400px; height: 400px; left: 44%; top: 26%; background: radial-gradient(circle, rgba(110,160,250,0.20), transparent 65%); animation: orbC 25s ease-in-out infinite alternate; }
-.hero-bg .beam { position: absolute; inset: -60%; background: conic-gradient(from 0deg at 68% 30%, transparent 0deg, rgba(47,111,237,0.06) 45deg, transparent 100deg, rgba(23,70,196,0.055) 210deg, transparent 270deg); animation: beamSpin 55s linear infinite; }
-@keyframes orbA { from { transform: translate(0,0) scale(1); } to { transform: translate(-150px, 100px) scale(1.2); } }
-@keyframes orbB { from { transform: translate(0,0) scale(1); } to { transform: translate(130px, -90px) scale(1.12); } }
-@keyframes orbC { from { transform: translate(0,0); } to { transform: translate(100px, 70px); } }
+.hero-bg .orb.a { width: 660px; height: 660px; right: -150px; top: -200px; background: radial-gradient(circle, rgba(47,111,237,0.42), transparent 65%); animation: orbA 14s ease-in-out infinite alternate; }
+.hero-bg .orb.b { width: 560px; height: 560px; left: -170px; bottom: -220px; background: radial-gradient(circle, rgba(23,70,196,0.32), transparent 65%); animation: orbB 18s ease-in-out infinite alternate; }
+.hero-bg .orb.c { width: 420px; height: 420px; left: 44%; top: 24%; background: radial-gradient(circle, rgba(34,211,238,0.26), transparent 65%); animation: orbC 22s ease-in-out infinite alternate; }
+.hero-bg .orb.d { width: 380px; height: 380px; left: 12%; top: -120px; background: radial-gradient(circle, rgba(139,92,246,0.22), transparent 65%); animation: orbD 26s ease-in-out infinite alternate; }
+.hero-bg .beam { position: absolute; inset: -60%; background: conic-gradient(from 0deg at 68% 30%, transparent 0deg, rgba(47,111,237,0.09) 45deg, transparent 100deg, rgba(34,211,238,0.07) 160deg, transparent 220deg, rgba(23,70,196,0.08) 290deg, transparent 340deg); animation: beamSpin 45s linear infinite; }
+.hero-bg .sweep { position: absolute; top: -25%; left: -35%; width: 34%; height: 150%; background: linear-gradient(78deg, transparent, rgba(47,111,237,0.10) 45%, rgba(34,211,238,0.08) 55%, transparent); transform: skewX(-14deg); animation: sweepX 8.5s cubic-bezier(.6,.05,.35,1) infinite; }
+.hero-bg .pt { position: absolute; bottom: -12px; width: 7px; height: 7px; border-radius: 50%; background: rgba(47,111,237,0.45); box-shadow: 0 0 12px rgba(47,111,237,0.5); animation: ptRise 11s linear infinite; }
+.hero-bg .pt.p1 { left: 12%; animation-duration: 12s; animation-delay: 0s; }
+.hero-bg .pt.p2 { left: 26%; width: 5px; height: 5px; animation-duration: 15s; animation-delay: 2.4s; background: rgba(34,211,238,0.5); box-shadow: 0 0 10px rgba(34,211,238,0.5); }
+.hero-bg .pt.p3 { left: 41%; animation-duration: 10s; animation-delay: 5s; }
+.hero-bg .pt.p4 { left: 55%; width: 4px; height: 4px; animation-duration: 16s; animation-delay: 1.2s; background: rgba(139,92,246,0.45); box-shadow: 0 0 10px rgba(139,92,246,0.45); }
+.hero-bg .pt.p5 { left: 68%; animation-duration: 13s; animation-delay: 6.5s; }
+.hero-bg .pt.p6 { left: 81%; width: 5px; height: 5px; animation-duration: 11s; animation-delay: 3.6s; background: rgba(34,211,238,0.45); box-shadow: 0 0 10px rgba(34,211,238,0.45); }
+.hero-bg .pt.p7 { left: 92%; width: 4px; height: 4px; animation-duration: 17s; animation-delay: 8s; }
+@keyframes orbA { from { transform: translate(0,0) scale(1); } to { transform: translate(-160px, 110px) scale(1.24); } }
+@keyframes orbB { from { transform: translate(0,0) scale(1); } to { transform: translate(140px, -100px) scale(1.15); } }
+@keyframes orbC { from { transform: translate(0,0); } to { transform: translate(110px, 80px); } }
+@keyframes orbD { from { transform: translate(0,0) scale(1); } to { transform: translate(90px, 70px) scale(1.18); } }
 @keyframes beamSpin { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) { .hero-bg .orb, .hero-bg .beam { animation: none; } }
+@keyframes sweepX { 0% { transform: translateX(0) skewX(-14deg); opacity: 0; } 12% { opacity: 1; } 55% { transform: translateX(420%) skewX(-14deg); opacity: 1; } 70%, 100% { transform: translateX(420%) skewX(-14deg); opacity: 0; } }
+@keyframes ptRise { 0% { transform: translateY(0); opacity: 0; } 8% { opacity: 1; } 85% { opacity: 0.9; } 100% { transform: translateY(-620px); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .hero-bg .orb, .hero-bg .beam, .hero-bg .sweep, .hero-bg .pt { animation: none; } .hero-bg .pt { display: none; } }
 .hero .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.18em; color: var(--accent); text-transform: uppercase; margin-bottom: 26px; }
 .hero .eyebrow::before { content: ""; width: 26px; height: 1px; background: var(--accent); display: inline-block; }
-.hero h1 { font-size: clamp(40px, 7vw, 82px); line-height: 1.04; font-weight: 900; margin: 0 0 26px; }
+.hero h1 { font-size: clamp(38px, 6vw, 70px); line-height: 1.08; font-weight: 900; margin: 0 0 26px; }
+.hero h1 .rot-wrap { white-space: nowrap; }
 .hero h1 .en { color: var(--accent); }
 /* 히어로 키워드 로테이션 */
 .hero h1 .rot { display: inline-block; color: var(--accent); }
@@ -109,17 +123,6 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 .hero h1 .rot-word.swap { animation: rotSwap .5s cubic-bezier(.2,.8,.2,1); }
 @keyframes rotSwap { 0% { transform: translateY(0.55em); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
 
-/* 문의 유도 CTA 밴드 */
-.cta-band { background: linear-gradient(120deg, var(--accent), var(--accent-ink)); color: #fff; padding: 58px 0; position: relative; overflow: hidden; }
-.cta-band::after { content: ""; position: absolute; right: -140px; top: -160px; width: 460px; height: 460px; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.14), transparent 65%); pointer-events: none; }
-.cta-band .container { display: flex; align-items: center; justify-content: space-between; gap: 28px; flex-wrap: wrap; position: relative; }
-.cta-band .cta-txt b { font-family: var(--font-display); font-size: clamp(22px, 3vw, 30px); font-weight: 800; display: block; letter-spacing: -0.02em; }
-.cta-band .cta-txt span { font-size: 15px; opacity: 0.85; margin-top: 8px; display: block; }
-.cta-btn { background: #fff; color: var(--accent-ink); font-family: var(--font-display); font-weight: 800; font-size: 16.5px; padding: 17px 36px; border-radius: 999px; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 14px 34px rgba(0,0,0,0.20); transition: transform .2s ease, box-shadow .2s ease; white-space: nowrap; }
-.cta-btn i { font-style: normal; transition: transform .2s ease; }
-.cta-btn:hover { transform: translateY(-2px); box-shadow: 0 18px 40px rgba(0,0,0,0.26); }
-.cta-btn:hover i { transform: translateX(4px); }
-@media (max-width: 640px) { .cta-band { padding: 44px 0; } .cta-band .container { justify-content: center; text-align: center; } .cta-band .cta-txt span { margin-bottom: 4px; } }
 .hero p.lead { font-size: clamp(16px, 2vw, 20px); color: var(--text); max-width: 620px; line-height: 1.7; margin: 0 0 48px; }
 .hero .stats { display: flex; gap: 44px; flex-wrap: wrap; }
 .stat .num { font-family: var(--font-display); font-size: clamp(30px, 4vw, 46px); font-weight: 800; color: var(--ink); letter-spacing: -0.03em; line-height: 1; }
@@ -541,6 +544,8 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 .fab { position: fixed; right: 24px; bottom: 24px; z-index: 200; display: flex; align-items: flex-end; gap: 14px; }
 .fab-btn { width: 58px; height: 58px; border-radius: 50%; border: 0; cursor: pointer; background: var(--accent); color: #fff; font-size: 23px; display: flex; align-items: center; justify-content: center; box-shadow: 0 14px 34px rgba(47,111,237,0.42); transition: transform .18s ease, background .18s ease; position: relative; }
 .fab-btn:hover { background: var(--accent-ink); transform: translateY(-2px) scale(1.04); }
+.fab-btn .ico-svg { width: 25px; height: 25px; }
+.contact-pop .cp-ic .ico-svg { width: 19px; height: 19px; }
 
 /* 연락처 팝오버 */
 .fab-unit { position: relative; }
