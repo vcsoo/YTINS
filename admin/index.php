@@ -5,14 +5,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>YTINS 홈페이지 관리</title>
+<title>YTINS 홈페이지 빌더</title>
 <link rel="stylesheet" href="admin.css">
 </head>
 <body>
 
 <div id="login" style="display:none">
   <form id="loginForm" class="login-box">
-    <h1>YTINS 홈페이지 관리</h1>
+    <h1>YTINS 홈페이지 빌더</h1>
     <p class="hint">관리자 계정으로 로그인하세요.</p>
     <label>아이디</label>
     <input id="loginUser" autocomplete="username" required>
@@ -24,27 +24,35 @@
 </div>
 
 <div id="app" style="display:none">
-  <aside>
-    <div class="brand">YTINS 관리자</div>
-    <nav id="nav"></nav>
-    <div class="side-foot">
-      <button id="chpassBtn" class="btn-ghost">비밀번호 변경</button>
-      <button id="logoutBtn" class="btn-ghost">로그아웃</button>
+  <header class="bld-top">
+    <div class="brand">YTINS 빌더</div>
+    <nav id="pageTabs"></nav>
+    <span class="tip">화면의 요소를 클릭해서 편집하세요 · 파란 버튼으로 이동/추가/삭제</span>
+    <div class="actions">
+      <button id="metaBtn" class="btn-ghost">페이지 설정</button>
+      <button id="previewBtn" class="btn-ghost">미리보기</button>
+      <button id="saveBtn" class="btn-primary">저장 (사이트 반영)</button>
+      <button id="chpassBtn" class="btn-ghost sm">비밀번호</button>
+      <button id="logoutBtn" class="btn-ghost sm">로그아웃</button>
     </div>
-  </aside>
-  <section class="main">
-    <div class="topbar">
-      <span class="tip">수정 후 반드시 <b>저장</b>을 눌러야 실제 홈페이지에 반영됩니다.</span>
-      <div class="actions">
-        <button id="previewBtn" class="btn-ghost">미리보기</button>
-        <button id="saveBtn" class="btn-primary">저장 (사이트 반영)</button>
-      </div>
-    </div>
-    <div id="panel"></div>
-  </section>
+  </header>
+  <div class="bld-main">
+    <iframe id="canvas" title="편집 캔버스"></iframe>
+    <aside id="inspector" class="closed">
+      <div class="ins-head"><b id="insTitle"></b><button id="insClose" class="btn-ghost sm">닫기 ✕</button></div>
+      <div id="insBody"></div>
+    </aside>
+  </div>
 </div>
 
-<div id="previewModal">
+<div id="paletteModal" class="modal">
+  <div class="pal-box">
+    <div class="pal-head"><b>블록 추가</b><button id="paletteClose" class="btn-ghost sm">닫기 ✕</button></div>
+    <div id="paletteList"></div>
+  </div>
+</div>
+
+<div id="previewModal" class="modal">
   <div class="preview-box">
     <div class="preview-bar">
       <select id="previewSel">
@@ -54,7 +62,7 @@
         <option value="solution.html">Solution</option>
         <option value="reference.html">레퍼런스</option>
       </select>
-      <span class="hint">저장 전 미리보기입니다. 실제 반영은 저장 버튼으로.</span>
+      <span class="hint">실제 동작(애니메이션 포함) 미리보기입니다.</span>
       <button id="previewClose" class="btn-ghost">닫기 ✕</button>
     </div>
     <iframe id="previewFrame" title="미리보기"></iframe>

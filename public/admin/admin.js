@@ -1,4 +1,5 @@
-/* YTINS 어드민 UI — 스키마 기반 폼 + 미리보기 + 저장(사이트 반영) */
+/* YTINS 비주얼 빌더 — 실제 페이지를 보면서 클릭·드래그로 편집 (아임웹 스타일)
+   캔버스(iframe) = renderAll(edit모드) 결과. 요소 클릭 → 우측 패널 편집 → 즉시 반영. */
 import { SECTIONS, BLOCKS } from "./schema.mjs";
 import { renderAll, ICON_NAMES } from "./render.mjs";
 
@@ -14,8 +15,7 @@ const el = (tag, cls, text) => {
   return e;
 };
 
-/* 테스트(데모) 모드: PHP 백엔드 없이 브라우저에서만 동작 — pages.dev 미리보기용.
-   저장은 localStorage에 보존되어 편집 UX를 그대로 검증할 수 있음. */
+/* ---------- API (실서버 PHP / 테스트 데모 겸용) ---------- */
 const DEMO = !!window.YTINS_DEMO;
 async function demoApi(action, opts = {}) {
   const LS = "ytins-admin-demo";
@@ -46,7 +46,6 @@ async function demoApi(action, opts = {}) {
   if (action === "chpass") return { ok: false, error: "테스트 모드에서는 비밀번호 변경이 동작하지 않습니다." };
   return { ok: false, error: "지원하지 않는 요청" };
 }
-
 async function api(action, opts = {}) {
   if (DEMO) return demoApi(action, opts);
   const res = await fetch("api.php?a=" + action, {
@@ -60,10 +59,16 @@ async function api(action, opts = {}) {
   return res.json();
 }
 
-/* ---------- 경로 유틸 ---------- */
+/* ---------- 유틸 ---------- */
 const getPath = (obj, path) => path.split(".").reduce((o, k) => (o ? o[k] : undefined), obj);
+const clone = (o) => JSON.parse(JSON.stringify(o));
+const stripTags = (t) => String(t || "").replace(/&amp;/g, "&").replace(/<[^>]*>/g, "");
 
-/* ---------- 폼 빌더 ---------- */
+/* 스키마 평탄화: id → {title, spec} */
+const SPEC_BY_ID = {};
+SECTIONS.forEach((pg) => pg.items.forEach((it) => { SPEC_BY_ID[it.id] = it; }));
+
+/* ---------- 폼 빌더 (우측 패널) ---------- */
 function labelOf(spec) { return spec.split(":").slice(1).join(":").trim(); }
 function typeOf(spec) { return spec.split(":")[0].trim(); }
 
@@ -116,12 +121,10 @@ function buildField(container, spec, value, setter) {
       const r = await api("upload", { method: "POST", form: fd });
       btn.textContent = "업로드";
       if (!r.ok) return alert(r.error || "업로드 실패");
-      /* 경로 형식은 기존 값 형식을 따름: 파일명만 쓰는 필드는 파일명만 */
-      const isBare = !(value || "").includes("/");
-      inp.value = isBare ? r.name : r.path;
+      const isBare = !(inp.value || "").includes("/");
+      inp.value = isBare && dir !== "assets" ? r.name : r.path;
       setter(inp.value);
       markDirty();
-      alert("업로드 완료: " + r.name + "\n저장 버튼을 눌러야 사이트에 반영됩니다.");
     });
     row.appendChild(inp);
     row.appendChild(btn);
@@ -161,9 +164,9 @@ function emptyFromSpec(spec) {
 }
 
 function buildSpec(container, spec, value, rerenderParent) {
-  if (typeof spec === "string") return; /* 최상위 문자열은 buildSection에서 처리 */
+  if (typeof spec === "string") return;
 
-  if (spec._cols) { /* 표: 문자열 배열의 배열 */
+  if (spec._cols) {
     const box = el("div", "grp");
     box.appendChild(el("div", "grp-t", spec._label));
     const render = () => {
@@ -194,7 +197,7 @@ function buildSpec(container, spec, value, rerenderParent) {
     return;
   }
 
-  if (spec._of !== undefined) { /* 문자열 배열 */
+  if (spec._of !== undefined) {
     const box = el("div", "grp");
     box.appendChild(el("div", "grp-t", spec._label));
     const render = () => {
@@ -215,7 +218,7 @@ function buildSpec(container, spec, value, rerenderParent) {
     return;
   }
 
-  if (spec._item) { /* 객체 배열 */
+  if (spec._item) {
     const box = el("div", "grp");
     box.appendChild(el("div", "grp-t", spec._label));
     const render = () => {
@@ -243,7 +246,6 @@ function buildSpec(container, spec, value, rerenderParent) {
     return;
   }
 
-  /* 일반 객체 그룹 */
   for (const k of Object.keys(spec)) {
     if (k.startsWith("_")) continue;
     const sub = spec[k];
@@ -252,140 +254,286 @@ function buildSpec(container, spec, value, rerenderParent) {
   }
 }
 
-/* ---------- 블록 에디터 (사업분야·Solution 페이지 구성) ---------- */
-function buildSectionsEditor(container, sections) {
-  const rerender = () => { container.innerHTML = ""; render(); };
-  const render = () => {
-    const info = el("p", "hint2", "섹션과 블록을 추가·삭제하고 ≡ 핸들을 드래그(또는 ▲▼)해서 순서를 바꿀 수 있습니다. 블록 제목을 누르면 편집이 열립니다.");
-    container.appendChild(info);
-    sections.forEach((sec, si) => {
-      const card = el("div", "sec-card");
-      const head = el("div", "sec-head");
-      head.appendChild(el("b", null, "섹션 · " + String(sec.title || sec.id).replace(/&amp;/g, "&").replace(/<[^>]*>/g, "")));
-      head.appendChild(listControls(sections, si, rerender));
-      card.appendChild(head);
-      const meta = el("div", "trow");
-      buildField(meta, "text: 섹션 제목", sec.title, (v) => { sec.title = v; });
-      buildField(meta, "text: 섹션 ID (메뉴 링크용 · 영문)", sec.id, (v) => { sec.id = v; });
-      buildField(meta, "check: 남색 배경(교차 배경)", sec.alt, (v) => { sec.alt = v; });
-      card.appendChild(meta);
+/* ---------- 빌더 상태 ---------- */
+const PAGES = [
+  ["index.html", "홈"], ["company.html", "회사소개"], ["business.html", "사업분야"],
+  ["solution.html", "Solution"], ["reference.html", "레퍼런스"],
+];
+const META_PREFIX = { "index.html": "home", "company.html": "company", "business.html": "business", "solution.html": "solution", "reference.html": "reference" };
+const BLOCKPAGE = { "business.html": "business", "solution.html": "solution" };
+let PAGE = "index.html";
+let SEL = null; /* {kind:"blk",si,bi} | {kind:"sec",si} | {kind:"edit",key} */
+let renderT = null;
 
-      const list = el("div", "blk-list");
-      sec.blocks.forEach((b, bi) => {
-        const def = BLOCKS[b.type];
-        const item = el("div", "blk");
-        item.draggable = false;
-        const bh = el("div", "blk-head");
-        const handle = el("span", "blk-handle", "≡");
-        handle.title = "드래그해서 순서 변경";
-        bh.appendChild(handle);
-        bh.appendChild(el("span", "blk-name", (def ? def.name : b.type)));
-        const ctl = listControls(sec.blocks, bi, rerender);
-        bh.appendChild(ctl);
-        item.appendChild(bh);
-        const body = el("div", "blk-body");
-        body.style.display = "none";
-        if (def) buildSpec(body, def.spec, b, rerender);
-        else buildField(body, "area: 데이터(JSON)", JSON.stringify(b), (v) => { try { Object.assign(b, JSON.parse(v)); } catch (e) {} });
-        item.appendChild(body);
-        bh.addEventListener("click", (e) => {
-          if (e.target.closest(".item-ctl") || e.target === handle) return;
-          body.style.display = body.style.display === "none" ? "flex" : "none";
-        });
-        /* 드래그 앤 드롭 정렬 */
-        handle.addEventListener("mousedown", () => { item.draggable = true; });
-        item.addEventListener("dragend", () => { item.draggable = false; });
-        item.addEventListener("dragstart", (e) => {
-          e.dataTransfer.effectAllowed = "move";
-          e.dataTransfer.setData("text/plain", bi);
-          item.classList.add("dragging");
-        });
-        item.addEventListener("dragover", (e) => { e.preventDefault(); item.classList.add("dropover"); });
-        item.addEventListener("dragleave", () => item.classList.remove("dropover"));
-        item.addEventListener("drop", (e) => {
-          e.preventDefault();
-          const from = parseInt(e.dataTransfer.getData("text/plain"), 10);
-          if (isNaN(from) || from === bi) return;
-          const [moved] = sec.blocks.splice(from, 1);
-          sec.blocks.splice(bi, 0, moved);
-          markDirty();
-          rerender();
-        });
-        list.appendChild(item);
-      });
-      card.appendChild(list);
-
-      const addRow = el("div", "blk-add");
-      const sel = el("select");
-      Object.keys(BLOCKS).forEach((k) => { const o = el("option", null, BLOCKS[k].name); o.value = k; sel.appendChild(o); });
-      const addBtn = el("button", "btn-sm", "+ 블록 추가");
-      addBtn.type = "button";
-      addBtn.addEventListener("click", () => {
-        sec.blocks.push(JSON.parse(JSON.stringify(BLOCKS[sel.value].empty)));
-        markDirty();
-        rerender();
-      });
-      addRow.appendChild(sel);
-      addRow.appendChild(addBtn);
-      card.appendChild(addRow);
-      container.appendChild(card);
-    });
-    const addSec = el("button", "btn-sm add-row", "+ 섹션 추가");
-    addSec.type = "button";
-    addSec.addEventListener("click", () => {
-      sections.push({ id: "new-section-" + (sections.length + 1), title: "새 섹션", alt: false, blocks: [JSON.parse(JSON.stringify(BLOCKS.desc.empty))] });
-      markDirty();
-      rerender();
-    });
-    container.appendChild(addSec);
-  };
-  render();
-}
-
-/* ---------- 섹션 화면 ---------- */
-function showSection(sec) {
-  const main = $("#panel");
-  main.innerHTML = "";
-  main.appendChild(el("h2", null, sec.title));
-  const form = el("div", "form");
-  const value = getPath(CONTENT, sec.id);
-  if (sec.sectionsEditor) {
-    buildSectionsEditor(form, value);
-    main.appendChild(form);
-    document.querySelectorAll(".nav-sec").forEach((n) => n.classList.toggle("on", n.dataset.id === sec.id));
-    return;
-  }
-  buildSpec(form, sec.spec, value, () => showSection(sec));
-  /* 최상위 문자열 필드 */
-  for (const k of Object.keys(sec.spec)) {
-    if (typeof sec.spec[k] === "string") {
-      /* 이미 buildSpec의 객체 그룹 분기에서 처리됨 */
-    }
-  }
-  main.appendChild(form);
-  document.querySelectorAll(".nav-sec").forEach((n) => n.classList.toggle("on", n.dataset.id === sec.id));
-}
-
-function buildSidebar() {
-  const nav = $("#nav");
-  nav.innerHTML = "";
-  SECTIONS.forEach((pg) => {
-    nav.appendChild(el("div", "nav-page", pg.page));
-    pg.items.forEach((sec) => {
-      const a = el("div", "nav-sec", sec.title);
-      a.dataset.id = sec.id;
-      a.addEventListener("click", () => showSection(sec));
-      nav.appendChild(a);
-    });
-  });
-}
-
-/* ---------- 저장 · 미리보기 ---------- */
 function markDirty() {
   DIRTY = true;
   $("#saveBtn").classList.add("need");
+  scheduleRender();
+}
+function scheduleRender() {
+  clearTimeout(renderT);
+  renderT = setTimeout(() => renderCanvas(true), 300);
 }
 
+/* ---------- 캔버스 ---------- */
+function canvasDoc() { return $("#canvas").contentDocument; }
+
+function renderCanvas(keepScroll) {
+  const iframe = $("#canvas");
+  const prev = keepScroll && iframe.contentWindow ? iframe.contentWindow.scrollY : 0;
+  const html = renderAll(CONTENT, { edit: true })[PAGE];
+  const base = new URL("..", location.href).href;
+  iframe.onload = () => {
+    bindCanvas();
+    iframe.contentWindow.scrollTo(0, prev);
+    reapplySelection(false);
+  };
+  iframe.srcdoc = html.replace("<head>", '<head><base href="' + base + '">');
+}
+
+const CANVAS_CSS = `
+  a, button { pointer-events: none; }
+  [data-edit]:hover, .eb:hover, section[data-sec]:hover { outline: 2px dashed rgba(47,111,237,.5); outline-offset: -2px; cursor: pointer !important; }
+  .bld-sel { outline: 3px solid #2f6fed !important; outline-offset: -3px; position: relative; }
+  .eb { position: relative; }
+  .eb.dropbefore { box-shadow: 0 -3px 0 0 #e8590c; }
+  .eb.dropafter { box-shadow: 0 3px 0 0 #e8590c; }
+  .bld-tools { position: absolute; top: 4px; right: 4px; z-index: 999; display: flex; gap: 4px; pointer-events: auto; }
+  .bld-tools button { pointer-events: auto; border: 0; background: #2f6fed; color: #fff; border-radius: 6px; font-size: 12px; padding: 5px 9px; cursor: pointer; font-family: inherit; box-shadow: 0 4px 10px rgba(12,14,19,.25); }
+  .bld-tools button.warn { background: #d33; }
+  .bld-tools button.drag { cursor: grab; background: #101828; }
+  .bld-badge { position: absolute; top: 4px; left: 4px; z-index: 999; background: rgba(16,24,40,.85); color: #fff; font-size: 11px; padding: 3px 8px; border-radius: 5px; pointer-events: none; }
+`;
+
+function bindCanvas() {
+  const doc = canvasDoc();
+  if (!doc) return;
+  const st = doc.createElement("style");
+  st.textContent = CANVAS_CSS;
+  doc.head.appendChild(st);
+  doc.addEventListener("click", (e) => {
+    const t = e.target;
+    if (t.closest(".bld-tools")) return; /* 툴바 버튼은 통과 */
+    e.preventDefault();
+    e.stopPropagation();
+    const eb = t.closest(".eb");
+    const sec = t.closest("section[data-sec]");
+    const de = t.closest("[data-edit]");
+    if (eb && sec) selectBlock(parseInt(sec.dataset.sec, 10), Array.prototype.indexOf.call(sec.querySelectorAll(".eb"), eb));
+    else if (sec) selectSection(parseInt(sec.dataset.sec, 10));
+    else if (de) selectEditKey(de.dataset.edit);
+    else clearSelection();
+  }, true);
+}
+
+function clearSelection() {
+  SEL = null;
+  const doc = canvasDoc();
+  if (doc) {
+    doc.querySelectorAll(".bld-sel").forEach((n) => n.classList.remove("bld-sel"));
+    doc.querySelectorAll(".bld-tools, .bld-badge").forEach((n) => n.remove());
+  }
+  $("#inspector").classList.add("closed");
+}
+
+function selEl() {
+  const doc = canvasDoc();
+  if (!doc || !SEL) return null;
+  if (SEL.kind === "blk") {
+    const sec = doc.querySelector(`section[data-sec="${SEL.si}"]`);
+    return sec ? sec.querySelectorAll(".eb")[SEL.bi] : null;
+  }
+  if (SEL.kind === "sec") return doc.querySelector(`section[data-sec="${SEL.si}"]`);
+  return doc.querySelector(`[data-edit="${SEL.key}"]`);
+}
+
+function decorate(target) {
+  const doc = canvasDoc();
+  doc.querySelectorAll(".bld-sel").forEach((n) => n.classList.remove("bld-sel"));
+  doc.querySelectorAll(".bld-tools, .bld-badge").forEach((n) => n.remove());
+  if (!target) return;
+  target.classList.add("bld-sel");
+  const pageKey = BLOCKPAGE[PAGE];
+
+  if (SEL.kind === "blk") {
+    const secs = CONTENT[pageKey].sections;
+    const blocks = secs[SEL.si].blocks;
+    const b = blocks[SEL.bi];
+    const badge = doc.createElement("div");
+    badge.className = "bld-badge";
+    badge.textContent = BLOCKS[b.type] ? BLOCKS[b.type].name : b.type;
+    target.appendChild(badge);
+    const bar = doc.createElement("div");
+    bar.className = "bld-tools";
+    const mk = (label, title, fn, cls) => {
+      const btn = doc.createElement("button");
+      btn.textContent = label;
+      btn.title = title;
+      if (cls) btn.className = cls;
+      btn.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); fn(); });
+      bar.appendChild(btn);
+    };
+    mk("≡", "드래그해서 위치 이동", () => {}, "drag");
+    mk("▲", "위로", () => { if (SEL.bi > 0) { [blocks[SEL.bi - 1], blocks[SEL.bi]] = [blocks[SEL.bi], blocks[SEL.bi - 1]]; SEL.bi--; markDirty(); } });
+    mk("▼", "아래로", () => { if (SEL.bi < blocks.length - 1) { [blocks[SEL.bi + 1], blocks[SEL.bi]] = [blocks[SEL.bi], blocks[SEL.bi + 1]]; SEL.bi++; markDirty(); } });
+    mk("＋", "이 아래에 블록 추가", () => openPalette(SEL.si, SEL.bi + 1));
+    mk("✕", "블록 삭제", () => {
+      if (confirm("이 블록을 삭제할까요?")) { blocks.splice(SEL.bi, 1); clearSelection(); markDirty(); }
+    }, "warn");
+    target.appendChild(bar);
+    enableDrag(target);
+  }
+
+  if (SEL.kind === "sec") {
+    const secs = CONTENT[pageKey].sections;
+    const bar = doc.createElement("div");
+    bar.className = "bld-tools";
+    const mk = (label, title, fn, cls) => {
+      const btn = doc.createElement("button");
+      btn.textContent = label;
+      btn.title = title;
+      if (cls) btn.className = cls;
+      btn.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); fn(); });
+      bar.appendChild(btn);
+    };
+    mk("▲", "섹션 위로", () => { if (SEL.si > 0) { [secs[SEL.si - 1], secs[SEL.si]] = [secs[SEL.si], secs[SEL.si - 1]]; SEL.si--; markDirty(); } });
+    mk("▼", "섹션 아래로", () => { if (SEL.si < secs.length - 1) { [secs[SEL.si + 1], secs[SEL.si]] = [secs[SEL.si], secs[SEL.si + 1]]; SEL.si++; markDirty(); } });
+    mk("＋블록", "이 섹션 끝에 블록 추가", () => openPalette(SEL.si, secs[SEL.si].blocks.length));
+    mk("＋섹션", "아래에 새 섹션 추가", () => {
+      secs.splice(SEL.si + 1, 0, { id: "new-section-" + Date.now() % 10000, title: "새 섹션", alt: !secs[SEL.si].alt, blocks: [clone(BLOCKS.desc.empty)] });
+      markDirty();
+    });
+    mk("✕", "섹션 삭제", () => {
+      if (confirm("섹션 전체를 삭제할까요? (안의 블록도 모두 삭제됩니다)")) { secs.splice(SEL.si, 1); clearSelection(); markDirty(); }
+    }, "warn");
+    target.appendChild(bar);
+  }
+}
+
+/* 블록 드래그 앤 드롭 (같은 페이지 내 자유 이동) */
+function enableDrag(wrapper) {
+  const doc = canvasDoc();
+  const handle = wrapper.querySelector(".bld-tools .drag");
+  if (!handle) return;
+  handle.addEventListener("mousedown", () => { wrapper.draggable = true; });
+  wrapper.addEventListener("dragend", () => {
+    wrapper.draggable = false;
+    doc.querySelectorAll(".dropbefore, .dropafter").forEach((n) => n.classList.remove("dropbefore", "dropafter"));
+  });
+  wrapper.addEventListener("dragstart", (e) => {
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", SEL.si + ":" + SEL.bi);
+    doc.querySelectorAll("section[data-sec] .eb").forEach((other) => {
+      if (other === wrapper) return;
+      other.addEventListener("dragover", dragOver);
+      other.addEventListener("dragleave", dragLeave);
+      other.addEventListener("drop", dragDrop);
+    });
+  });
+  function dragOver(e) {
+    e.preventDefault();
+    const r = this.getBoundingClientRect();
+    const before = e.clientY < r.top + r.height / 2;
+    this.classList.toggle("dropbefore", before);
+    this.classList.toggle("dropafter", !before);
+  }
+  function dragLeave() { this.classList.remove("dropbefore", "dropafter"); }
+  function dragDrop(e) {
+    e.preventDefault();
+    const [fromSi, fromBi] = e.dataTransfer.getData("text/plain").split(":").map(Number);
+    const toSec = this.closest("section[data-sec]");
+    const toSi = parseInt(toSec.dataset.sec, 10);
+    let toBi = Array.prototype.indexOf.call(toSec.querySelectorAll(".eb"), this);
+    const before = this.classList.contains("dropbefore");
+    if (!before) toBi++;
+    const secs = CONTENT[BLOCKPAGE[PAGE]].sections;
+    const [moved] = secs[fromSi].blocks.splice(fromBi, 1);
+    if (fromSi === toSi && fromBi < toBi) toBi--;
+    secs[toSi].blocks.splice(toBi, 0, moved);
+    SEL = { kind: "blk", si: toSi, bi: toBi };
+    markDirty();
+  }
+}
+
+/* ---------- 선택 → 우측 패널 ---------- */
+function openInspector(title, build) {
+  const ins = $("#inspector");
+  $("#insTitle").textContent = title;
+  const body = $("#insBody");
+  body.innerHTML = "";
+  build(body);
+  ins.classList.remove("closed");
+}
+
+function selectBlock(si, bi) {
+  SEL = { kind: "blk", si, bi };
+  const b = CONTENT[BLOCKPAGE[PAGE]].sections[si].blocks[bi];
+  const def = BLOCKS[b.type];
+  decorate(selEl());
+  openInspector(def ? def.name : b.type, (body) => {
+    if (def) buildSpec(body, def.spec, b);
+    else buildField(body, "area: 데이터(JSON)", JSON.stringify(b), (v) => { try { Object.assign(b, JSON.parse(v)); } catch (e) {} });
+  });
+}
+
+function selectSection(si) {
+  SEL = { kind: "sec", si };
+  const sec = CONTENT[BLOCKPAGE[PAGE]].sections[si];
+  decorate(selEl());
+  openInspector("섹션 · " + stripTags(sec.title), (body) => {
+    buildField(body, "text: 섹션 제목", sec.title, (v) => { sec.title = v; });
+    buildField(body, "text: 섹션 ID (메뉴 링크용 · 영문)", sec.id, (v) => { sec.id = v; });
+    buildField(body, "check: 남색 배경(교차 배경)", sec.alt, (v) => { sec.alt = v; });
+    const hint = el("p", "hint2", "섹션 순서 이동·삭제·블록 추가는 캔버스의 파란 버튼으로 할 수 있습니다.");
+    body.appendChild(hint);
+  });
+}
+
+function selectEditKey(key) {
+  SEL = { kind: "edit", key };
+  const def = SPEC_BY_ID[key];
+  decorate(selEl());
+  if (!def) return;
+  openInspector(def.title, (body) => {
+    const value = getPath(CONTENT, key);
+    buildSpec(body, def.spec, value);
+  });
+}
+
+function reapplySelection(reopenPanel) {
+  if (!SEL) return;
+  const t = selEl();
+  if (!t) { clearSelection(); return; }
+  decorate(t);
+  if (reopenPanel) {
+    if (SEL.kind === "blk") selectBlock(SEL.si, SEL.bi);
+    else if (SEL.kind === "sec") selectSection(SEL.si);
+    else selectEditKey(SEL.key);
+  }
+}
+
+/* ---------- 블록 팔레트 ---------- */
+function openPalette(si, insertAt) {
+  const modal = $("#paletteModal");
+  const list = $("#paletteList");
+  list.innerHTML = "";
+  Object.keys(BLOCKS).forEach((k) => {
+    const item = el("button", "pal-item");
+    item.type = "button";
+    item.appendChild(el("b", null, BLOCKS[k].name));
+    item.addEventListener("click", () => {
+      CONTENT[BLOCKPAGE[PAGE]].sections[si].blocks.splice(insertAt, 0, clone(BLOCKS[k].empty));
+      modal.style.display = "none";
+      SEL = { kind: "blk", si, bi: insertAt };
+      markDirty();
+      setTimeout(() => reapplySelection(true), 400);
+    });
+    list.appendChild(item);
+  });
+  modal.style.display = "flex";
+}
+
+/* ---------- 저장 · 미리보기 ---------- */
 async function doSave() {
   const btn = $("#saveBtn");
   btn.disabled = true;
@@ -410,16 +558,14 @@ function doPreview() {
   const modal = $("#previewModal");
   const sel = $("#previewSel");
   const frame = $("#previewFrame");
-  const show = (file) => {
-    const base = new URL("..", location.href).href; // admin/ 상위 = 사이트 루트
-    frame.srcdoc = pages[file].replace("<head>", '<head><base href="' + base + '">');
-  };
+  const base = new URL("..", location.href).href;
+  const show = (file) => { frame.srcdoc = pages[file].replace("<head>", '<head><base href="' + base + '">'); };
+  sel.value = PAGE;
   sel.onchange = () => show(sel.value);
   show(sel.value);
   modal.style.display = "flex";
 }
 
-/* ---------- 비밀번호 변경 ---------- */
 async function doChpass() {
   const old = prompt("현재 비밀번호를 입력하세요.");
   if (old == null) return;
@@ -444,20 +590,44 @@ async function boot() {
     return;
   }
   CSRF = state.csrf;
-  if (state.defaultPw) {
-    alert("초기 비밀번호를 사용 중입니다. 보안을 위해 [비밀번호 변경]에서 반드시 변경해 주세요.");
-  }
+  if (state.defaultPw) alert("초기 비밀번호를 사용 중입니다. 보안을 위해 [비밀번호 변경]에서 반드시 변경해 주세요.");
   CONTENT = await api("content");
   $("#login").style.display = "none";
   $("#app").style.display = "flex";
-  buildSidebar();
-  showSection(SECTIONS[0].items[1] || SECTIONS[0].items[0]);
+
+  /* 페이지 탭 */
+  const tabs = $("#pageTabs");
+  PAGES.forEach(([file, label]) => {
+    const t = el("button", "tab", label);
+    t.type = "button";
+    t.dataset.file = file;
+    t.addEventListener("click", () => {
+      PAGE = file;
+      clearSelection();
+      document.querySelectorAll("#pageTabs .tab").forEach((n) => n.classList.toggle("on", n.dataset.file === PAGE));
+      renderCanvas(false);
+    });
+    tabs.appendChild(t);
+  });
+  tabs.firstChild.classList.add("on");
 
   $("#saveBtn").addEventListener("click", doSave);
   $("#previewBtn").addEventListener("click", doPreview);
+  $("#metaBtn").addEventListener("click", () => {
+    const id = META_PREFIX[PAGE] + ".meta";
+    SEL = null;
+    const def = SPEC_BY_ID[id];
+    openInspector(def.title + " — " + PAGES.find((p) => p[0] === PAGE)[1], (body) => {
+      buildSpec(body, def.spec, getPath(CONTENT, id));
+    });
+  });
   $("#chpassBtn").addEventListener("click", doChpass);
   $("#logoutBtn").addEventListener("click", async () => { await api("logout", { method: "POST" }); location.reload(); });
+  $("#insClose").addEventListener("click", clearSelection);
   $("#previewClose").addEventListener("click", () => ($("#previewModal").style.display = "none"));
+  $("#paletteClose").addEventListener("click", () => ($("#paletteModal").style.display = "none"));
   window.addEventListener("beforeunload", (e) => { if (DIRTY) { e.preventDefault(); e.returnValue = ""; } });
+
+  renderCanvas(false);
 }
 boot();
