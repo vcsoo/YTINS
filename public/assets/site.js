@@ -78,6 +78,21 @@
 
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  // 섹션 타이틀: 헤더에 붙는 순간 배지(stuck) 상태로 전환
+  var stickyTitles = [].slice.call(document.querySelectorAll(".section h2"));
+  if (stickyTitles.length) {
+    var stickCheck = function () {
+      var hh = (header ? header.offsetHeight : 68) + 10;
+      stickyTitles.forEach(function (h) {
+        var r = h.getBoundingClientRect();
+        h.classList.toggle("stuck", r.top <= hh && window.scrollY > 10);
+      });
+    };
+    stickCheck();
+    window.addEventListener("scroll", stickCheck, { passive: true });
+    window.addEventListener("resize", stickCheck, { passive: true });
+  }
+
   // 마퀴: 내용이 컨테이너를 넘지 않으면 흐름 정지·복제 숨김
   var marquees = [].slice.call(document.querySelectorAll(".marquee"));
   if (marquees.length) {
@@ -151,7 +166,7 @@
   // 스크롤 리빌 (스크롤 기반·결정적, 스태거) — 콘텐츠는 기본 노출, JS 있을 때만 애니메이션
   var targets = [].slice.call(document.querySelectorAll(
     ".card, .nav-card, .cert, .partner, .tl-item, .about-card, .perf-stat, .info-table, .org, .clients-bar, .viewer, .contact-card, " +
-    ".section h2, .sec-desc, .block-desc, .num-item, .feat, .duo-panel, .phase, .fstep, .layer, .stack-arrow, " +
+    ".sec-desc, .block-desc, .num-item, .feat, .duo-panel, .phase, .fstep, .layer, .stack-arrow, " +
     ".ssd-eng, .ssd-bridge, .ssd-db, .ssd-comp, .cert-doc, .pcat-head, .finchart, .hnode, .hc-inner, " +
     ".found .p4, .found .base, .cloud-partners, .map-wrap, .map-info, .btn-row, .ceo, .table-wrap"
   )).filter(function (el) { return !el.closest("[data-marquee]"); });
