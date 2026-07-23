@@ -35,7 +35,16 @@
   <header class="bld-top">
     <div class="brand">YTINS 빌더</div>
     <nav id="pageTabs"></nav>
-    <span class="tip">화면의 요소를 클릭해서 편집하세요 · 파란 버튼으로 이동/추가/삭제</span>
+    <div class="hist">
+      <button id="undoBtn" class="btn-ghost sm" title="실행취소 (Ctrl+Z)">↶</button>
+      <button id="redoBtn" class="btn-ghost sm" title="다시실행 (Ctrl+Shift+Z)">↷</button>
+    </div>
+    <div class="devs">
+      <button id="devPc" class="btn-ghost sm dev-btn on" title="PC 화면">PC</button>
+      <button id="devTab" class="btn-ghost sm dev-btn" title="태블릿 768px">태블릿</button>
+      <button id="devMo" class="btn-ghost sm dev-btn" title="모바일 390px">모바일</button>
+    </div>
+    <span class="tip">클릭=선택 · 더블클릭=바로 글자 수정 · 파란 버튼/드래그=이동·추가·삭제</span>
     <div class="actions">
       <button id="metaBtn" class="btn-ghost">페이지 설정</button>
       <button id="previewBtn" class="btn-ghost">미리보기</button>
@@ -45,7 +54,7 @@
     </div>
   </header>
   <div class="bld-main">
-    <iframe id="canvas" title="편집 캔버스"></iframe>
+    <div class="canvas-wrap"><iframe id="canvas" title="편집 캔버스"></iframe></div>
     <aside id="inspector" class="closed">
       <div class="ins-head"><b id="insTitle"></b><button id="insClose" class="btn-ghost sm">닫기 ✕</button></div>
       <div id="insBody"></div>
