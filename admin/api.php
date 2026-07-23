@@ -5,7 +5,7 @@ require __DIR__ . '/lib.php';
 $a = $_GET['a'] ?? '';
 $method = $_SERVER['REQUEST_METHOD'];
 
-function body_json(): array {
+function body_json() {
     $raw = file_get_contents('php://input');
     $j = json_decode($raw, true);
     return is_array($j) ? $j : [];
