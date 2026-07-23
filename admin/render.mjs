@@ -272,253 +272,141 @@ function renderCompany(C) {
   return pageShell({ active: "company", title: P.meta.title, desc: P.meta.desc, main }, C);
 }
 
-/* ============================================================ BUSINESS */
-function renderBusiness(C) {
-  const P = C.business;
-  const duoPanel = (p, i) => `<div class="duo-panel ${i === 0 ? "ink" : "blue"}">
+/* ============================================================ 블록 렌더러 (사업분야·Solution — 어드민 블록 에디터 대응) */
+const BLOCK_RENDERERS = {
+  desc: (b) => `<p class="sec-desc">${b.text}</p>`,
+  subhead: (b) => `<h3 class="sub-h${b.tight ? " tight" : ""}">${b.title}</h3>${b.desc ? `\n      <p class="block-desc">${b.desc}</p>` : ""}`,
+  flow: (b) => `<div class="flow grad"${b.style ? ` style="${b.style}"` : ""}>
+        ${flowSteps(b.steps)}
+      </div>`,
+  numbered: (b) => `<div class="numbered">
+        ${numbered(b.items)}
+      </div>`,
+  featgrid: (b) => `<div class="featgrid">
+        ${featgrid(b.feats)}
+      </div>`,
+  duo: (b) => `<div class="duo">
+        ${b.panels.map((p, i) => `<div class="duo-panel ${i === 0 ? "ink" : "blue"}">
           <div class="dhead"><div class="kicker">${p.kicker}</div><h3>${p.title}</h3></div>
           <div class="dbody">
             ${p.items.map((s) => `<div class="srv"><b>${s.b}</b><span>${s.s}</span></div>`).join("\n            ")}
           </div>
-        </div>`;
-  const main = `${pageHero(P.hero)}
-
-  <section class="section" id="dxax">
-    <div class="container">
-      <h2>${P.dxax.title}</h2>
-      <p class="sec-desc">${P.dxax.desc}</p>
-      <div class="flow grad" style="margin-top:6px;margin-bottom:44px">
-        ${flowSteps(P.dxax.flow)}
-      </div>
-      <div class="duo">
-        ${P.dxax.panels.map(duoPanel).join("\n        ")}
-      </div>
-      ${clientsBar(P.dxax.bar)}
-    </div>
-  </section>
-
-  <section class="section alt" id="si">
-    <div class="container">
-      <h2>${P.si.title}</h2>
-      <p class="sec-desc">${P.si.desc}</p>
-      <div class="numbered">
-        ${numbered(P.si.numbered)}
-      </div>
-      <h3 class="sub-h">${P.si.egov.title}</h3>
-      <p class="block-desc">${P.si.egov.desc}</p>
-      <div class="featgrid">
-        ${featgrid(P.si.egov.feats)}
-      </div>
-
-      <h3 class="sub-h">${P.si.method.title}</h3>
-      <p class="block-desc">${P.si.method.desc}</p>
-      <div class="phases">
-        ${P.si.method.phases.map((p) => `<div class="phase"><div class="ph">${p.ph}</div><ul>${p.items.map((li) => `<li>${li}</li>`).join("")}</ul></div>`).join("\n        ")}
-      </div>
-
-      ${clientsBar(P.si.bar)}
-    </div>
-  </section>
-
-  <section class="section" id="ito">
-    <div class="container">
-      <h2>${P.ito.title}</h2>
-      <p class="sec-desc">${P.ito.desc}</p>
-      <div class="found">
-        <div class="top4">
-          ${P.ito.p4.map((p) => `<div class="p4"><div class="ic">${ic(p.icon)}</div><b>${p.b}</b><span>${p.s}</span></div>`).join("\n          ")}
-        </div>
-        <div class="base">
-          <div class="bt">${P.ito.base.bt}</div>
-          <div class="cols">${P.ito.base.cols.map((c) => `<span><b>${c.b}</b>${c.s}</span>`).join("")}</div>
-        </div>
-      </div>
-      ${clientsBar(P.ito.bar)}
-    </div>
-  </section>
-
-  <section class="section alt" id="bigdata-ai">
-    <div class="container">
-      <h2>${P.bigdata.title}</h2>
-      <p class="sec-desc">${P.bigdata.desc}</p>
-      <div class="flow grad" style="margin-bottom:40px">
-        ${flowSteps(P.bigdata.flow)}
-      </div>
-      <div class="numbered">
-        ${numbered(P.bigdata.numbered)}
-      </div>
-
-      <h3 class="sub-h">${P.bigdata.tagsTitle}</h3>
-      <p class="block-desc">${P.bigdata.tagsDesc}</p>
-      ${marquee(P.bigdata.tags.map((t) => `<span class="tag">${t}</span>`).join(""), "taglist")}
-
-      <h3 class="sub-h">${P.bigdata.featsTitle}</h3>
-      <div class="featgrid">
-        ${featgrid(P.bigdata.feats)}
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="cloud">
-    <div class="container">
-      <h2>${P.cloud.title}</h2>
-      <p class="sec-desc">${P.cloud.desc}</p>
-
-      <h3 class="sub-h tight">${P.cloud.lineupTitle}</h3>
-      <p class="block-desc">${P.cloud.lineupDesc}</p>
-      <div class="numbered">
-        ${numbered(P.cloud.numbered)}
-      </div>
-
-      <h3 class="sub-h">${P.cloud.checksTitle}</h3>
-      <p class="block-desc">${P.cloud.checksDesc}</p>
-      <ul class="checks">
-        ${P.cloud.checks.map((c) => `<li><b>${c.b}</b> — ${c.s}</li>`).join("\n        ")}
-      </ul>
-
-      <div class="flow grad" style="margin-top:56px">
-        ${flowSteps(P.cloud.flow)}
-      </div>
-
-      <div class="cloud-partners">
-        <div class="cp-head"><span class="cp-kicker">${P.cloud.cp.kicker}</span><b>${P.cloud.cp.head}</b><span class="cp-sub">${P.cloud.cp.sub}</span></div>
-        <div class="cp-logos">
-          <div class="cp-logo"><img src="${P.cloud.cp.logo1}" alt="NAVER Cloud Platform"></div>
-          <div class="cp-plus">+</div>
-          <div class="cp-logo"><img src="${P.cloud.cp.logo2}" alt="Amazon Web Services"></div>
-          <div class="cp-with">with <img class="cp-with-logo" src="assets/ytins-logo.png" alt="YTINS"></div>
-        </div>
-      </div>
-
-      ${clientsBar(P.cloud.bar)}
-    </div>
-  </section>`;
-  return pageShell({ active: "business", title: P.meta.title, desc: P.meta.desc, main }, C);
-}
-
-/* ============================================================ SOLUTION */
-function renderSolution(C) {
-  const P = C.solution;
-  const main = `${pageHero(P.hero)}
-
-  <section class="section" id="hadoop">
-    <div class="container">
-      <h2>${P.hadoop.title}</h2>
-      <p class="sec-desc">${P.hadoop.desc}</p>
-      <div class="duo">
+        </div>`).join("\n        ")}
+      </div>`,
+  duospec: (b) => `<div class="duo">
         <div class="duo-panel ink">
-          <div class="dhead"><div class="kicker">${P.hadoop.before.kicker}</div><h3>${P.hadoop.before.title}</h3></div>
+          <div class="dhead"><div class="kicker">${b.before.kicker}</div><h3>${b.before.title}</h3></div>
           <div class="dbody">
-            ${P.hadoop.before.items.map((s) => `<div class="srv iconed"><i class="s-ic">${ic('alert')}</i><span>${s}</span></div>`).join("\n            ")}
+            ${b.before.items.map((s) => `<div class="srv iconed"><i class="s-ic">${ic('alert')}</i><span>${s}</span></div>`).join("\n            ")}
           </div>
         </div>
         <div class="duo-panel blue">
-          <div class="dhead"><div class="kicker">${P.hadoop.after.kicker}</div><h3>${P.hadoop.after.title}</h3></div>
+          <div class="dhead"><div class="kicker">${b.after.kicker}</div><h3>${b.after.title}</h3></div>
           <div class="dbody">
             <table class="spec" style="margin:6px 0">
-              ${P.hadoop.after.spec.map((r) => `<tr><th>${r.th}</th><td>${r.td}</td></tr>`).join("\n              ")}
+              ${b.after.spec.map((r) => `<tr><th>${r.th}</th><td>${r.td}</td></tr>`).join("\n              ")}
             </table>
           </div>
         </div>
-      </div>
-      <div class="flow grad" style="margin-top:26px">
-        ${flowSteps(P.hadoop.flow1)}
-      </div>
-      <h3 class="sub-h">${P.hadoop.aiTitle}</h3>
-      <p class="block-desc">${P.hadoop.aiDesc}</p>
-      <div class="flow grad">
-        ${flowSteps(P.hadoop.flow2)}
-      </div>
-
-      <h3 class="sub-h">${P.hadoop.monTitle}</h3>
-      <p class="block-desc">${P.hadoop.monDesc}</p>
-      <div class="featgrid">
-        ${featgrid(P.hadoop.monFeats)}
-      </div>
-
-      ${clientsBar(P.hadoop.bar)}
-    </div>
-  </section>
-
-  <section class="section alt" id="data-ai">
-    <div class="container">
-      <h2>${P.dataai.title}</h2>
-      <p class="sec-desc">${P.dataai.desc}</p>
-      <div class="flow grad" style="margin-top:6px;margin-bottom:34px">
-        ${flowSteps(P.dataai.flow)}
-      </div>
-      <div class="stack">
-        ${P.dataai.layers.map((l, i) => `<div class="layer${i === 0 ? " top" : ""}">
+      </div>`,
+  phases: (b) => `<div class="phases">
+        ${b.items.map((p) => `<div class="phase"><div class="ph">${p.ph}</div><ul>${p.items.map((li) => `<li>${li}</li>`).join("")}</ul></div>`).join("\n        ")}
+      </div>`,
+  checks: (b) => `<ul class="checks">
+        ${b.items.map((c) => `<li><b>${c.b}</b> — ${c.s}</li>`).join("\n        ")}
+      </ul>`,
+  tags: (b) => marquee(b.tags.map((t) => `<span class="tag">${t}</span>`).join(""), "taglist"),
+  found: (b) => `<div class="found">
+        <div class="top4">
+          ${b.p4.map((p) => `<div class="p4"><div class="ic">${ic(p.icon)}</div><b>${p.b}</b><span>${p.s}</span></div>`).join("\n          ")}
+        </div>
+        <div class="base">
+          <div class="bt">${b.base.bt}</div>
+          <div class="cols">${b.base.cols.map((c) => `<span><b>${c.b}</b>${c.s}</span>`).join("")}</div>
+        </div>
+      </div>`,
+  cp: (b) => `<div class="cloud-partners">
+        <div class="cp-head"><span class="cp-kicker">${b.kicker}</span><b>${b.head}</b><span class="cp-sub">${b.sub}</span></div>
+        <div class="cp-logos">
+          <div class="cp-logo"><img src="${b.logo1}" alt="NAVER Cloud Platform"></div>
+          <div class="cp-plus">+</div>
+          <div class="cp-logo"><img src="${b.logo2}" alt="Amazon Web Services"></div>
+          <div class="cp-with">with <img class="cp-with-logo" src="assets/ytins-logo.png" alt="YTINS"></div>
+        </div>
+      </div>`,
+  bar: (b) => clientsBar(b),
+  stack: (b) => `<div class="stack">
+        ${b.layers.map((l, i) => `<div class="layer${i === 0 ? " top" : ""}">
           <div class="lhead"><span class="licon">${ic(l.icon)}</span><div><div class="lsub">${l.sub}</div><div class="ltitle">${l.title}</div></div></div>
-          <ul>${l.items.map((li, j) => `<li>${li}</li>`).join("\n            ")}</ul>
+          <ul>${l.items.map((li) => `<li>${li}</li>`).join("\n            ")}</ul>
         </div>`).join(`
         <div class="stack-arrow">▲</div>
         `)}
-      </div>
-      <div class="block" style="margin-top:40px">
-        <h3>${P.dataai.featsTitle}</h3>
-        <div class="featgrid">
-          ${featgrid(P.dataai.feats, "\n          ")}
-        </div>
-        ${clientsBar(P.dataai.bar)}
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="smart">
-    <div class="container">
-      <h2>${P.smart.title}</h2>
-      <p class="sec-desc">${P.smart.desc}</p>
-
-      <h3 class="sub-h">${P.smart.ssdTitle}</h3>
-      <p class="block-desc">${P.smart.ssdDesc}</p>
-      <div class="ssd">
+      </div>`,
+  ssd: (b) => `<div class="ssd">
         <div class="ssd-sys">
-          <div class="ssd-sys-label">${P.smart.ssd.sysLabel}</div>
+          <div class="ssd-sys-label">${b.sysLabel}</div>
           <div class="ssd-engines">
             <div class="ssd-eng">
-              <div class="ssd-eng-head"><span class="tag">${P.smart.ssd.eng1.tag}</span><span class="nm">${P.smart.ssd.eng1.nm}</span><span class="ko">${P.smart.ssd.eng1.ko}</span></div>
+              <div class="ssd-eng-head"><span class="tag">${b.eng1.tag}</span><span class="nm">${b.eng1.nm}</span><span class="ko">${b.eng1.ko}</span></div>
               <ul class="ssd-list">
-                ${P.smart.ssd.eng1.items.map((li, j) => `<li${j === 0 ? ' class="link"' : ""}>${li}</li>`).join("\n                ")}
+                ${b.eng1.items.map((li, j) => `<li${j === 0 ? ' class="link"' : ""}>${li}</li>`).join("\n                ")}
               </ul>
             </div>
-            <div class="ssd-bridge"><span class="rest"><i>⇄</i>${P.smart.ssd.bridge}</span></div>
+            <div class="ssd-bridge"><span class="rest"><i>⇄</i>${b.bridge}</span></div>
             <div class="ssd-eng">
-              <div class="ssd-eng-head"><span class="tag alt">${P.smart.ssd.eng2.tag}</span><span class="nm">${P.smart.ssd.eng2.nm}</span><span class="ko">${P.smart.ssd.eng2.ko}</span></div>
+              <div class="ssd-eng-head"><span class="tag alt">${b.eng2.tag}</span><span class="nm">${b.eng2.nm}</span><span class="ko">${b.eng2.ko}</span></div>
               <ul class="ssd-list">
-                ${P.smart.ssd.eng2.items.map((li, j) => `<li${j === 0 ? ' class="link"' : ""}>${li}</li>`).join("\n                ")}
+                ${b.eng2.items.map((li, j) => `<li${j === 0 ? ' class="link"' : ""}>${li}</li>`).join("\n                ")}
               </ul>
             </div>
           </div>
         </div>
         <div class="ssd-link"></div>
-        <div class="ssd-db"><span class="ssd-db-ic">${ic('database')}</span><div class="ssd-db-tx"><b>${P.smart.ssd.db.b}</b><em>${P.smart.ssd.db.em}</em></div></div>
+        <div class="ssd-db"><span class="ssd-db-ic">${ic('database')}</span><div class="ssd-db-tx"><b>${b.db.b}</b><em>${b.db.em}</em></div></div>
         <div class="ssd-link"></div>
         <div class="ssd-sys">
-          <div class="ssd-sys-label">${P.smart.ssd.sys2Label}</div>
+          <div class="ssd-sys-label">${b.sys2Label}</div>
           <div class="ssd-comps">
-            ${P.smart.ssd.comps.map((c) => `<div class="ssd-comp"><div class="ic">${ic(c.icon)}</div><b>${c.b}</b></div>`).join("\n            ")}
+            ${b.comps.map((c) => `<div class="ssd-comp"><div class="ic">${ic(c.icon)}</div><b>${c.b}</b></div>`).join("\n            ")}
           </div>
         </div>
-      </div>
-
-      <div class="block" style="margin-top:56px">
-        <h3>${P.smart.lh.title}</h3>
+      </div>`,
+  lhref: (b) => `<div class="block" style="margin-top:56px">
+        <h3>${b.title}</h3>
         <div class="about-grid" style="margin-top:20px">
-          <div class="card" style="align-self:stretch"><h4>${P.smart.lh.cardTitle}</h4>
-            <p>${P.smart.lh.cardDesc}</p>
+          <div class="card" style="align-self:stretch"><h4>${b.cardTitle}</h4>
+            <p>${b.cardDesc}</p>
             <ul class="card-points">
-              ${P.smart.lh.points.map((li) => `<li>${li}</li>`).join("\n              ")}
+              ${b.points.map((li) => `<li>${li}</li>`).join("\n              ")}
             </ul></div>
           <div class="about-side col">
-            ${P.smart.lh.years.map((y) => `<div class="about-card"><div class="num">${y.num}</div><div class="label">${y.label}</div></div>`).join("\n            ")}
+            ${b.years.map((y) => `<div class="about-card"><div class="num">${y.num}</div><div class="label">${y.label}</div></div>`).join("\n            ")}
           </div>
         </div>
-      </div>
-    </div>
-  </section>`;
-  return pageShell({ active: "solution", title: P.meta.title, desc: P.meta.desc, main }, C);
+      </div>`,
+  image: (b) => `<figure class="img-block"${b.maxw ? ` style="max-width:${b.maxw}px"` : ""}>
+        <img src="${b.src}" alt="${b.alt || ""}">${b.caption ? `\n        <figcaption>${b.caption}</figcaption>` : ""}
+      </figure>`,
+  html: (b) => b.code,
+};
+function renderBlock(b) {
+  const fn = BLOCK_RENDERERS[b.type];
+  return fn ? fn(b) : "";
 }
+function renderSectionsPage(P, active, C) {
+  const main = `${pageHero(P.hero)}
+
+  ${P.sections.map((sec) => `<section class="section${sec.alt ? " alt" : ""}" id="${sec.id}">
+    <div class="container">
+      <h2>${sec.title}</h2>
+      ${sec.blocks.map(renderBlock).join("\n\n      ")}
+    </div>
+  </section>`).join("\n\n")}`;
+  return pageShell({ active, title: P.meta.title, desc: P.meta.desc, main }, C);
+}
+function renderBusiness(C) { return renderSectionsPage(C.business, "business", C); }
+function renderSolution(C) { return renderSectionsPage(C.solution, "solution", C); }
 
 /* ============================================================ REFERENCE */
 function renderReference(C) {

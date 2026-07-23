@@ -1,5 +1,5 @@
 /* YTINS 어드민 UI — 스키마 기반 폼 + 미리보기 + 저장(사이트 반영) */
-import { SECTIONS } from "./schema.mjs";
+import { SECTIONS, BLOCKS } from "./schema.mjs";
 import { renderAll, ICON_NAMES } from "./render.mjs";
 
 let CONTENT = null;
@@ -29,9 +29,13 @@ async function demoApi(action, opts = {}) {
   }
   if (action === "logout") { sessionStorage.removeItem(LS + "-authed"); return { ok: true }; }
   if (action === "content") {
+    const fresh = await (await fetch("content.json")).json();
     const saved = localStorage.getItem(LS + "-content");
-    if (saved) { try { return JSON.parse(saved); } catch (e) {} }
-    return (await fetch("content.json")).json();
+    if (saved) {
+      try { const j = JSON.parse(saved); if (j.version === fresh.version) return j; } catch (e) {}
+      localStorage.removeItem(LS + "-content"); // 구조가 바뀐 옛 편집본은 폐기
+    }
+    return fresh;
   }
   if (action === "save") {
     localStorage.setItem(LS + "-content", JSON.stringify(opts.body.content));
@@ -73,6 +77,13 @@ function buildField(container, spec, value, setter) {
     ta.rows = Math.min(6, Math.max(2, Math.ceil((value || "").length / 60)));
     ta.addEventListener("input", () => { setter(ta.value); markDirty(); });
     wrap.appendChild(ta);
+  } else if (type === "check") {
+    const cb = el("input");
+    cb.type = "checkbox";
+    cb.checked = !!value;
+    cb.style.width = "auto";
+    cb.addEventListener("change", () => { setter(cb.checked); markDirty(); });
+    wrap.appendChild(cb);
   } else if (type === "icon") {
     const sel = el("select");
     ICON_NAMES.forEach((n) => {
@@ -241,6 +252,96 @@ function buildSpec(container, spec, value, rerenderParent) {
   }
 }
 
+/* ---------- 블록 에디터 (사업분야·Solution 페이지 구성) ---------- */
+function buildSectionsEditor(container, sections) {
+  const rerender = () => { container.innerHTML = ""; render(); };
+  const render = () => {
+    const info = el("p", "hint2", "섹션과 블록을 추가·삭제하고 ≡ 핸들을 드래그(또는 ▲▼)해서 순서를 바꿀 수 있습니다. 블록 제목을 누르면 편집이 열립니다.");
+    container.appendChild(info);
+    sections.forEach((sec, si) => {
+      const card = el("div", "sec-card");
+      const head = el("div", "sec-head");
+      head.appendChild(el("b", null, "섹션 · " + String(sec.title || sec.id).replace(/&amp;/g, "&").replace(/<[^>]*>/g, "")));
+      head.appendChild(listControls(sections, si, rerender));
+      card.appendChild(head);
+      const meta = el("div", "trow");
+      buildField(meta, "text: 섹션 제목", sec.title, (v) => { sec.title = v; });
+      buildField(meta, "text: 섹션 ID (메뉴 링크용 · 영문)", sec.id, (v) => { sec.id = v; });
+      buildField(meta, "check: 남색 배경(교차 배경)", sec.alt, (v) => { sec.alt = v; });
+      card.appendChild(meta);
+
+      const list = el("div", "blk-list");
+      sec.blocks.forEach((b, bi) => {
+        const def = BLOCKS[b.type];
+        const item = el("div", "blk");
+        item.draggable = false;
+        const bh = el("div", "blk-head");
+        const handle = el("span", "blk-handle", "≡");
+        handle.title = "드래그해서 순서 변경";
+        bh.appendChild(handle);
+        bh.appendChild(el("span", "blk-name", (def ? def.name : b.type)));
+        const ctl = listControls(sec.blocks, bi, rerender);
+        bh.appendChild(ctl);
+        item.appendChild(bh);
+        const body = el("div", "blk-body");
+        body.style.display = "none";
+        if (def) buildSpec(body, def.spec, b, rerender);
+        else buildField(body, "area: 데이터(JSON)", JSON.stringify(b), (v) => { try { Object.assign(b, JSON.parse(v)); } catch (e) {} });
+        item.appendChild(body);
+        bh.addEventListener("click", (e) => {
+          if (e.target.closest(".item-ctl") || e.target === handle) return;
+          body.style.display = body.style.display === "none" ? "flex" : "none";
+        });
+        /* 드래그 앤 드롭 정렬 */
+        handle.addEventListener("mousedown", () => { item.draggable = true; });
+        item.addEventListener("dragend", () => { item.draggable = false; });
+        item.addEventListener("dragstart", (e) => {
+          e.dataTransfer.effectAllowed = "move";
+          e.dataTransfer.setData("text/plain", bi);
+          item.classList.add("dragging");
+        });
+        item.addEventListener("dragover", (e) => { e.preventDefault(); item.classList.add("dropover"); });
+        item.addEventListener("dragleave", () => item.classList.remove("dropover"));
+        item.addEventListener("drop", (e) => {
+          e.preventDefault();
+          const from = parseInt(e.dataTransfer.getData("text/plain"), 10);
+          if (isNaN(from) || from === bi) return;
+          const [moved] = sec.blocks.splice(from, 1);
+          sec.blocks.splice(bi, 0, moved);
+          markDirty();
+          rerender();
+        });
+        list.appendChild(item);
+      });
+      card.appendChild(list);
+
+      const addRow = el("div", "blk-add");
+      const sel = el("select");
+      Object.keys(BLOCKS).forEach((k) => { const o = el("option", null, BLOCKS[k].name); o.value = k; sel.appendChild(o); });
+      const addBtn = el("button", "btn-sm", "+ 블록 추가");
+      addBtn.type = "button";
+      addBtn.addEventListener("click", () => {
+        sec.blocks.push(JSON.parse(JSON.stringify(BLOCKS[sel.value].empty)));
+        markDirty();
+        rerender();
+      });
+      addRow.appendChild(sel);
+      addRow.appendChild(addBtn);
+      card.appendChild(addRow);
+      container.appendChild(card);
+    });
+    const addSec = el("button", "btn-sm add-row", "+ 섹션 추가");
+    addSec.type = "button";
+    addSec.addEventListener("click", () => {
+      sections.push({ id: "new-section-" + (sections.length + 1), title: "새 섹션", alt: false, blocks: [JSON.parse(JSON.stringify(BLOCKS.desc.empty))] });
+      markDirty();
+      rerender();
+    });
+    container.appendChild(addSec);
+  };
+  render();
+}
+
 /* ---------- 섹션 화면 ---------- */
 function showSection(sec) {
   const main = $("#panel");
@@ -248,6 +349,12 @@ function showSection(sec) {
   main.appendChild(el("h2", null, sec.title));
   const form = el("div", "form");
   const value = getPath(CONTENT, sec.id);
+  if (sec.sectionsEditor) {
+    buildSectionsEditor(form, value);
+    main.appendChild(form);
+    document.querySelectorAll(".nav-sec").forEach((n) => n.classList.toggle("on", n.dataset.id === sec.id));
+    return;
+  }
   buildSpec(form, sec.spec, value, () => showSection(sec));
   /* 최상위 문자열 필드 */
   for (const k of Object.keys(sec.spec)) {
@@ -304,7 +411,7 @@ function doPreview() {
   const sel = $("#previewSel");
   const frame = $("#previewFrame");
   const show = (file) => {
-    const base = new URL(".", location.href.replace(/admin\/?[^/]*$/, "")).href;
+    const base = new URL("..", location.href).href; // admin/ 상위 = 사이트 루트
     frame.srcdoc = pages[file].replace("<head>", '<head><base href="' + base + '">');
   };
   sel.onchange = () => show(sel.value);

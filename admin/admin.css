@@ -72,3 +72,20 @@ aside .btn-ghost:hover { color: #fff; border-color: rgba(255,255,255,.45); }
   aside { width: 100%; height: auto; position: static; }
   .topbar { flex-wrap: wrap; }
 }
+
+/* 블록 에디터 */
+.hint2 { color: #6b7280; font-size: 12.5px; margin: 0 0 4px; }
+.sec-card { background: #fff; border: 1px solid #dbe2ec; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.sec-head { display: flex; justify-content: space-between; align-items: center; }
+.sec-head b { font-size: 15px; }
+.blk-list { display: flex; flex-direction: column; gap: 8px; }
+.blk { border: 1px solid #e5e9f0; border-radius: 10px; background: #f8fafc; }
+.blk.dragging { opacity: .5; }
+.blk.dropover { outline: 2px dashed #2f6fed; outline-offset: -2px; }
+.blk-head { display: flex; align-items: center; gap: 10px; padding: 9px 12px; cursor: pointer; }
+.blk-handle { cursor: grab; color: #94a3b8; font-size: 17px; user-select: none; padding: 0 2px; }
+.blk-handle:active { cursor: grabbing; }
+.blk-name { flex: 1; font-weight: 600; font-size: 13.5px; }
+.blk-body { display: none; flex-direction: column; gap: 10px; padding: 4px 12px 14px; border-top: 1px dashed #e0e6ef; }
+.blk-add { display: flex; gap: 8px; align-items: center; }
+.blk-add select { width: auto; flex: 1; max-width: 320px; }
