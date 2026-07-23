@@ -164,7 +164,10 @@
 
   // 스크롤 리빌 (스크롤 기반·결정적, 스태거) — 콘텐츠는 기본 노출, JS 있을 때만 애니메이션
   var targets = [].slice.call(document.querySelectorAll(
-    ".card, .nav-card, .cert, .partner, .tl-item, .about-card, .perf-stat, .info-table, .org, .clients-bar, .viewer, .contact-card"
+    ".card, .nav-card, .cert, .partner, .tl-item, .about-card, .perf-stat, .info-table, .org, .clients-bar, .viewer, .contact-card, " +
+    ".sec-chip, .section h2, .sec-desc, .block-desc, .num-item, .feat, .duo-panel, .phase, .fstep, .layer, .stack-arrow, " +
+    ".ssd-eng, .ssd-bridge, .ssd-db, .ssd-comp, .cert-doc, .pcat-head, .finchart, .hnode, .hc-inner, " +
+    ".found .p4, .found .base, .cloud-partners, .map-wrap, .map-info, .btn-row, .ceo, .table-wrap"
   )).filter(function (el) { return !el.closest("[data-marquee]"); });
   if (!targets.length) return;
   document.documentElement.classList.add("js-reveal");
@@ -177,7 +180,7 @@
       var r = el.getBoundingClientRect();
       if (r.top < vh * 0.9 && r.bottom > 0) {
         var sibs = el.parentElement ? [].slice.call(el.parentElement.children).filter(function (c) { return c.classList.contains("reveal"); }) : [el];
-        el.style.transitionDelay = Math.min(sibs.indexOf(el), 6) * 70 + "ms";
+        el.style.transitionDelay = Math.min(sibs.indexOf(el), 8) * 85 + "ms";
         el.classList.add("in");
       }
     });
