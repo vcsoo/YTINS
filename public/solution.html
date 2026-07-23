@@ -144,40 +144,42 @@
       <p class="sec-desc">온라인과 오프라인 심사 시스템을 통합·연계하여 심사의 객관성과 공정성을 확보하고, 심사위원 모집부터 교섭·평가·집계까지 심사평가 업무 전 과정을 All-in-ONE으로 자동화하는 지능형 심사 정보시스템입니다. LH(한국토지주택공사)의 심사 프로세스에 특화하여 구축·운영·고도화를 수행 중인 대표 레퍼런스입니다.</p>
 
       <h3 style="margin-top:40px">스마트 심사 시스템 구성도</h3>
-      <p class="block-desc">두 자동화 엔진(ACS·AAS)이 REST API로 연동되고, 통합 DB를 중심으로 온라인 심사 시스템과 유기적으로 연계됩니다.</p>
+      <p class="block-desc">ACS의 <b>심사위원 자동교섭</b>과 AAS의 <b>심사위원 모집 조건</b>이 REST API로 연동되며, 두 시스템이 하나의 통합 DB를 공유합니다.</p>
       <div class="ssd">
-        <div class="ssd-subs">
-          <div class="ssd-sub">
-            <div class="ssd-sub-head"><span class="tag">ACS</span><b>Auto Calling System</b><span class="ko">심사위원 자동교섭 시스템</span></div>
-            <div class="ssd-nodes">
-              <span class="ssd-node">교섭내용 TTS 전송</span>
-              <span class="ssd-node hi">심사위원 자동교섭</span>
-              <span class="ssd-node">Out Call 프로그램</span>
-              <span class="ssd-node">교섭 결과 관리</span>
+        <div class="ssd-sys">
+          <div class="ssd-sys-label">스마트 심사 시스템</div>
+          <div class="ssd-engines">
+            <div class="ssd-eng">
+              <div class="ssd-eng-head"><span class="tag">ACS</span><span class="nm">Auto Calling System</span><span class="ko">심사위원 자동교섭 시스템</span></div>
+              <ul class="ssd-list">
+                <li class="link">심사위원 자동교섭</li>
+                <li>교섭내용 TTS 전송</li>
+                <li>Out Call 프로그램</li>
+                <li>교섭 결과 관리</li>
+              </ul>
             </div>
-          </div>
-          <div class="ssd-api"><i>⇄</i><span>REST API</span></div>
-          <div class="ssd-sub">
-            <div class="ssd-sub-head"><span class="tag">AAS</span><b>Auto Aggregation System</b><span class="ko">평가 데이터 자동 집계·분석 시스템</span></div>
-            <div class="ssd-nodes">
-              <span class="ssd-node hi">심사위원 모집 조건</span>
-              <span class="ssd-node">기술심사 평가 집계</span>
-              <span class="ssd-node">시스템 관리</span>
-              <span class="ssd-node">평가 사유서</span>
+            <div class="ssd-bridge"><span class="rest"><i>⇄</i>REST API</span></div>
+            <div class="ssd-eng">
+              <div class="ssd-eng-head"><span class="tag alt">AAS</span><span class="nm">Auto Aggregation System</span><span class="ko">평가 데이터 자동 집계·분석 시스템</span></div>
+              <ul class="ssd-list">
+                <li class="link">심사위원 모집 조건</li>
+                <li>기술심사 평가 집계</li>
+                <li>시스템 관리</li>
+                <li>평가 사유서</li>
+              </ul>
             </div>
           </div>
         </div>
         <div class="ssd-link"></div>
-        <div class="ssd-band"><span>스마트 심사 시스템</span></div>
+        <div class="ssd-db"><span class="ssd-db-ic">🗄️</span><div class="ssd-db-tx"><b>통합 DB</b><em>두 시스템이 공유하는 통합 데이터 저장소</em></div></div>
         <div class="ssd-link"></div>
-        <div class="ssd-db"><span class="ssd-db-ic">🗄️</span><b>통합 DB</b></div>
-        <div class="ssd-link"></div>
-        <div class="ssd-band alt"><span>온라인 심사 시스템</span></div>
-        <div class="ssd-link"></div>
-        <div class="ssd-bottom">
-          <div class="ssd-comp"><div class="ic">🖥️</div><b>온라인 화상 평가 솔루션</b></div>
-          <div class="ssd-comp"><div class="ic">🧑‍💼</div><b>심사위원 신청·모집 기능</b></div>
-          <div class="ssd-comp"><div class="ic">☁️</div><b>클라우드 인프라 구성</b></div>
+        <div class="ssd-sys">
+          <div class="ssd-sys-label">온라인 심사 시스템</div>
+          <div class="ssd-comps">
+            <div class="ssd-comp"><div class="ic">🖥️</div><b>온라인 화상 평가 솔루션</b></div>
+            <div class="ssd-comp"><div class="ic">🧑‍💼</div><b>심사위원 신청·모집 기능</b></div>
+            <div class="ssd-comp"><div class="ic">☁️</div><b>클라우드 인프라 구성</b></div>
+          </div>
         </div>
       </div>
 
