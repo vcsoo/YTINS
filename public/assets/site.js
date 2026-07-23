@@ -76,40 +76,6 @@
     window.addEventListener("scroll", onScroll, { passive: true });
   }
 
-  // 스크롤 시 현재 섹션명을 헤더 아래 고정 표시
-  var secbar = document.getElementById("secbar");
-  if (secbar) {
-    var secOut = secbar.querySelector("b");
-    var headerH = header ? header.offsetHeight : 64;
-    var secList = [].slice.call(document.querySelectorAll("main section[id]")).map(function (s) {
-      var chip = s.querySelector(".sec-chip");
-      var hh = s.querySelector("h2, h1");
-      return { el: s, label: (chip ? chip.textContent : (hh ? hh.textContent : "")).trim() };
-    }).filter(function (x) { return x.label; });
-    var lastLabel = "";
-    var secScroll = function () {
-      if (!secList.length) return;
-      var y = window.scrollY + headerH + 8;
-      var cur = null;
-      for (var i = 0; i < secList.length; i++) { if (secList[i].el.offsetTop <= y) cur = secList[i]; }
-      if (cur && y >= secList[0].el.offsetTop) {
-        secbar.classList.add("show");
-        if (cur.label !== lastLabel) {
-          lastLabel = cur.label;
-          secOut.textContent = "";
-          var sp = document.createElement("span");
-          sp.className = "swap"; sp.textContent = cur.label;
-          secOut.appendChild(sp);
-        }
-      } else {
-        secbar.classList.remove("show");
-      }
-    };
-    secScroll();
-    window.addEventListener("scroll", secScroll, { passive: true });
-    window.addEventListener("resize", function () { headerH = header ? header.offsetHeight : 64; secScroll(); }, { passive: true });
-  }
-
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // 마퀴: 내용이 컨테이너를 넘지 않으면 흐름 정지·복제 숨김
