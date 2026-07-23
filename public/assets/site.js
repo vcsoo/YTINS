@@ -95,29 +95,32 @@
     window.addEventListener("resize", mqCheck, { passive: true });
   }
 
-  // 히어로 네트워크(노드 연결) 배경 — 모노크롬 슬레이트 톤
-  var netCv = document.getElementById("heroNet");
-  if (netCv) {
-    var nctx = netCv.getContext("2d");
-    var heroEl = netCv.closest(".hero");
+  // 네트워크(노드 연결) 배경 — 메인 히어로(#heroNet) + 서브 히어로(.pageNet) 공용
+  function initNet(cv) {
+    var nctx = cv.getContext("2d");
+    var host = cv.closest(".hero, .page-hero");
+    var isHero = host.classList.contains("hero");
     var W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
-    var nodes = [], LINK = 135, mouse = { x: -9999, y: -9999 };
+    var nodes = [], LINK = isHero ? 135 : 110, mouse = { x: -9999, y: -9999 };
     var sizeNet = function () {
-      var r = heroEl.getBoundingClientRect();
+      var r = host.getBoundingClientRect();
       W = r.width; H = r.height;
-      netCv.width = W * DPR; netCv.height = H * DPR;
-      netCv.style.width = W + "px"; netCv.style.height = H + "px";
+      cv.width = W * DPR; cv.height = H * DPR;
+      cv.style.width = W + "px"; cv.style.height = H + "px";
       nctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-      var target = W < 720 ? 34 : 84;
+      var target = isHero ? (W < 720 ? 34 : 84) : (W < 720 ? 16 : 38);
       while (nodes.length < target) nodes.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.55, vy: (Math.random() - 0.5) * 0.55, r: 1.2 + Math.random() * 1.6 });
       nodes.length = target;
     };
     sizeNet();
     window.addEventListener("resize", sizeNet, { passive: true });
-    heroEl.addEventListener("pointermove", function (e) { var r = netCv.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; }, { passive: true });
-    heroEl.addEventListener("pointerleave", function () { mouse.x = -9999; mouse.y = -9999; });
+    if (isHero) {
+      host.addEventListener("pointermove", function (e) { var r = cv.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; }, { passive: true });
+      host.addEventListener("pointerleave", function () { mouse.x = -9999; mouse.y = -9999; });
+    }
     var drawNet = function () {
-      if (window.scrollY < H + 120) { // 히어로가 보일 때만 렌더
+      var hr = host.getBoundingClientRect();
+      if (hr.bottom > 0 && hr.top < (window.innerHeight || 800)) { // 화면에 보일 때만 렌더
         nctx.clearRect(0, 0, W, H);
         var i, j;
         for (i = 0; i < nodes.length; i++) {
@@ -140,7 +143,7 @@
             }
           }
           var mdx = nodes[i].x - mouse.x, mdy = nodes[i].y - mouse.y, md2 = mdx * mdx + mdy * mdy;
-          if (md2 < 28900) { // 170px 이내 노드는 커서와 연결
+          if (md2 < 28900) {
             nctx.strokeStyle = "rgba(51,65,85," + ((1 - Math.sqrt(md2) / 170) * 0.3).toFixed(3) + ")";
             nctx.beginPath(); nctx.moveTo(nodes[i].x, nodes[i].y); nctx.lineTo(mouse.x, mouse.y); nctx.stroke();
           }
@@ -150,6 +153,7 @@
     };
     drawNet(); // 모션 최소화 설정 시 정적 1프레임만
   }
+  [].slice.call(document.querySelectorAll("#heroNet, canvas.pageNet")).forEach(initNet);
 
   // 히어로 키워드 로테이션
   var rotWord = document.getElementById("rotWord");
@@ -167,7 +171,7 @@
 
   // KPI 숫자 카운트업 (뷰포트 진입 시 1회)
   (function () {
-    var els = [].slice.call(document.querySelectorAll(".hero .stats .num, .about-card .num, .org-stat .nums b"))
+    var els = [].slice.call(document.querySelectorAll(".hero .stats .num, .about-card .num, .org-stat .nums b, .finchart .fc-val"))
       .filter(function (el) { return !el.closest(".about-side.col"); }); // 연혁(연도) 카드는 카운트업 제외
     var items = [];
     els.forEach(function (el) {
