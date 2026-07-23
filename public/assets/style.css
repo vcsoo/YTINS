@@ -149,9 +149,11 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 /* ---------- Sections ---------- */
 .section { padding: 104px 0; scroll-margin-top: var(--header-h); }
 .section.alt { background: var(--bg-alt); }
-/* 섹션 큰 타이틀이 자석처럼 헤더 아래에 고정 — 현재 보고 있는 영역을 확실히 표시 */
-.section h2 { font-size: clamp(33px, 5vw, 54px); font-weight: 800; margin: -10px 0 20px; line-height: 1.15; position: sticky; top: var(--header-h); z-index: 20; background: var(--bg); padding: 10px 0 12px; }
-.section.alt h2 { background: var(--bg-alt); }
+/* 섹션 큰 타이틀: 평소엔 큰 제목, 헤더에 붙는 순간 축소된 알약 배지로 변신 */
+.section h2 { font-size: clamp(33px, 5vw, 54px); font-weight: 800; line-height: 1.15; position: sticky; top: calc(var(--header-h) + 8px); z-index: 20; width: fit-content; max-width: 100%; margin: 0 0 20px -24px; padding: 9px 24px 11px; border: 1px solid transparent; border-radius: 999px; background: transparent; transform-origin: left center; transition: transform .28s cubic-bezier(.2,.8,.2,1), background .25s ease, border-color .25s ease, box-shadow .25s ease; }
+.section h2::before { content: ""; display: inline-block; width: 0; height: 11px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-ink)); margin-right: 0; vertical-align: 8%; opacity: 0; transition: width .25s ease, margin .25s ease, opacity .25s ease; }
+.section h2.stuck { transform: scale(0.7); background: rgba(255,255,255,0.93); border-color: rgba(12,14,19,0.08); box-shadow: 0 10px 28px rgba(12,14,19,0.12); backdrop-filter: saturate(160%) blur(8px); }
+.section h2.stuck::before { width: 11px; margin-right: 13px; opacity: 1; }
 .section .sec-desc { color: var(--muted); font-size: 17px; line-height: var(--lh-body); max-width: 720px; margin: 0 0 var(--sp-6); }
 /* 서브섹션 제목 공통 리듬: 위 56px · 아래 12px */
 .section h3.sub-h { margin: var(--sp-7) 0 var(--sp-2); }
@@ -673,7 +675,7 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 .js-reveal .ssd-engines .ssd-eng.reveal:not(.in):nth-child(3) { transform: translateX(24px); }
 .js-reveal :is(.num-item, .feat, .cert-doc, .about-card, .phase, .found .p4, .ssd-comp, .nav-card, .perf-stat).reveal:not(.in) { transform: translateY(15px) scale(0.96); }
 .js-reveal .fstep.reveal:not(.in) { transform: translateY(11px) scale(0.95); }
-.js-reveal :is(.section h2, .sec-desc, .block-desc, .pcat-head).reveal:not(.in) { transform: translateY(13px); filter: blur(2px); }
+.js-reveal :is(.sec-desc, .block-desc, .pcat-head).reveal:not(.in) { transform: translateY(13px); filter: blur(2px); }
 .js-reveal :is(.map-wrap, .finchart, .cloud-partners, .ssd-db).reveal:not(.in) { transform: translateY(17px) scale(0.985); }
 .js-reveal .reveal.in { opacity: 1; transform: none; filter: none; }
 /* 모바일: 좌우 슬라이드 대신 위로 떠오르기 (가로 오버플로·정렬 흔들림 방지) */
