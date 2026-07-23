@@ -56,15 +56,6 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 }
 .site-header.scrolled { border-bottom-color: var(--line); background: rgba(255,255,255,0.97); box-shadow: 0 10px 30px rgba(12,14,19,0.10); }
 /* 스크롤 시 현재 섹션명을 헤더 아래 고정 표시 */
-/* 스크롤 시 현재 섹션명: 밴드 없이 작은 라벨만 자연스럽게 */
-.secbar { position: fixed; top: calc(var(--header-h) + 10px); left: 0; right: 0; z-index: 90; transform: translateY(-10px); opacity: 0; transition: transform .3s cubic-bezier(.2,.8,.2,1), opacity .3s ease; pointer-events: none; }
-.secbar.show { transform: translateY(0); opacity: 1; }
-.secbar-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.88); backdrop-filter: saturate(160%) blur(10px); border: 1px solid rgba(12,14,19,0.07); border-radius: 999px; padding: 8px 16px; box-shadow: 0 6px 20px rgba(12,14,19,0.08); }
-.secbar .secbar-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
-.secbar b { font-family: var(--font-display); font-weight: 700; font-size: 13.5px; color: var(--ink); letter-spacing: -0.01em; overflow: hidden; white-space: nowrap; }
-.secbar b .swap { display: inline-block; animation: secswap .3s ease; }
-@keyframes secswap { from { transform: translateY(-110%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-@media (max-width: 520px) { .secbar-pill { padding: 7px 13px; } .secbar b { font-size: 12.5px; } }
 .site-header .container { height: 100%; display: flex; align-items: center; justify-content: space-between; }
 .logo { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 800; letter-spacing: -0.01em; }
 .logo .logo-img { height: 30px; width: auto; display: block; }
@@ -159,7 +150,9 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 .section { padding: 104px 0; scroll-margin-top: var(--header-h); }
 .section.alt { background: var(--bg-alt); }
 .sec-chip { display: inline-block; color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 18px; font-family: var(--font-body); }
-.section h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 800; margin: 0 0 18px; line-height: 1.15; }
+/* 섹션 큰 타이틀이 자석처럼 헤더 아래에 고정 — 현재 보고 있는 영역을 확실히 표시 */
+.section h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 800; margin: -10px 0 18px; line-height: 1.15; position: sticky; top: var(--header-h); z-index: 20; background: var(--bg); padding: 10px 0 12px; }
+.section.alt h2 { background: var(--bg-alt); }
 .section .sec-desc { color: var(--muted); font-size: 17px; line-height: var(--lh-body); max-width: 720px; margin: 0 0 var(--sp-6); }
 /* 서브섹션 제목 공통 리듬: 위 56px · 아래 12px */
 .section h3.sub-h { margin: var(--sp-7) 0 var(--sp-2); }
