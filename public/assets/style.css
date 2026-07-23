@@ -329,7 +329,7 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 }
 
 /* Smart-screening system diagram */
-.ssd { max-width: 860px; margin: 12px auto 0; }
+.ssd { max-width: 860px; margin: 40px auto 0; }
 .ssd-link { width: 2px; height: 22px; background: #c9d6f2; margin: 0 auto; }
 /* system container (스마트 심사 / 온라인 심사) */
 .ssd-sys { border: 1.5px solid #d5e1fb; background: #f4f8ff; border-radius: 20px; padding: 40px 22px 24px; position: relative; }
@@ -407,6 +407,22 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 .feat .ftx b { font-family: var(--font-display); font-size: 14.5px; color: var(--ink); display: block; }
 .feat .ftx span { font-size: 12.5px; color: var(--muted); }
 
+/* card highlight points */
+.card-points { list-style: none; margin: 18px 0 0; padding: 16px 0 0; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 11px; }
+.card-points li { position: relative; padding-left: 22px; font-size: 14px; color: var(--text); line-height: 1.55; }
+.card-points li::before { content: ""; position: absolute; left: 2px; top: 7px; width: 8px; height: 8px; border-radius: 2px; background: linear-gradient(135deg, var(--accent), var(--accent-ink)); }
+
+/* rough finance bar chart */
+.finchart { margin-top: 34px; border: 1px solid var(--line); border-radius: 16px; background: #fff; padding: 24px 28px 20px; }
+.finchart .fc-title { font-family: var(--font-display); font-weight: 800; font-size: 15px; color: var(--ink); margin-bottom: 22px; }
+.finchart .fc-title span { font-weight: 500; font-size: 12px; color: var(--muted); }
+.finchart .fc-plot { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; align-items: end; border-bottom: 2px solid var(--line); padding-bottom: 0; }
+.finchart .fc-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; }
+.finchart .fc-val { font-family: var(--font-display); font-weight: 800; font-size: 14px; color: var(--accent-ink); margin-bottom: 9px; }
+.finchart .fc-bar { width: 100%; max-width: 88px; border-radius: 7px 7px 0 0; background: linear-gradient(180deg, #6a9bf3, var(--accent-ink)); }
+.finchart .fc-axis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-top: 10px; }
+.finchart .fc-axis span { text-align: center; font-size: 12.5px; color: var(--muted); font-weight: 600; }
+
 /* Process phases */
 .phases { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
 @media (max-width: 760px) { .phases { grid-template-columns: 1fr 1fr; } }
@@ -458,6 +474,10 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 .cert-doc .cap { padding: 16px 18px 18px; border-top: 1px solid var(--line); }
 .cert-doc .cap .name { font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--ink); line-height: 1.35; }
 .cert-doc .cap .meta { font-size: 12.5px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+@media (max-width: 720px) {
+  .cert-docs { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 14px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-bottom: 10px; margin: 0 -20px; padding-left: 20px; padding-right: 20px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 20px, #000 calc(100% - 20px), transparent); mask-image: linear-gradient(90deg, transparent, #000 20px, #000 calc(100% - 20px), transparent); }
+  .cert-docs .cert-doc { flex: 0 0 66%; max-width: 250px; scroll-snap-align: center; }
+}
 
 /* Partner logo groups */
 .pcat-group { margin-bottom: 40px; }
