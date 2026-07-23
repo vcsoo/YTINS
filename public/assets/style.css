@@ -778,7 +778,6 @@ b.count-pop { display: inline-block; }
 /* 헤더: 다크네이비 반투명 */
 .site-header { background: rgba(16,24,40,0.86); }
 .site-header.scrolled { background: rgba(16,24,40,0.97); border-bottom-color: rgba(255,255,255,0.10); box-shadow: 0 10px 30px rgba(4,8,16,0.35); }
-.site-header .logo-img { filter: brightness(0) invert(1); } /* 로고 흰색 단색화 (푸터 로고는 제외) */
 .logo .kr { color: #e8edf5; }
 .gnb > a, .gnb .has-sub > .sub-toggle { color: #b9c4d8; }
 .gnb > a:hover, .gnb .has-sub:hover > .sub-toggle { color: #fff; background: rgba(255,255,255,0.08); }
@@ -821,3 +820,39 @@ b.count-pop { display: inline-block; }
   .sub a { color: #8fa0ba; }
   .sub a:hover, .sub a:active { color: #fff; }
 }
+
+/* ---- 다크네이비 v2: 로고 원본 · 밝은 네이비 히어로 · 파란 글씨 → 네이비 ---- */
+:root { --navy-text: #22355e; --navy-hero: #253853; }
+
+/* 메인 히어로(네트워크 애니메이션 영역): 밝은 네이비 */
+.hero { background: var(--navy-hero); }
+.hero-bg::before { background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px); }
+.hero .eyebrow { color: #9db9ee; }
+.hero .eyebrow::before { background: #9db9ee; }
+.hero h1 { color: #fff; }
+.hero h1 .en, .hero h1 .rot { color: #8db4f9; }
+.hero p.lead { color: #b9c4d8; }
+.hero .stat .num { color: #fff; }
+.hero .stat .num small, .hero .stat .label { color: #93a1b8; }
+.scroll-cue { color: #8ea0bc; }
+
+/* 파란색 글씨 → 다크네이비 (밝은 배경 위 텍스트만) */
+.page-hero .eyebrow { color: var(--navy-text); }
+.clients-bar .t { color: var(--navy-text); }
+.cloud-partners .cp-kicker, .cloud-partners .cp-plus, .cloud-partners .cp-with { color: var(--navy-text); }
+.nav-card .no, .nav-card .go { color: var(--navy-text); }
+.nav-card:hover .go { color: var(--ink); }
+.org-staff span { color: var(--navy-text); }
+.contact-card .t { color: var(--navy-text); }
+.duo-vals .v b { color: var(--navy-text); }
+.flow .fstep { color: var(--navy-text); }
+.mvrow .lbl { color: var(--navy-text); }
+.layer .lsub { color: var(--navy-text); }
+.finchart .fc-val { color: var(--navy-text); }
+.step .n { color: var(--navy-text); }
+.tag { color: var(--navy-text); }
+.spec th { color: var(--navy-text); }
+.checks li::before { color: var(--navy-text); }
+.ssd-list li.link { color: var(--navy-text); border-color: var(--navy-text); }
+.ssd-bridge .rest { color: var(--navy-text); border-color: var(--navy-text); }
+.ssd-bridge .rest::before, .ssd-bridge .rest::after { background: var(--navy-text); }

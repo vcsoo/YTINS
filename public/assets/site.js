@@ -131,20 +131,21 @@
             if (p.y < -20) p.y = H + 20; else if (p.y > H + 20) p.y = -20;
           }
           nctx.beginPath(); nctx.arc(p.x, p.y, p.r, 0, 6.2832);
-          nctx.fillStyle = "rgba(71,85,105,0.45)"; nctx.fill();
+          nctx.fillStyle = isHero ? "rgba(176,190,210,0.55)" : "rgba(71,85,105,0.45)"; // 메인 히어로는 네이비 배경이라 밝은 노드
+          nctx.fill();
         }
         nctx.lineWidth = 1;
         for (i = 0; i < nodes.length; i++) {
           for (j = i + 1; j < nodes.length; j++) {
             var dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y, d2 = dx * dx + dy * dy;
             if (d2 < LINK * LINK) {
-              nctx.strokeStyle = "rgba(100,116,139," + ((1 - Math.sqrt(d2) / LINK) * 0.17).toFixed(3) + ")";
+              nctx.strokeStyle = (isHero ? "rgba(168,182,204," : "rgba(100,116,139,") + ((1 - Math.sqrt(d2) / LINK) * (isHero ? 0.22 : 0.17)).toFixed(3) + ")";
               nctx.beginPath(); nctx.moveTo(nodes[i].x, nodes[i].y); nctx.lineTo(nodes[j].x, nodes[j].y); nctx.stroke();
             }
           }
           var mdx = nodes[i].x - mouse.x, mdy = nodes[i].y - mouse.y, md2 = mdx * mdx + mdy * mdy;
           if (md2 < 28900) {
-            nctx.strokeStyle = "rgba(51,65,85," + ((1 - Math.sqrt(md2) / 170) * 0.3).toFixed(3) + ")";
+            nctx.strokeStyle = (isHero ? "rgba(200,212,230," : "rgba(51,65,85,") + ((1 - Math.sqrt(md2) / 170) * 0.3).toFixed(3) + ")";
             nctx.beginPath(); nctx.moveTo(nodes[i].x, nodes[i].y); nctx.lineTo(mouse.x, mouse.y); nctx.stroke();
           }
         }
