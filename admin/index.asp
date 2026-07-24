@@ -1,0 +1,83 @@
+<%@ Language="JScript" CodePage="65001" %><% Response.Charset = "utf-8"; Response.CodePage = 65001; %><!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>YTINS 홈페이지 빌더</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<div id="login" style="display:none">
+  <form id="loginForm" class="login-box">
+    <h1>YTINS 홈페이지 빌더</h1>
+    <p class="hint">관리자 계정으로 로그인하세요.</p>
+    <label>아이디</label>
+    <input id="loginUser" autocomplete="username" required>
+    <label>비밀번호</label>
+    <input id="loginPass" type="password" autocomplete="current-password" required>
+    <button type="submit">로그인</button>
+    <div id="loginErr" class="err"></div>
+  </form>
+</div>
+
+<div id="app" style="display:none">
+  <header class="bld-top">
+    <div class="brand">YTINS 빌더</div>
+    <nav id="pageTabs"></nav>
+    <div class="hist">
+      <button id="undoBtn" class="btn-ghost sm" title="실행취소 (Ctrl+Z)">↶</button>
+      <button id="redoBtn" class="btn-ghost sm" title="다시실행 (Ctrl+Shift+Z)">↷</button>
+    </div>
+    <div class="devs">
+      <button id="devPc" class="btn-ghost sm dev-btn on" title="PC 화면">PC</button>
+      <button id="devTab" class="btn-ghost sm dev-btn" title="태블릿 768px">태블릿</button>
+      <button id="devMo" class="btn-ghost sm dev-btn" title="모바일 390px">모바일</button>
+    </div>
+    <span class="tip">클릭=선택 · 더블클릭=바로 글자 수정 · 파란 버튼/드래그=이동·추가·삭제</span>
+    <div class="actions">
+      <button id="metaBtn" class="btn-ghost">페이지 설정</button>
+      <button id="previewBtn" class="btn-ghost">미리보기</button>
+      <button id="saveBtn" class="btn-primary">저장 (사이트 반영)</button>
+      <button id="chpassBtn" class="btn-ghost sm">비밀번호</button>
+      <button id="logoutBtn" class="btn-ghost sm">로그아웃</button>
+    </div>
+  </header>
+  <div class="bld-main">
+    <div class="canvas-wrap"><iframe id="canvas" title="편집 캔버스"></iframe></div>
+    <aside id="inspector" class="closed">
+      <div class="ins-head"><b id="insTitle"></b><button id="insClose" class="btn-ghost sm">닫기 ✕</button></div>
+      <div id="insBody"></div>
+    </aside>
+  </div>
+</div>
+
+<div id="paletteModal" class="modal">
+  <div class="pal-box">
+    <div class="pal-head"><b>블록 추가</b><button id="paletteClose" class="btn-ghost sm">닫기 ✕</button></div>
+    <div id="paletteList"></div>
+  </div>
+</div>
+
+<div id="previewModal" class="modal">
+  <div class="preview-box">
+    <div class="preview-bar">
+      <select id="previewSel">
+        <option value="index.html">홈</option>
+        <option value="company.html">회사소개</option>
+        <option value="business.html">사업분야</option>
+        <option value="solution.html">Solution</option>
+        <option value="reference.html">레퍼런스</option>
+      </select>
+      <span class="hint">실제 동작(애니메이션 포함) 미리보기입니다.</span>
+      <button id="previewClose" class="btn-ghost">닫기 ✕</button>
+    </div>
+    <iframe id="previewFrame" title="미리보기"></iframe>
+  </div>
+</div>
+
+<script>window.YTINS_ASP = true;</script>
+<script type="module" src="admin.js"></script>
+</body>
+</html>
