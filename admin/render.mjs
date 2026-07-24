@@ -378,7 +378,7 @@ const BLOCK_RENDERERS = {
         </div>
       </div>`,
   lhref: (b, P) => `<div class="block" style="margin-top:56px">
-        <h3${b.logo ? "" : et(P + ".title")}>${b.logo ? b.title.replace(/LH\s*/, `<img class="lh-inline" src="${b.logo}" alt="LH">`) : b.title}</h3>
+        <h3${b.logo ? "" : et(P + ".title")}>${b.logo ? b.title.replace(b.logoText || "LH", `<img class="lh-inline" src="${b.logo}" alt="${b.logoText || "LH"}">`) : b.title}</h3>
         <div class="about-grid" style="margin-top:20px">
           <div class="card" style="align-self:stretch"><h4${et(P + ".cardTitle")}>${b.cardTitle}</h4>
             <p${et(P + ".cardDesc")}>${b.cardDesc}</p>
