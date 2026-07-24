@@ -212,7 +212,7 @@
             "rows": [
                 {
                     "th": "회사명",
-                    "td": "주식회사 와이티아이엔에스 (YTINS Co., Ltd.)"
+                    "td": "주식회사 와이티아이엔에스<br>(YTINS Co., Ltd.)"
                 },
                 {
                     "th": "대표자",
@@ -232,7 +232,7 @@
                 },
                 {
                     "th": "연락처",
-                    "td": "Tel 031-698-2096 · Fax 0504-152-0871<br>service@ytins.co.kr"
+                    "td": "· Tel 031-698-2096<br>· Fax 0504-152-0871<br>· service@ytins.co.kr"
                 }
             ],
             "cards": [
