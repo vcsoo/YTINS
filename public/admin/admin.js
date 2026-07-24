@@ -404,10 +404,27 @@ function renderCanvas(keepScroll) {
   const base = new URL("..", location.href).href;
   iframe.onload = () => {
     bindCanvas();
-    iframe.contentWindow.scrollTo(0, prev);
+    /* 문서 높이가 이미지 로드 등으로 늦게 확정되면 scrollTo가 잘리므로 여러 번 복원 */
+    const w = iframe.contentWindow;
+    const restore = () => { if (w) w.scrollTo({ top: prev, left: 0, behavior: "instant" }); };
+    restore();
+    requestAnimationFrame(restore);
+    setTimeout(restore, 80);
+    setTimeout(restore, 300);
     reapplySelection(false);
   };
   iframe.srcdoc = html.replace("<head>", '<head><base href="' + base + '">');
+  /* load(이미지 포함) 완료를 기다리지 않고, 새 문서 레이아웃이 잡히는 즉시 스크롤 복원 (0으로 튀는 깜빡임 방지) */
+  clearInterval(renderCanvas._early);
+  if (prev > 0) {
+    renderCanvas._early = setInterval(() => {
+      try {
+        const d = iframe.contentDocument;
+        if (d && d.body && d.documentElement.scrollHeight >= prev + 200) iframe.contentWindow.scrollTo({ top: prev, behavior: "instant" });
+        if (d && d.readyState === "complete") clearInterval(renderCanvas._early);
+      } catch (e) { clearInterval(renderCanvas._early); }
+    }, 40);
+  }
 }
 
 const CANVAS_CSS = `
@@ -423,6 +440,8 @@ const CANVAS_CSS = `
   .bld-tools button.warn { background: #d33; }
   .bld-tools button.drag { cursor: grab; background: #101828; }
   .bld-badge { position: absolute; top: 4px; left: 4px; z-index: 999; background: rgba(16,24,40,.85); color: #fff; font-size: 11px; padding: 3px 8px; border-radius: 5px; pointer-events: none; }
+  .sp-block { background: repeating-linear-gradient(45deg, rgba(47,111,237,.08), rgba(47,111,237,.08) 8px, transparent 8px, transparent 16px); border: 1px dashed rgba(47,111,237,.45); border-radius: 6px; position: relative; }
+  .sp-block::after { content: "여백 " attr(data-sp) "px"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #2f6fed; font-size: 11px; font-weight: 700; }
 `;
 
 function bindCanvas() {

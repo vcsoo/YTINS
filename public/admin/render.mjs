@@ -389,6 +389,7 @@ const BLOCK_RENDERERS = {
           </div>
         </div>
       </div>`,
+  spacer: (b) => { const h = Math.max(4, parseInt(b.h, 10) || 40); return EDIT ? `<div class="sp-block" data-sp="${h}" style="height:${h}px"></div>` : `<div aria-hidden="true" style="height:${h}px"></div>`; },
   image: (b, P) => `<figure class="img-block"${b.maxw ? ` style="max-width:${b.maxw}px"` : ""}>
         <img src="${b.src}" alt="${b.alt || ""}">${b.caption ? `\n        <figcaption${et(P + ".caption")}>${b.caption}</figcaption>` : ""}
       </figure>`,

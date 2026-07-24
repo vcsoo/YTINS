@@ -91,7 +91,7 @@ export const SECTIONS = [
   { page: "공통", items: [
     { id: "nav", title: "상단 메뉴", spec: {
       brand: "text: 로고 옆 회사명",
-      groups: { _label: "메뉴 그룹", _item: { key: "text: 구분키(수정 비권장)", label: "text: 메뉴명", href: "text: 링크", subs: { _label: "하위 메뉴", _item: { href: "text: 링크", label: "text: 메뉴명" } } } }
+      groups: { _label: "메뉴 그룹 (대메뉴)", _item: { key: "text: 구분키(수정 비권장)", label: "text: 메뉴명", href: "text: 링크 (예: solution.html)", subs: { _label: "하위 메뉴 (+ 항목 추가로 늘리기)", _item: { href: "text: 링크 (예: solution.html#bdp — 파일명#섹션ID)", label: "text: 메뉴명" } } } }
     } },
     { id: "footer", title: "푸터(하단 정보)", spec: {
       slogan: "text: 슬로건", company: "text: 회사명", ceo: "text: 대표자",
@@ -150,6 +150,8 @@ export const BLOCKS = {
       cardTitle: "text: 카드 제목", cardLogo: "img.assets: 카드 제목 로고 (비우면 텍스트)", cardDesc: "area: 카드 설명",
       points: { _label: "주요 내용 (우측 박스)", _of: "text: 항목" } },
     empty: { type: "lhref", title: "대표 레퍼런스", cardTitle: "", cardLogo: "", cardDesc: "", points: [""], logo: "", logoText: "" } },
+  spacer: { name: "여백 (빈 공간)", spec: { h: "text: 높이 px (예: 48)" },
+    empty: { type: "spacer", h: "48" } },
   image: { name: "이미지 (도식·사진 업로드)", spec: { src: "img.assets: 이미지 파일", alt: "text: 이미지 설명", caption: "text: 캡션 (비워도 됨)", maxw: "text: 최대 폭 px (비우면 전체 폭)" },
     empty: { type: "image", src: "", alt: "", caption: "", maxw: "" } },
   html: { name: "자유 HTML (고급)", spec: { code: "area: HTML 코드" },
