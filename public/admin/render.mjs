@@ -51,7 +51,7 @@ function lg(src, alt, fallback) {
 
 function header(active, nav) {
   const cls = (k) => (k === active ? " active" : "");
-  const grp = (g) => `<div class="has-sub">
+  const grp = (g) => `<div class="has-sub grp-${g.key}">
         <a href="${g.href}" class="sub-toggle${cls(g.key)}">${g.label} <span class="caret">▾</span></a>
         <div class="sub">
           ${g.subs.map((s) => `<a href="${s.href}">${s.label}</a>`).join("\n          ")}

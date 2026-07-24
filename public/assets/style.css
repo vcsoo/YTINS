@@ -791,6 +791,8 @@ b.count-pop { display: inline-block; }
   .sub::before { display: none; }
   .sub a { background: transparent; border: 0; border-radius: 0; padding: 5px 0; font-size: 14px; font-weight: 500; color: var(--muted); }
   .sub a:hover, .sub a:active { background: transparent; color: var(--accent); }
+  /* Solution 하위 메뉴: 제품명이 길어 한 줄에 하나씩 */
+  .grp-solution .sub { flex-direction: column; gap: 2px; }
   .burger { display: block; }
   /* 지도·PDF 버튼 우측 정렬 */
   .map-info { display: flex; flex-direction: column; }
