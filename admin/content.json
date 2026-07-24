@@ -938,7 +938,7 @@
                 "blocks": [
                     {
                         "type": "desc",
-                        "text": "수집·저장·처리·모니터링을 하나로 통합한 오픈소스 기반 빅데이터 플랫폼입니다. 상용 빅데이터 플랫폼을 저비용·단계적으로 전환하여 벤더 종속 없이 유연성과 확장성을 확보하고, 클라우드·온프레미스·G-클라우드 어디에나 구축할 수 있습니다."
+                        "text": "수집·저장·처리·모니터링을 하나로 통합한 오픈소스 기반 빅데이터 플랫폼입니다. 상용 빅데이터 플랫폼을 저비용·단계적으로 전환(윈백)하여 벤더 종속 없이 유연성과 확장성을 확보합니다."
                     },
                     {
                         "type": "stack",
@@ -989,15 +989,15 @@
                                 },
                                 {
                                     "th": "처리",
-                                    "td": "MapReduce, Hive, Pig, Spark"
+                                    "td": "Spark, Hive, MapReduce"
                                 },
                                 {
                                     "th": "분석·조회",
-                                    "td": "Presto, Spark, Zeppelin"
+                                    "td": "Trino(Presto), Spark SQL, Zeppelin"
                                 },
                                 {
                                     "th": "AI · ML",
-                                    "td": "Anaconda (Python), TensorFlow"
+                                    "td": "Python(Anaconda), PyTorch·TensorFlow"
                                 },
                                 {
                                     "th": "수집·연계",
@@ -1113,41 +1113,13 @@
                                 "sub": "YT-DA 핵심 구성",
                                 "title": "분석부터 생성형 AI까지",
                                 "items": [
-                                    "실시간 분석·시각화·AI 모델 적용을 지원하는 분석 플랫폼",
+                                    "실시간 대시보드·차트 시각화 및 BI 도구(Power BI·Tableau) 연계",
                                     "정형·비정형 데이터 통합 분석",
                                     "RAG 기반 지식검색 및 생성형 AI 서비스 확장"
                                 ],
                                 "img": "assets/yt-da.png"
                             }
                         ]
-                    },
-                    {
-                        "type": "subhead",
-                        "title": "빅데이터 + AI 분석 시스템 구축",
-                        "desc": "YT-BDP 빅데이터 플랫폼과 AI를 융합하여, OLAP 기반 다차원 분석부터 머신러닝까지 데이터 사이언스를 쉽게 적용합니다.",
-                        "tight": false
-                    },
-                    {
-                        "type": "flow",
-                        "steps": [
-                            {
-                                "t": "IoT · 데이터 소스",
-                                "s": "Internet of Anything"
-                            },
-                            {
-                                "t": "OLAP 분석",
-                                "s": "다차원 통계·집계"
-                            },
-                            {
-                                "t": "ML 분석",
-                                "s": "머신러닝·예측"
-                            },
-                            {
-                                "t": "시각화 · SPARK",
-                                "s": "분석 결과 활용"
-                            }
-                        ],
-                        "style": ""
                     },
                     {
                         "type": "subhead",
