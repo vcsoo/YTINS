@@ -298,7 +298,7 @@ const BLOCK_RENDERERS = {
           </div>
         </div>`).join("\n        ")}
       </div>`,
-  duospec: (b, P) => `<div class="duo">
+  duospec: (b, P) => `<div class="duo duospec">
         <div class="duo-panel ink">
           <div class="dhead"><div class="kicker"${et(P + ".before.kicker")}>${b.before.kicker}</div><h3${et(P + ".before.title")}>${b.before.title}</h3></div>
           <div class="dbody">
