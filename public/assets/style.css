@@ -405,7 +405,7 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 
 /* Smart-screening system diagram */
 .ssd { max-width: 860px; margin: 40px auto 0; }
-.ssd-link { width: 2px; height: 48px; background: #c9d6f2; margin: 0 auto; position: relative; }
+.ssd-link { width: 2px; height: 48px; background: #c9d6f2; margin: 0 auto; position: relative; z-index: 0; }
 .ssd-link::after { content: ""; position: absolute; left: 50%; top: -3px; width: 6px; height: 6px; margin-left: -3px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px rgba(47,111,237,0.55); animation: linkFlow 2.2s ease-in-out infinite; }
 @keyframes linkFlow { 0% { top: -4px; opacity: 0; } 18% { opacity: 1; } 82% { opacity: 1; } 100% { top: calc(100% - 2px); opacity: 0; } }
 /* 반대 방향(아래→위) 점 — 데이터 양방향 흐름 표현 */
@@ -413,7 +413,7 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 @keyframes linkFlowUp { 0% { bottom: -4px; opacity: 0; } 18% { opacity: 1; } 82% { opacity: 1; } 100% { bottom: calc(100% - 2px); opacity: 0; } }
 /* system container (스마트 심사 / 온라인 심사) */
 .ssd-sys { border: 1.5px solid #d5e1fb; background: #f4f8ff; border-radius: var(--r-lg); padding: 40px 22px 24px; position: relative; }
-.ssd-sys-label { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; font-family: var(--font-display); font-weight: 800; font-size: 15px; padding: 8px 24px; border-radius: var(--r-pill); white-space: nowrap; box-shadow: 0 8px 20px rgba(12,14,19,0.18); }
+.ssd-sys-label { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; font-family: var(--font-display); font-weight: 800; font-size: 15px; padding: 8px 24px; border-radius: var(--r-pill); white-space: nowrap; box-shadow: 0 8px 20px rgba(12,14,19,0.18); z-index: 2; }
 /* ACS / AAS engines */
 .ssd-engines { display: grid; grid-template-columns: 1fr auto 1fr; align-items: start; gap: 0; }
 .ssd-eng { background: #fff; border: 1px solid var(--line); border-radius: var(--r-md); padding: 16px; box-shadow: 0 8px 22px rgba(12,14,19,0.05); }
@@ -481,6 +481,9 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
   /* 모바일: 스마트 심사 시스템 배지를 박스 하단(통합 DB 쪽)에 배치 */
   .ssd > .ssd-sys:first-child { padding: 20px 14px 32px; }
   .ssd > .ssd-sys:first-child .ssd-sys-label { top: auto; bottom: -16px; }
+  /* 배지가 박스 밖으로 나온 만큼 연결선을 띄워 텍스트를 가리지 않게 */
+  .ssd > .ssd-sys:first-child + .ssd-link { margin-top: 21px; }
+  .ssd-db + .ssd-link { margin-bottom: 20px; }
 }
 
 /* Mission / Vision rows */
