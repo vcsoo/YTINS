@@ -15,7 +15,7 @@ const el = (tag, cls, text) => {
   return e;
 };
 
-/* ---------- API (실서버 PHP / 테스트 데모 겸용) ---------- */
+/* ---------- API (실서버 ASP·PHP / 테스트 데모 겸용) ---------- */
 const DEMO = !!window.YTINS_DEMO;
 async function demoApi(action, opts = {}) {
   const LS = "ytins-admin-demo";
@@ -46,8 +46,69 @@ async function demoApi(action, opts = {}) {
   if (action === "chpass") return { ok: false, error: "테스트 모드에서는 비밀번호 변경이 동작하지 않습니다." };
   return { ok: false, error: "지원하지 않는 요청" };
 }
+/* ---------- 카페24(윈도우/Classic ASP) 어댑터 — index.asp가 window.YTINS_ASP=true 설정 ----------
+   ASP 서버는 요청 크기 제한(기본 200KB)이 있어 저장은 파일별로, 업로드는 base64 조각으로 나눠 보낸다. */
+const ASP = !!window.YTINS_ASP;
+async function aspFetch(action, opts = {}) {
+  const res = await fetch("api.asp?a=" + action, {
+    method: opts.method || "GET",
+    headers: Object.assign({}, opts.headers || {}, CSRF ? { "X-CSRF": CSRF } : {}),
+    body: opts.body,
+  });
+  return res.json();
+}
+const formBody = (obj) => ({
+  method: "POST",
+  headers: { "Content-Type": "application/x-www-form-urlencoded; charset=utf-8" },
+  body: new URLSearchParams(obj).toString(),
+});
+const textBody = (text) => ({
+  method: "POST",
+  headers: { "Content-Type": "text/plain; charset=utf-8" },
+  body: text,
+});
+async function aspApi(action, opts = {}) {
+  const b = opts.body || {};
+  if (action === "state") return aspFetch("state");
+  if (action === "login") return aspFetch("login", formBody({ user: b.user, pass: b.pass }));
+  if (action === "logout") return aspFetch("logout", { method: "POST" });
+  if (action === "chpass") return aspFetch("chpass", formBody({ old: b.old, "new": b["new"] }));
+  if (action === "content") return (await fetch("content.json?ts=" + Date.now())).json();
+  if (action === "save") {
+    let r = await aspFetch("save-content", textBody(JSON.stringify(b.content)));
+    if (!r.ok) return r;
+    const written = [];
+    for (const f of Object.keys(b.pages || {})) {
+      r = await aspFetch("save-page&f=" + encodeURIComponent(f), textBody(b.pages[f]));
+      if (!r.ok) return { ok: false, error: (r.error || "저장 실패") + " (" + f + ")" };
+      written.push(f);
+    }
+    return { ok: true, written };
+  }
+  if (action === "upload") {
+    const fd = opts.form;
+    const file = fd.get("file"), dir = fd.get("dir"), name = fd.get("name");
+    const b64 = await new Promise((resolve, reject) => {
+      const fr = new FileReader();
+      fr.onload = () => resolve(String(fr.result).split(",")[1] || "");
+      fr.onerror = () => reject(new Error("파일을 읽지 못했습니다."));
+      fr.readAsDataURL(file);
+    });
+    let r = await aspFetch("upload-begin&dir=" + encodeURIComponent(dir) + "&name=" + encodeURIComponent(name), { method: "POST" });
+    if (!r.ok) return r;
+    const STEP = 120000; /* base64 12만 자 ≈ 88KB — ASP 요청 제한(200KB) 이내 */
+    for (let i = 0; i < b64.length; i += STEP) {
+      r = await aspFetch("upload-chunk", textBody(b64.slice(i, i + STEP)));
+      if (!r.ok) return r;
+    }
+    return aspFetch("upload-end", { method: "POST" });
+  }
+  return { ok: false, error: "지원하지 않는 요청" };
+}
+
 async function api(action, opts = {}) {
   if (DEMO) return demoApi(action, opts);
+  if (ASP) return aspApi(action, opts);
   const res = await fetch("api.php?a=" + action, {
     method: opts.method || "GET",
     headers: Object.assign(
