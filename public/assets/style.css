@@ -579,7 +579,8 @@ html:has(.hero) { scroll-snap-type: y proximity; }
 .found .base { background: var(--ink); color: #fff; border-radius: var(--r-md); padding: 24px 28px; }
 .found .base .bt { font-family: var(--font-display); font-weight: 800; font-size: 16px; margin-bottom: 14px; }
 .found .base .cols { display: flex; gap: 14px; flex-wrap: wrap; }
-.found .base .cols span { flex: 1 1 160px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); border-radius: var(--r-sm); padding: 14px 18px; font-size: 14px; }
+.found .base .cols > span { flex: 1 1 160px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); border-radius: var(--r-sm); padding: 14px 18px; font-size: 14px; display: flex; align-items: center; gap: 13px; }
+.found .base .cols .col-tx { display: block; min-width: 0; }
 .found .base .cols span b { font-family: var(--font-display); display: block; margin-bottom: 3px; }
 
 @media (max-width: 760px) {
@@ -916,8 +917,10 @@ b.count-pop { display: inline-block; }
 .phase .ph { display: flex; align-items: center; justify-content: center; gap: 9px; }
 .phase .ph i { font-style: normal; font-family: var(--font-display); font-weight: 800; font-size: 15px; color: #8db4f9; letter-spacing: 0.02em; }
 /* ITO 기반 바 아이콘 */
-.found .base .cols .col-ic { display: inline-flex; width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.14); color: #8db4f9; align-items: center; justify-content: center; margin-right: 10px; vertical-align: middle; flex-shrink: 0; }
-.found .base .cols .col-ic .ico-svg { width: 16px; height: 16px; }
+.found .base .cols .col-ic { display: inline-flex; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.14); color: #8db4f9; align-items: center; justify-content: center; flex-shrink: 0; }
+.found .base .cols .col-ic .ico-svg { width: 18px; height: 18px; }
+/* 라인업 박스: 우상단 아이콘과 제목·배지가 겹치지 않게 */
+.num-item:has(.ni) h4 { padding-right: 52px; }
 
 /* 대표 레퍼런스 제목 인라인 로고 (텍스트 'LH' 대체 · 뒤 단어와 줄바뀜 없음) */
 .block h3 .lh-inline { height: 1.25em; width: auto; display: inline-block; vertical-align: -0.25em; margin: 0 2px 0 4px; }

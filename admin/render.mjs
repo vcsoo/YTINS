@@ -327,7 +327,7 @@ const BLOCK_RENDERERS = {
         </div>
         <div class="base">
           <div class="bt"${et(P + ".base.bt")}>${b.base.bt}</div>
-          <div class="cols">${b.base.cols.map((c, i) => `<span>${c.icon ? `<i class="col-ic">${ic(c.icon)}</i>` : ""}<b${et(`${P}.base.cols.${i}.b`)}>${c.b}</b>${ew(c.s, `${P}.base.cols.${i}.s`)}</span>`).join("")}</div>
+          <div class="cols">${b.base.cols.map((c, i) => `<span>${c.icon ? `<i class="col-ic">${ic(c.icon)}</i>` : ""}<span class="col-tx"><b${et(`${P}.base.cols.${i}.b`)}>${c.b}</b>${ew(c.s, `${P}.base.cols.${i}.s`)}</span></span>`).join("")}</div>
         </div>
       </div>`,
   cp: (b, P) => `<div class="cloud-partners">
