@@ -141,7 +141,7 @@ const pageHero = (h, key) => `  <section class="page-hero"${ea(key)}>
   </section>`;
 const clientsBar = (b, P) => `<div class="clients-bar"><span class="t"${P ? et(P + ".t") : ""}>${b.t}</span><span class="list"${P ? et(P + ".list") : ""}>${b.list}</span></div>`;
 const flowSteps = (steps, P) => steps.map((s, i) => `<div class="fstep">${P ? ew(s.t, `${P}.steps.${i}.t`) : s.t}${s.s ? `<small${P ? et(`${P}.steps.${i}.s`) : ""}>${s.s}</small>` : ""}</div>`).join("\n        ");
-const numbered = (items, P) => items.map((n, i) => `<div class="num-item">${n.icon ? `<span class="ni">${ic(n.icon)}</span>` : ""}<div class="gh">0${i + 1}</div><h4>${P ? ew(n.title, `${P}.items.${i}.title`) : n.title}${n.badge ? ` <span style="color:var(--accent);font-size:12px;font-weight:700"${P ? et(`${P}.items.${i}.badge`) : ""}>${n.badge}</span>` : ""}</h4><p${P ? et(`${P}.items.${i}.desc`) : ""}>${n.desc}</p></div>`).join("\n        ");
+const numbered = (items, P) => items.map((n, i) => `<div class="num-item">${n.icon ? `<span class="ni">${ic(n.icon)}</span>` : ""}<div class="gh">0${i + 1}</div><h4>${P ? ew(n.title, `${P}.items.${i}.title`) : n.title}${n.badge ? `<span class="nbadge"${P ? et(`${P}.items.${i}.badge`) : ""}>${n.badge}</span>` : ""}</h4><p${P ? et(`${P}.items.${i}.desc`) : ""}>${n.desc}</p></div>`).join("\n        ");
 const featgrid = (feats, sep = "\n        ", P) => feats.map((f, i) => `<div class="feat"><span class="fic">${ic(f.icon)}</span><div class="ftx"><b${P ? et(`${P}.feats.${i}.b`) : ""}>${f.b}</b><span${P ? et(`${P}.feats.${i}.s`) : ""}>${f.s}</span></div></div>`).join(sep);
 
 /* ============================================================ HOME */
