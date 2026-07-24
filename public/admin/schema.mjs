@@ -136,7 +136,7 @@ export const BLOCKS = {
     empty: { type: "cp", kicker: "Partnership", head: "제목", sub: "", logo1: "", logo2: "" } },
   bar: { name: "하단 정보 바 (주요 고객 등)", spec: { t: "text: 라벨", list: "area: 내용" },
     empty: { type: "bar", t: "라벨", list: "" } },
-  stack: { name: "레이어 스택 (상위/기반)", spec: { layers: { _label: "레이어", _item: { icon: "icon: 아이콘", sub: "text: 레이어 라벨", title: "text: 레이어 제목", items: { _label: "설명 항목", _of: "text: 항목" } } } },
+  stack: { name: "레이어 스택 (상위/기반)", spec: { layers: { _label: "레이어", _item: { icon: "icon: 아이콘", sub: "text: 레이어 라벨", title: "text: 레이어 제목", img: "img.assets: 우측 일러스트 (PC 전용 · 비워도 됨)", items: { _label: "설명 항목", _of: "text: 항목" } } } },
     empty: { type: "stack", layers: [{ icon: "chart", sub: "상위 레이어", title: "제목", items: ["항목"] }, { icon: "database", sub: "기반 레이어", title: "제목", items: ["항목"] }] } },
   ssd: { name: "스마트심사 구성도", spec: {
       sysLabel: "text: 상단 시스템 라벨",
@@ -148,7 +148,7 @@ export const BLOCKS = {
       comps: { _label: "하단 구성요소", _item: { icon: "icon: 아이콘", b: "text: 이름" } } },
     empty: { type: "ssd", sysLabel: "시스템", eng1: { tag: "A", nm: "", ko: "", items: [""] }, bridge: "REST API", eng2: { tag: "B", nm: "", ko: "", items: [""] }, db: { b: "통합 DB", em: "" }, sys2Label: "시스템", comps: [{ icon: "cloud", b: "구성요소" }] } },
   lhref: { name: "대표 레퍼런스 (카드 + 연도 이력)", spec: {
-      title: "text: 소제목", cardTitle: "text: 카드 제목", cardDesc: "area: 카드 설명",
+      title: "text: 소제목", logo: "img.assets: 고객사 로고 (비우면 미표시)", cardTitle: "text: 카드 제목", cardDesc: "area: 카드 설명",
       points: { _label: "주요 내용", _of: "text: 항목" },
       years: { _label: "연도별 이력", _item: { num: "text: 연도", label: "area: 내용" } } },
     empty: { type: "lhref", title: "대표 레퍼런스", cardTitle: "", cardDesc: "", points: [""], years: [{ num: "2026", label: "" }] } },
