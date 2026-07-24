@@ -1387,14 +1387,6 @@
                 {
                     "img": "33-ebs.png",
                     "name": "한국교육방송공사"
-                },
-                {
-                    "img": "34-lgcns.png",
-                    "name": "LG CNS"
-                },
-                {
-                    "img": "35-ntels.png",
-                    "name": "엔텔스"
                 }
             ]
         },
@@ -1481,6 +1473,11 @@
                             "img": "forcewave.png",
                             "name": "FORCE WAVE",
                             "fallback": "FORCE WAVE"
+                        },
+                        {
+                            "img": "ntels.png",
+                            "name": "엔텔스",
+                            "fallback": "nTels"
                         }
                     ]
                 },
