@@ -448,7 +448,7 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 .ssd-comp { background: #fff; border: 1px solid var(--line); border-radius: var(--r-md); padding: 20px 14px; text-align: center; box-shadow: 0 8px 22px rgba(12,14,19,0.05); }
 .ssd-comp .ic { width: 46px; height: 46px; margin: 0 auto 10px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: flex; align-items: center; justify-content: center; }
 .ssd-comp .ic .ico-svg { width: 24px; height: 24px; }
-.ssd-comp b { font-family: var(--font-display); font-size: 13.5px; color: var(--ink); line-height: 1.35; display: block; }
+.ssd-comp b { font-family: var(--font-display); font-size: 13.5px; color: var(--ink); line-height: 1.35; display: flex; align-items: center; justify-content: center; min-height: 37px; }
 .ssd-comp .ssd-sub { list-style: none; margin: 11px 0 0; padding: 10px 6px 0; border-top: 1px dashed var(--line); display: flex; flex-direction: column; gap: 6px; text-align: left; }
 .ssd-comp .ssd-sub li { font-size: 12.5px; color: var(--muted); line-height: 1.45; position: relative; padding-left: 13px; }
 .ssd-comp .ssd-sub li::before { content: ""; position: absolute; left: 0; top: 6px; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
@@ -473,7 +473,7 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
   .ssd-comps { gap: 8px; }
   .ssd-comp { padding: 14px 6px; }
   .ssd-comp .ic { font-size: 24px; }
-  .ssd-comp b { font-size: 11px; }
+  .ssd-comp b { font-size: 11px; min-height: 30px; }
   .ssd-comp .ssd-sub { margin-top: 8px; padding-top: 8px; gap: 4px; }
   .ssd-comp .ssd-sub li { font-size: 10px; }
   .ssd-sys-label { font-size: 13px; padding: 7px 16px; }
