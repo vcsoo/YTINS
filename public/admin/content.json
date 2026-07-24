@@ -1262,7 +1262,8 @@
                                 "label": "지속 운영 및 고도화 수행 중"
                             }
                         ],
-                        "logo": "assets/lh-logo.png"
+                        "logo": "assets/lh-smart-logo.png",
+                        "logoText": "LH 스마트심사"
                     }
                 ]
             }
