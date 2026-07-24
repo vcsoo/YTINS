@@ -472,7 +472,7 @@
                         "type": "duo",
                         "panels": [
                             {
-                                "kicker": "STEP 1 · Digital Transformation",
+                                "kicker": "STEP 1",
                                 "title": "디지털 전환 (DX)",
                                 "items": [
                                     {
@@ -491,10 +491,11 @@
                                         "b": "디지털 채널·서비스",
                                         "s": "웹·모바일 기반 대국민·대고객 서비스 구현"
                                     }
-                                ]
+                                ],
+                                "sub": "Digital Transformation"
                             },
                             {
-                                "kicker": "STEP 2 · AI Transformation",
+                                "kicker": "STEP 2",
                                 "title": "AI 전환 (AX)",
                                 "items": [
                                     {
@@ -513,7 +514,8 @@
                                         "b": "AI 운영·고도화",
                                         "s": "데이터 파이프라인·MLOps 기반 안정적 운영"
                                     }
-                                ]
+                                ],
+                                "sub": "AI Transformation"
                             }
                         ]
                     },

@@ -342,6 +342,12 @@ html:has(.hero) { scroll-snap-type: y proximity; }
 .duo-panel { border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; background: #fff; display: flex; flex-direction: column; }
 .duo-panel .dhead { padding: 24px 26px; color: #fff; }
 .duo-panel .dhead .kicker { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.82; }
+/* STEP 칩 + 부제 헤더 — 두 패널 헤더 높이 동일 고정 */
+.duo:not(.duospec) .duo-panel .dhead { display: flex; flex-direction: column; justify-content: flex-end; gap: 7px; min-height: 96px; box-sizing: border-box; }
+.duo-panel .kick-row { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+.duo-panel .step-chip { background: #fff; color: var(--ink); font-family: var(--font-display); font-weight: 800; font-size: 12px; letter-spacing: 0.08em; padding: 3px 13px; border-radius: var(--r-pill); }
+.duo-panel.blue .step-chip { color: var(--accent-ink); }
+.duo-panel .kick-sub { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.75); }
 .duo-panel .dhead h3 { color: #fff; font-size: 22px; margin: 6px 0 0; }
 .duo-panel.ink .dhead { background: var(--ink); }
 .duo-panel.blue .dhead { background: linear-gradient(135deg, var(--accent), var(--accent-ink)); }
@@ -610,6 +616,9 @@ html:has(.hero) { scroll-snap-type: y proximity; }
   .duo { grid-template-columns: 1fr 1fr; gap: 10px; }
   .duospec::after { width: 30px; height: 30px; font-size: 14px; border-width: 1.5px; }
   .duo .dhead { padding: 13px 12px; }
+  .duo:not(.duospec) .duo-panel .dhead { min-height: 104px; gap: 5px; }
+  .duo-panel .step-chip { font-size: 10.5px; padding: 2px 10px; }
+  .duo-panel .kick-sub { font-size: 9.5px; letter-spacing: 0.08em; }
   .duo .dhead h3 { font-size: 14.5px; }
   .duo .dhead .kicker { font-size: 10px; letter-spacing: 0.06em; }
   .duospec .dhead .kicker { padding: 2px 9px; }
