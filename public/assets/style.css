@@ -343,7 +343,7 @@ html:has(.hero) { scroll-snap-type: y proximity; }
 .duo-panel .dhead { padding: 24px 26px; color: #fff; }
 .duo-panel .dhead .kicker { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.82; }
 /* STEP 칩 + 부제 헤더 — 두 패널 헤더 높이 동일 고정 */
-.duo:not(.duospec) .duo-panel .dhead { display: flex; flex-direction: column; justify-content: flex-end; gap: 7px; min-height: 96px; box-sizing: border-box; }
+.duo:not(.duospec) .duo-panel .dhead { display: flex; flex-direction: column; justify-content: space-between; gap: 7px; min-height: 86px; box-sizing: border-box; }
 .duo-panel .kick-row { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
 .duo-panel .step-chip { background: #fff; color: var(--ink); font-family: var(--font-display); font-weight: 800; font-size: 12px; letter-spacing: 0.08em; padding: 3px 13px; border-radius: var(--r-pill); }
 .duo-panel.blue .step-chip { color: var(--accent-ink); }
