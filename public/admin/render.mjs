@@ -380,13 +380,12 @@ const BLOCK_RENDERERS = {
   lhref: (b, P) => `<div class="block" style="margin-top:56px">
         <h3${b.logo ? "" : et(P + ".title")}>${b.logo ? b.title.replace(b.logoText || "LH", `<img class="lh-inline" src="${b.logo}" alt="${b.logoText || "LH"}">`) : b.title}</h3>
         <div class="about-grid" style="margin-top:20px">
-          <div class="card" style="align-self:stretch"><h4${et(P + ".cardTitle")}>${b.cardTitle}</h4>
+          <div class="card" style="align-self:stretch">
+            <h4${b.cardLogo ? "" : et(P + ".cardTitle")}>${b.cardLogo ? `<img class="lh-card-logo" src="${b.cardLogo}" alt="${b.cardTitle}">` : b.cardTitle}</h4>
             <p${et(P + ".cardDesc")}>${b.cardDesc}</p>
-            <ul class="card-points">
-              ${b.points.map((li, i) => `<li${et(`${P}.points.${i}`)}>${li}</li>`).join("\n              ")}
-            </ul></div>
+          </div>
           <div class="about-side col">
-            ${b.years.map((y, i) => `<div class="about-card"><div class="num"${et(`${P}.years.${i}.num`)}>${y.num}</div><div class="label"${et(`${P}.years.${i}.label`)}>${y.label}</div></div>`).join("\n            ")}
+            ${b.points.map((li, i) => `<div class="about-card pt-card"><span class="pt-ic">${ic("shieldcheck")}</span><div class="label"${et(`${P}.points.${i}`)}>${li}</div></div>`).join("\n            ")}
           </div>
         </div>
       </div>`,
