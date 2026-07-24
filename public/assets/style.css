@@ -112,6 +112,7 @@ h1,h2,h3,h4 { font-family: var(--font-display); color: var(--ink); letter-spacin
 .hero h1 .en { color: var(--accent); }
 /* 히어로 키워드 로테이션 */
 .hero h1 .rot { display: inline-block; color: var(--accent); }
+.hero h1 .rot-sfx { color: var(--ink); }
 .hero h1 .rot-word { display: inline-block; }
 .hero h1 .rot-word.swap { animation: rotSwap .5s cubic-bezier(.2,.8,.2,1); }
 @keyframes rotSwap { 0% { transform: translateY(0.55em); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
@@ -858,3 +859,19 @@ b.count-pop { display: inline-block; }
 .img-block { margin: 26px auto; text-align: center; }
 .img-block img { max-width: 100%; height: auto; border-radius: var(--r-md); border: 1px solid var(--line); box-shadow: 0 10px 26px rgba(12,14,19,0.06); display: inline-block; }
 .img-block figcaption { margin-top: 10px; font-size: 13px; color: var(--muted); }
+
+/* PC: BigData 역량 태그 한 줄 고정 (자동 축소) */
+@media (min-width: 721px) {
+  .marquee-track.taglist { display: flex; flex-wrap: nowrap; justify-content: space-between; gap: 6px; }
+  .marquee-track.taglist .tag { white-space: nowrap; flex: 0 1 auto; font-size: clamp(10px, 0.95vw, 12.5px); padding: 6px clamp(6px, 0.8vw, 11px); letter-spacing: -0.01em; }
+}
+/* 번호 카드 아이콘 (SI·BigData 등) */
+.num-item { position: relative; }
+.num-item .ni { position: absolute; top: 18px; right: 18px; width: 40px; height: 40px; border-radius: var(--r-sm); background: var(--accent-soft); color: var(--accent); display: flex; align-items: center; justify-content: center; }
+.num-item .ni .ico-svg { width: 21px; height: 21px; }
+/* 방법론 단계: 유령 번호 타이포 */
+.phase .ph { display: flex; align-items: center; justify-content: center; gap: 9px; }
+.phase .ph i { font-style: normal; font-family: var(--font-display); font-weight: 800; font-size: 15px; color: #8db4f9; letter-spacing: 0.02em; }
+/* ITO 기반 바 아이콘 */
+.found .base .cols .col-ic { display: inline-flex; width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.14); color: #8db4f9; align-items: center; justify-content: center; margin-right: 10px; vertical-align: middle; flex-shrink: 0; }
+.found .base .cols .col-ic .ico-svg { width: 16px; height: 16px; }

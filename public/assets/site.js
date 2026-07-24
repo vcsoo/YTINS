@@ -78,6 +78,30 @@
 
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  // 스마트심사 구성도: REST API 배지를 좌우 '연동 행' 중심에 실측 정렬 (해상도 무관)
+  // transform(리빌) 영향을 받지 않도록 offsetTop을 조상 체인으로 직접 합산
+  var accTop = function (el, stopAt) {
+    var t = 0;
+    while (el && el !== stopAt) { t += el.offsetTop; el = el.offsetParent; }
+    return t;
+  };
+  var ssdAlign = function () {
+    [].forEach.call(document.querySelectorAll(".ssd"), function (ssd) {
+      var sys = ssd.querySelector(".ssd-sys");
+      var bridge = ssd.querySelector(".ssd-bridge");
+      var rest = bridge && bridge.querySelector(".rest");
+      var link = ssd.querySelector(".ssd-list li.link");
+      if (!sys || !bridge || !rest || !link) return;
+      var center = accTop(link, sys) + link.offsetHeight / 2;
+      var pad = center - accTop(bridge, sys) - rest.offsetHeight / 2;
+      if (pad > 0) bridge.style.paddingTop = pad + "px";
+    });
+  };
+  ssdAlign();
+  window.addEventListener("load", ssdAlign);
+  window.addEventListener("resize", ssdAlign, { passive: true });
+  setTimeout(ssdAlign, 900); // 웹폰트 적용 후 재정렬
+
   // 마퀴: 내용이 컨테이너를 넘지 않으면 흐름 정지·복제 숨김
   var marquees = [].slice.call(document.querySelectorAll(".marquee"));
   if (marquees.length) {
@@ -196,6 +220,19 @@
   if (rotWord && !reduceMotion) {
     var rotWords = ["AI 전환", "클라우드 전환", "데이터 혁신"];
     var rotIdx = 0;
+    // 회전 슬롯 폭을 가장 긴 단어로 고정 → 단어가 바뀌어도 앞뒤 글자·줄바꿈이 전혀 움직이지 않음
+    var rotBox = rotWord.parentElement; // .rot
+    var fitRot = function () {
+      var orig = rotWord.textContent, max = 0;
+      rotBox.style.width = "auto";
+      rotWords.forEach(function (t) { rotWord.textContent = t; max = Math.max(max, rotBox.offsetWidth); });
+      rotWord.textContent = orig;
+      rotBox.style.width = Math.ceil(max) + "px";
+    };
+    fitRot();
+    window.addEventListener("load", fitRot);
+    window.addEventListener("resize", fitRot, { passive: true });
+    setTimeout(fitRot, 800); // 웹폰트 적용 후 재측정
     setInterval(function () {
       rotIdx = (rotIdx + 1) % rotWords.length;
       rotWord.classList.remove("swap");

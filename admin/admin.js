@@ -97,6 +97,10 @@ function buildField(container, spec, value, setter) {
     wrap.appendChild(cb);
   } else if (type === "icon") {
     const sel = el("select");
+    const none = el("option", null, "(없음)");
+    none.value = "";
+    if (!value) none.selected = true;
+    sel.appendChild(none);
     ICON_NAMES.forEach((n) => {
       const o = el("option", null, n);
       o.value = n;
