@@ -297,6 +297,20 @@ html:has(.hero) { scroll-snap-type: y proximity; }
 .perf-table .cat { white-space: nowrap; }
 .perf-table .cat-tag { display: inline-block; font-size: 12px; font-weight: 700; font-family: var(--font-display); color: var(--accent-ink); background: var(--accent-soft); border-radius: var(--r-pill); padding: 4px 12px; }
 .table-wrap { overflow-x: auto; }
+/* 모바일 주요실적: 가로 스크롤 표 대신 간소화 카드 리스트 */
+@media (max-width: 720px) {
+  .table-wrap { overflow: visible; }
+  .perf-table thead { display: none; }
+  .perf-table, .perf-table tbody, .perf-table tr, .perf-table td { display: block; width: 100%; }
+  .perf-table tr { background: #fff; border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px 16px 12px; margin-bottom: 10px; box-shadow: 0 6px 16px rgba(12,14,19,0.04); }
+  .perf-table tbody tr:hover { background: #fff; }
+  .perf-table td { border-bottom: 0; padding: 0; }
+  .perf-table td:first-child { font-weight: 700; color: var(--ink); font-size: 14px; line-height: 1.5; margin-bottom: 7px; }
+  .perf-table td:nth-child(2) { display: inline; font-size: 12.5px; color: var(--muted); font-weight: 600; margin-right: 10px; }
+  .perf-table td.cat { display: inline-block; width: auto; margin-right: 10px; }
+  .perf-table .cat-tag { font-size: 10.5px; padding: 3px 9px; }
+  .perf-table td.when { display: inline; width: auto; font-size: 12px; }
+}
 .note { font-size: 13px; color: var(--muted); margin-top: 18px; }
 
 
