@@ -81,7 +81,7 @@ function footerHtml(f) {
       <div class="footer-info">
         ${f.company}<span class="sep">|</span>대표자 : ${f.ceo}<br>
         ${f.address}<br>
-        Tel : ${f.tel}<span class="sep">|</span>Fax : ${f.fax}<span class="sep">|</span>E-Mail : ${f.email}<span class="sep">|</span><a href="${f.url}" target="_blank" rel="noopener">${f.urlLabel}</a>
+        <span class="fi">Tel : ${f.tel}</span><span class="sep">|</span><span class="fi">Fax : ${f.fax}</span><span class="sep">|</span><span class="fi">E-Mail : ${f.email}</span><span class="sep">|</span><a class="fi" href="${f.url}" target="_blank" rel="noopener">${f.urlLabel}</a>
       </div>
     </div>
     <div class="footer-bottom">

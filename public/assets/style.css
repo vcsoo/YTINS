@@ -330,6 +330,11 @@ html:has(.hero) { scroll-snap-type: y proximity; }
 .footer-info { font-size: 13.5px; line-height: 2; color: var(--text); }
 .footer-info .sep { color: var(--line); margin: 0 8px; }
 .footer-info a:hover { color: var(--accent); text-decoration: underline; }
+/* 모바일: 연락처 항목을 한 줄에 하나씩 */
+@media (max-width: 720px) {
+  .footer-info .fi { display: block; }
+  .footer-info .fi + .sep { display: none; }
+}
 .footer-bottom { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--muted); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .footer-bottom .fnav { display: flex; gap: 18px; }
 .footer-bottom .fnav a { font-weight: 500; }
