@@ -341,7 +341,7 @@ const BLOCK_RENDERERS = {
       </div>`,
   bar: (b, P) => clientsBar(b, P),
   stack: (b, P) => `<div class="stack">
-        ${b.layers.map((l, i) => `<div class="layer${i === 0 ? " top" : ""}">
+        ${b.layers.map((l, i) => `<div class="layer${i === 0 ? " top" : ""}${l.img ? " has-img" : ""}">${l.img ? `<img class="layer-img" src="${l.img}" alt="">` : ""}
           <div class="lhead"><span class="licon">${ic(l.icon)}</span><div><div class="lsub"${et(`${P}.layers.${i}.sub`)}>${l.sub}</div><div class="ltitle"${et(`${P}.layers.${i}.title`)}>${l.title}</div></div></div>
           <ul>${l.items.map((li, j) => `<li${et(`${P}.layers.${i}.items.${j}`)}>${li}</li>`).join("\n            ")}</ul>
         </div>`).join(`
@@ -380,7 +380,7 @@ const BLOCK_RENDERERS = {
   lhref: (b, P) => `<div class="block" style="margin-top:56px">
         <h3${et(P + ".title")}>${b.title}</h3>
         <div class="about-grid" style="margin-top:20px">
-          <div class="card" style="align-self:stretch"><h4${et(P + ".cardTitle")}>${b.cardTitle}</h4>
+          <div class="card" style="align-self:stretch">${b.logo ? `<img class="lh-logo" src="${b.logo}" alt="LH">` : ""}<h4${et(P + ".cardTitle")}>${b.cardTitle}</h4>
             <p${et(P + ".cardDesc")}>${b.cardDesc}</p>
             <ul class="card-points">
               ${b.points.map((li, i) => `<li${et(`${P}.points.${i}`)}>${li}</li>`).join("\n              ")}
