@@ -147,11 +147,11 @@ export const BLOCKS = {
       sys2Label: "text: 하단 시스템 라벨",
       comps: { _label: "하단 구성요소", _item: { icon: "icon: 아이콘", b: "text: 이름" } } },
     empty: { type: "ssd", sysLabel: "시스템", eng1: { tag: "A", nm: "", ko: "", items: [""] }, bridge: "REST API", eng2: { tag: "B", nm: "", ko: "", items: [""] }, db: { b: "통합 DB", em: "" }, sys2Label: "시스템", comps: [{ icon: "cloud", b: "구성요소" }] } },
-  lhref: { name: "대표 레퍼런스 (카드 + 연도 이력)", spec: {
-      title: "text: 소제목", logo: "img.assets: 로고 이미지 (비우면 텍스트 그대로)", logoText: "text: 로고로 대체할 제목 속 문구", cardTitle: "text: 카드 제목", cardDesc: "area: 카드 설명",
-      points: { _label: "주요 내용", _of: "text: 항목" },
-      years: { _label: "연도별 이력", _item: { num: "text: 연도", label: "area: 내용" } } },
-    empty: { type: "lhref", title: "대표 레퍼런스", cardTitle: "", cardDesc: "", points: [""], years: [{ num: "2026", label: "" }] } },
+  lhref: { name: "대표 레퍼런스 (카드 + 포인트)", spec: {
+      title: "text: 소제목", logo: "img.assets: 제목 로고 (비우면 텍스트 그대로)", logoText: "text: 로고로 대체할 제목 속 문구",
+      cardTitle: "text: 카드 제목", cardLogo: "img.assets: 카드 제목 로고 (비우면 텍스트)", cardDesc: "area: 카드 설명",
+      points: { _label: "주요 내용 (우측 박스)", _of: "text: 항목" } },
+    empty: { type: "lhref", title: "대표 레퍼런스", cardTitle: "", cardLogo: "", cardDesc: "", points: [""], logo: "", logoText: "" } },
   image: { name: "이미지 (도식·사진 업로드)", spec: { src: "img.assets: 이미지 파일", alt: "text: 이미지 설명", caption: "text: 캡션 (비워도 됨)", maxw: "text: 최대 폭 px (비우면 전체 폭)" },
     empty: { type: "image", src: "", alt: "", caption: "", maxw: "" } },
   html: { name: "자유 HTML (고급)", spec: { code: "area: HTML 코드" },

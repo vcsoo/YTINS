@@ -878,6 +878,13 @@ b.count-pop { display: inline-block; }
 
 /* 대표 레퍼런스 제목 인라인 로고 (텍스트 'LH' 대체 · 뒤 단어와 줄바뀜 없음) */
 .block h3 .lh-inline { height: 1.25em; width: auto; display: inline-block; vertical-align: -0.25em; margin: 0 2px 0 4px; }
+/* 대표 레퍼런스: 카드 제목 로고 + 우측 포인트 박스 */
+.card .lh-card-logo { height: 38px; width: auto; display: block; margin: 2px 0 6px; }
+.about-grid .card:has(.lh-card-logo) { display: flex; flex-direction: column; justify-content: center; }
+.about-card.pt-card { flex-direction: row; align-items: center; gap: 14px; padding: 18px 22px; }
+.about-card.pt-card .pt-ic { width: 36px; height: 36px; flex: none; border-radius: var(--r-sm); background: rgba(255,255,255,0.14); display: flex; align-items: center; justify-content: center; }
+.about-card.pt-card .pt-ic .ico-svg { width: 19px; height: 19px; }
+.about-card.pt-card .label { margin-top: 0; font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.55; }
 /* 레이어 스택 우측 일러스트 (PC 전용) */
 .layer { position: relative; }
 .layer.has-img { padding-right: 210px; }
