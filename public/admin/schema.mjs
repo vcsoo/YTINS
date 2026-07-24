@@ -145,8 +145,8 @@ export const BLOCKS = {
       eng2: { tag: "text: 우측 태그", nm: "text: 우측 영문명", ko: "text: 우측 한글명", items: { _label: "기능 (첫 항목이 연동 강조)", _of: "text: 기능" } },
       db: { b: "text: DB 이름", em: "text: DB 설명" },
       sys2Label: "text: 하단 시스템 라벨",
-      comps: { _label: "하단 구성요소", _item: { icon: "icon: 아이콘", b: "text: 이름" } } },
-    empty: { type: "ssd", sysLabel: "시스템", eng1: { tag: "A", nm: "", ko: "", items: [""] }, bridge: "REST API", eng2: { tag: "B", nm: "", ko: "", items: [""] }, db: { b: "통합 DB", em: "" }, sys2Label: "시스템", comps: [{ icon: "cloud", b: "구성요소" }] } },
+      comps: { _label: "하단 구성요소", _item: { icon: "icon: 아이콘", b: "text: 이름", items: { _label: "세부 항목", _of: "text: 항목" } } } },
+    empty: { type: "ssd", sysLabel: "시스템", eng1: { tag: "A", nm: "", ko: "", items: [""] }, bridge: "REST API", eng2: { tag: "B", nm: "", ko: "", items: [""] }, db: { b: "통합 DB", em: "" }, sys2Label: "시스템", comps: [{ icon: "cloud", b: "구성요소", items: [] }] } },
   lhref: { name: "대표 레퍼런스 (카드 + 포인트)", spec: {
       title: "text: 소제목", logo: "img.assets: 제목 로고 (비우면 텍스트 그대로)", logoText: "text: 로고로 대체할 제목 속 문구",
       cardTitle: "text: 카드 제목", cardLogo: "img.assets: 카드 제목 로고 (비우면 텍스트)", cardDesc: "area: 카드 설명",

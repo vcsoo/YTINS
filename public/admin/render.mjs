@@ -373,7 +373,7 @@ const BLOCK_RENDERERS = {
         <div class="ssd-sys">
           <div class="ssd-sys-label"${et(P + ".sys2Label")}>${b.sys2Label}</div>
           <div class="ssd-comps">
-            ${b.comps.map((c, i) => `<div class="ssd-comp"><div class="ic">${ic(c.icon)}</div><b${et(`${P}.comps.${i}.b`)}>${c.b}</b></div>`).join("\n            ")}
+            ${b.comps.map((c, i) => `<div class="ssd-comp"><div class="ic">${ic(c.icon)}</div><b${et(`${P}.comps.${i}.b`)}>${c.b}</b>${c.items && c.items.length ? `<ul class="ssd-sub">${c.items.map((s, j) => `<li${et(`${P}.comps.${i}.items.${j}`)}>${s}</li>`).join("")}</ul>` : ""}</div>`).join("\n            ")}
           </div>
         </div>
       </div>`,
