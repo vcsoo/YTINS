@@ -84,9 +84,7 @@ export const SECTIONS = [
     } },
     { id: "reference.performance", title: "주요 실적", spec: {
       title: "text: 섹션 제목", desc: "area: 섹션 설명",
-      years: { _label: "연도별 실적", _item: { year: "text: 연도", rows: { _label: "실적", _cols: ["사업명", "발주처", "사업기간"] } } },
-      bigdata: { title: "text: 표 제목", desc: "area: 표 설명", rows: { _label: "실적", _cols: ["발주처", "사업명", "사업기간", "구분"] } },
-      cloud: { title: "text: 표 제목", desc: "area: 표 설명", rows: { _label: "실적", _cols: ["발주처", "사업명", "사업기간", "산업"] } },
+      years: { _label: "연도별 실적", _item: { year: "text: 연도", rows: { _label: "실적", _cols: ["사업명", "발주처", "분야", "사업기간"] } } },
       note: "text: 하단 주석"
     } }
   ] },

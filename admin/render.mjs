@@ -444,33 +444,12 @@ function renderReference(C) {
       ${P.performance.years.map((y, yi) => `<div class="block">
         <h3${et(`reference.performance.years.${yi}.year`)}>${y.year}</h3>
         <div class="table-wrap"><table class="perf-table">
-          <thead><tr><th>사업명</th><th style="width:190px">발주처</th><th style="width:160px">사업기간</th></tr></thead>
+          <thead><tr><th>사업명</th><th style="width:180px">발주처</th><th style="width:120px">분야</th><th style="width:160px">사업기간</th></tr></thead>
           <tbody>
-            ${y.rows.map((r, ri) => `<tr><td${et(`reference.performance.years.${yi}.rows.${ri}.0`)}>${r[0]}</td><td${et(`reference.performance.years.${yi}.rows.${ri}.1`)}>${r[1]}</td><td class="when"${et(`reference.performance.years.${yi}.rows.${ri}.2`)}>${r[2]}</td></tr>`).join("\n            ")}
+            ${y.rows.map((r, ri) => `<tr><td${et(`reference.performance.years.${yi}.rows.${ri}.0`)}>${r[0]}</td><td${et(`reference.performance.years.${yi}.rows.${ri}.1`)}>${r[1]}</td><td class="cat"><span class="cat-tag"${et(`reference.performance.years.${yi}.rows.${ri}.2`)}>${r[2]}</span></td><td class="when"${et(`reference.performance.years.${yi}.rows.${ri}.3`)}>${r[3]}</td></tr>`).join("\n            ")}
           </tbody>
         </table></div>
       </div>`).join("\n      ")}
-      <div class="block">
-        <h3${et("reference.performance.bigdata.title")}>${P.performance.bigdata.title}</h3>
-        <p class="block-desc"${et("reference.performance.bigdata.desc")}>${P.performance.bigdata.desc}</p>
-        <div class="table-wrap"><table class="perf-table">
-          <thead><tr><th style="width:170px">발주처</th><th>사업명</th><th style="width:150px">사업기간</th><th style="width:150px">구분</th></tr></thead>
-          <tbody>
-            ${P.performance.bigdata.rows.map((r, ri) => `<tr>${[0,1,2,3].map((ci) => `<td${ci === 2 ? ' class="when"' : ""}${et(`reference.performance.bigdata.rows.${ri}.${ci}`)}>${r[ci]}</td>`).join("")}</tr>`).join("\n            ")}
-          </tbody>
-        </table></div>
-      </div>
-
-      <div class="block">
-        <h3${et("reference.performance.cloud.title")}>${P.performance.cloud.title}</h3>
-        <p class="block-desc"${et("reference.performance.cloud.desc")}>${P.performance.cloud.desc}</p>
-        <div class="table-wrap"><table class="perf-table">
-          <thead><tr><th style="width:150px">발주처</th><th>사업명</th><th style="width:150px">사업기간</th><th style="width:130px">산업</th></tr></thead>
-          <tbody>
-            ${P.performance.cloud.rows.map((r, ri) => `<tr>${[0,1,2,3].map((ci) => `<td${ci === 2 ? ' class="when"' : ""}${et(`reference.performance.cloud.rows.${ri}.${ci}`)}>${r[ci]}</td>`).join("")}</tr>`).join("\n            ")}
-          </tbody>
-        </table></div>
-      </div>
       <p class="note"${et("reference.performance.note")}>${P.performance.note}</p>
     </div>
   </section>`;
