@@ -292,7 +292,7 @@ const BLOCK_RENDERERS = {
       </div>`,
   duo: (b, P) => `<div class="duo">
         ${b.panels.map((p, i) => `<div class="duo-panel ${i === 0 ? "ink" : "blue"}">
-          <div class="dhead"><div class="kicker"${et(`${P}.panels.${i}.kicker`)}>${p.kicker}</div><h3${et(`${P}.panels.${i}.title`)}>${p.title}</h3></div>
+          <div class="dhead">${p.sub ? `<div class="kick-row"><span class="step-chip"${et(`${P}.panels.${i}.kicker`)}>${p.kicker}</span><span class="kick-sub"${et(`${P}.panels.${i}.sub`)}>${p.sub}</span></div>` : `<div class="kicker"${et(`${P}.panels.${i}.kicker`)}>${p.kicker}</div>`}<h3${et(`${P}.panels.${i}.title`)}>${p.title}</h3></div>
           <div class="dbody">
             ${p.items.map((s, j) => `<div class="srv"><b${et(`${P}.panels.${i}.items.${j}.b`)}>${s.b}</b><span${et(`${P}.panels.${i}.items.${j}.s`)}>${s.s}</span></div>`).join("\n            ")}
           </div>

@@ -114,8 +114,8 @@ export const BLOCKS = {
     empty: { type: "numbered", items: [{ icon: "", title: "제목", badge: "", desc: "" }] } },
   featgrid: { name: "특징 카드 (아이콘+제목+설명)", spec: { feats: { _label: "카드", _item: { icon: "icon: 아이콘", b: "text: 제목", s: "text: 설명" } } },
     empty: { type: "featgrid", feats: [{ icon: "target", b: "제목", s: "설명" }] } },
-  duo: { name: "좌우 패널 (검정/파랑)", spec: { panels: { _label: "패널 (2개)", _item: { kicker: "text: 상단 라벨", title: "text: 패널 제목", items: { _label: "항목", _item: { b: "text: 제목", s: "text: 설명" } } } } },
-    empty: { type: "duo", panels: [{ kicker: "LEFT", title: "왼쪽 패널", items: [{ b: "항목", s: "" }] }, { kicker: "RIGHT", title: "오른쪽 패널", items: [{ b: "항목", s: "" }] }] } },
+  duo: { name: "좌우 패널 (검정/파랑)", spec: { panels: { _label: "패널 (2개)", _item: { kicker: "text: 상단 라벨 (칩)", sub: "text: 라벨 옆 부제 (비우면 라벨만 표시)", title: "text: 패널 제목", items: { _label: "항목", _item: { b: "text: 제목", s: "text: 설명" } } } } },
+    empty: { type: "duo", panels: [{ kicker: "LEFT", sub: "", title: "왼쪽 패널", items: [{ b: "항목", s: "" }] }, { kicker: "RIGHT", sub: "", title: "오른쪽 패널", items: [{ b: "항목", s: "" }] }] } },
   duospec: { name: "Before/After 패널 (경고 목록 + 기술표)", spec: {
       before: { kicker: "text: 좌측 라벨", title: "text: 좌측 제목", items: { _label: "항목", _of: "text: 항목" } },
       after: { kicker: "text: 우측 라벨", title: "text: 우측 제목", spec: { _label: "기술 표", _item: { th: "text: 구분", td: "text: 내용" } } } },
