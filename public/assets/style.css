@@ -294,6 +294,8 @@ html:has(.hero) { scroll-snap-type: y proximity; }
 .perf-table tbody tr { transition: background .15s ease; }
 .perf-table tbody tr:hover { background: var(--bg-soft); }
 .perf-table .when { white-space: nowrap; color: var(--muted); }
+.perf-table .cat { white-space: nowrap; }
+.perf-table .cat-tag { display: inline-block; font-size: 12px; font-weight: 700; font-family: var(--font-display); color: var(--accent-ink); background: var(--accent-soft); border-radius: var(--r-pill); padding: 4px 12px; }
 .table-wrap { overflow-x: auto; }
 .note { font-size: 13px; color: var(--muted); margin-top: 18px; }
 
