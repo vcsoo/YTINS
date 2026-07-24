@@ -957,6 +957,12 @@
                         ]
                     },
                     {
+                        "type": "subhead",
+                        "title": "상용 빅데이터 플랫폼 전환",
+                        "desc": "Before/After 비교와 검증된 4단계 전환 절차로, 서비스 중단과 리스크를 최소화하며 오픈소스 기반으로 전환합니다.",
+                        "tight": false
+                    },
+                    {
                         "type": "duospec",
                         "before": {
                             "kicker": "Before",
